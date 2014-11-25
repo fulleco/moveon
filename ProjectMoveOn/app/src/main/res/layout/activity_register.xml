@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_inscription"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#4c006b" >
+
+     <Button
+         android:id="@+id/buttonRegister"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerHorizontal="true"
+         android:layout_marginBottom="20dp"
+         android:adjustViewBounds="true"
+         android:layout_below="@+id/editPassword2"
+         android:background="@drawable/button_big_register_selector"
+         android:scaleType="centerInside"
+         android:textColor="#FFF"
+         android:textStyle="bold" />
+     
+     <EditText
+         android:id="@+id/editPassword1"
+         android:layout_width="245dp"
+         android:layout_height="30dp"
+         android:layout_below="@+id/editMail"
+         android:layout_centerHorizontal="true"
+         android:layout_marginBottom="20dp"
+         android:maxLength="12"
+         android:padding="5dp"
+         android:background="@drawable/rounded_edit"
+         android:hint="Mot de passe"
+         android:inputType="textPassword"
+         android:textColor="#000"
+         android:ellipsize="start"
+   		 android:gravity="center_horizontal"
+         android:textSize="14sp" />
+
+     <EditText
+         android:id="@+id/editMail"
+         android:layout_width="245dp"
+         android:layout_height="30dp"
+         android:layout_below="@+id/editLogin"
+         android:layout_alignLeft="@+id/editLogin"
+         android:layout_marginBottom="18dp"
+         android:padding="5dp"
+         android:layout_centerHorizontal="true"
+         android:background="@drawable/rounded_edit"
+         android:hint="Adresse E-Mail"
+         android:inputType="text"
+         android:textColor="#000"
+         android:ellipsize="start"
+   		 android:gravity="center_horizontal"
+         android:textSize="14sp" >
+     </EditText>
+
+     <EditText
+         android:id="@+id/editLogin"
+         android:layout_width="245dp"
+         android:layout_centerHorizontal="true"
+         android:layout_height="30dp"
+         android:layout_below="@+id/logo"
+         android:layout_marginBottom="19dp"
+         android:padding="5dp"
+         android:background="@drawable/rounded_edit"
+         android:hint="Pseudo"
+         android:inputType="text"
+         android:textColor="#000"
+         android:ellipsize="start"
+   		 android:gravity="center_horizontal"
+         android:textSize="14sp" />
+
+     <EditText
+         android:id="@+id/editPassword2"
+         android:layout_width="245dp"
+         android:layout_height="30dp"
+         android:layout_below="@+id/editPassword1"
+         android:layout_alignLeft="@+id/editPassword1"
+         android:layout_marginBottom="16dp"
+         android:padding="5dp"
+         android:background="@drawable/rounded_edit"
+         android:hint="Confirmez le mot de passe"
+         android:inputType="textPassword"
+         android:textColor="#000"
+         android:ellipsize="start"
+   		 android:gravity="center_horizontal"
+         android:textSize="14sp" />
+     
+     <TextView
+         android:id="@+id/txt_confirm"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/buttonConnect"
+         android:layout_centerHorizontal="true"
+         android:textColor="#FFF"
+         android:text="DÉJÀ INSCRIT ?"
+         android:textStyle="italic" />
+     
+     <Button
+         android:id="@+id/buttonConnect"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerHorizontal="true"
+         android:layout_marginBottom="20dp"
+         android:layout_marginTop="10dp"
+         android:adjustViewBounds="true"
+         android:layout_alignParentBottom="true"
+         android:background="@drawable/button_big_connect_selector"
+         android:scaleType="centerInside"
+         android:textColor="#FFF"
+         android:textStyle="bold" />
+
+     <ImageView
+         android:id="@+id/logo"
+         android:layout_width="77dp"
+         android:layout_height="84dp"
+         android:layout_marginBottom="19dp"
+         android:layout_centerHorizontal="true"
+         android:layout_alignParentTop="true"
+         android:layout_marginTop="30dp"
+         android:adjustViewBounds="true"
+         android:background="@drawable/logo"
+         android:scaleType="fitCenter" />
+    
+</RelativeLayout>
