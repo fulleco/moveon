@@ -1,22 +1,19 @@
 package com.application.moveon.database;
 
 /**
- * Created by user on 24/11/2014.
+ * Created by damota on 24/11/2014.
  */
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.concurrent.ExecutionException;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.application.moveon.LoginActivity;
+import com.application.moveon.session.SessionManager;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -26,18 +23,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.AnimationDrawable;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import com.application.moveon.LoginActivity;
-import com.application.moveon.session.SessionManager;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class ConnectTask extends AsyncTask<Void, Void, String> {
 
@@ -125,8 +115,7 @@ public class ConnectTask extends AsyncTask<Void, Void, String> {
         try {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(
-                    "http://mobile.linkibe.fr/appli_hiddenphoto/select_user_by_login.php?login="
-                            + login + "&password=" + password);
+                    "http://martinezhugo.com/moveon/select_user_by_email.php");
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();

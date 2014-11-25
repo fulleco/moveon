@@ -1,17 +1,85 @@
 package com.application.moveon;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.application.moveon.database.ConnectTask;
+import com.application.moveon.session.Connectivity;
+import com.application.moveon.session.SessionManager;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 public class LoginActivity extends Activity {
+
+    private EditText editLogin;
+    private EditText editPassword;
+
+    private String id;
+
+    private SessionManager session;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage("Connexion en cours");
+
+        session = new SessionManager(this);
+
+        editLogin = (EditText) findViewById(R.id.editLogin);
+        editPassword = (EditText) findViewById(R.id.editPassword);
+
+        Button registerButton = (Button) findViewById(R.id.buttonRegister);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(i);
+            }
+        });
+
+            Button loginButton = (Button) findViewById(R.id.buttonConnect);
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+            public void onClick(View v) {
+
+                if(!Connectivity.isConnected(LoginActivity.this)){
+                    Toast.makeText(LoginActivity.this, "Pas de connexion.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                final String loginTxt = editLogin.getText().toString();
+                final String passTxt = editPassword.getText().toString();
+
+                int corePoolSize = 80;
+                int maximumPoolSize = 90;
+                int keepAliveTime = 20;
+
+                BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(maximumPoolSize);
+                Executor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, workQueue);
+
+                new ConnectTask(LoginActivity.this, loginTxt, passTxt, session, id, progressDialog).executeOnExecutor(threadPoolExecutor);
+            }
+        });
     }
 
 

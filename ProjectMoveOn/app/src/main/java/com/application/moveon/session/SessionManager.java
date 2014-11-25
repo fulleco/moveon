@@ -10,7 +10,7 @@ import com.application.moveon.HomeActivity;
 import java.util.HashMap;
 
 /**
- * Created by user on 24/11/2014.
+ * Created by damota on 24/11/2014.
  */
 public class SessionManager {
     // Shared Preferences
