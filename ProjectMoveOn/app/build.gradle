@@ -22,4 +22,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:20.0.0'
+    compile files('libs/httpmime-4.2.2.jar')
+    compile files('libs/org.apache.commons.net_2.0.0.v200905272248.jar')
+    compile files('libs/simpleftp.jar')
+    compile files('libs/commons-io-2.4.jar')
 }
