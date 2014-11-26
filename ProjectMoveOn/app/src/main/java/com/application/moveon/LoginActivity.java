@@ -3,12 +3,15 @@ package com.application.moveon;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.application.moveon.database.ConnectTask;
@@ -33,6 +36,8 @@ public class LoginActivity extends Activity {
 
     private ProgressDialog progressDialog;
 
+    private ImageView logo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +49,8 @@ public class LoginActivity extends Activity {
         progressDialog.setMessage("Connexion en cours");
 
         session = new SessionManager(this);
+
+        logo = (ImageView) findViewById(R.id.logo);
 
         editLogin = (EditText) findViewById(R.id.editLogin);
         editPassword = (EditText) findViewById(R.id.editPassword);
@@ -70,6 +77,21 @@ public class LoginActivity extends Activity {
                 final String loginTxt = editLogin.getText().toString();
                 final String passTxt = editPassword.getText().toString();
 
+                logo.setBackgroundResource(R.drawable.loader_moveon);
+
+                final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
+                logo.post(new Runnable() {
+                    public void run() {
+                        if ( mailAnimation != null ) mailAnimation.start();
+                    }
+                });
+
+                //Calculate the total duration
+                int duration = 0;
+                for(int i = 0; i < mailAnimation.getNumberOfFrames(); i++){
+                    duration += mailAnimation.getDuration(i);
+                }
+
                 int corePoolSize = 80;
                 int maximumPoolSize = 90;
                 int keepAliveTime = 20;
@@ -77,7 +99,7 @@ public class LoginActivity extends Activity {
                 BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(maximumPoolSize);
                 Executor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, workQueue);
 
-                new ConnectTask(LoginActivity.this, loginTxt, passTxt, session, id, progressDialog).executeOnExecutor(threadPoolExecutor);
+                new ConnectTask(LoginActivity.this, loginTxt, passTxt, session, id, mailAnimation).executeOnExecutor(threadPoolExecutor);
             }
         });
     }

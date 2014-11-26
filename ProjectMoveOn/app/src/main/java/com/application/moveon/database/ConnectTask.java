@@ -4,6 +4,7 @@ package com.application.moveon.database;
  * Created by damota on 24/11/2014.
  */
 import android.app.ProgressDialog;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -37,20 +38,22 @@ public class ConnectTask extends AsyncTask<Void, Void, String> {
     SessionManager session;
     String id;
     ProgressDialog progressBar;
+    AnimationDrawable mailAnimation;
 
     public ConnectTask(LoginActivity activity, String loginTxt,
-                       String passTxt, SessionManager session, String id, ProgressDialog progressBar) {
+                       String passTxt, SessionManager session, String id, AnimationDrawable mailAnimation) {
         this.activity = activity;
         this.loginTxt = loginTxt;
         this.passTxt = passTxt;
         this.session = session;
         this.id = id;
         this.progressBar = progressBar;
+        this.mailAnimation = mailAnimation;
     }
 
     protected void onPreExecute()
     {
-        progressBar.show();
+        //progressBar.show();
     }
 
     protected String doInBackground(Void... args) {
@@ -90,7 +93,10 @@ public class ConnectTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String result) {
         if(result.equals(new String("Connexion"))){
             session.createLoginSession(loginTxt, passTxt, id);
-            dismissBar();
+            mailAnimation.stop();
+            //dismissBar();
+        }else{
+            mailAnimation.stop();
         }
     }
 
@@ -115,7 +121,7 @@ public class ConnectTask extends AsyncTask<Void, Void, String> {
         try {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(
-                    "http://martinezhugo.com/moveon/select_user_by_email.php");
+                    "http://martinezhugo.com/pfe/select_user.php");
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();

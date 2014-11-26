@@ -25,7 +25,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     private EditText editLogin;
     private EditText editPassword1;
     private EditText editPassword2;
-    private EditText editMail;
+    private EditText editLastName;
+    private EditText editFirstName;
     private ToolBox tools;
 
     private ProgressDialog progressDialog;
@@ -47,7 +48,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         editLogin = (EditText) findViewById(R.id.editLogin);
         editPassword1 = (EditText) findViewById(R.id.editPassword1);
         editPassword2 = (EditText) findViewById(R.id.editPassword2);
-        editMail = (EditText) findViewById(R.id.editMail);
+        editFirstName = (EditText) findViewById(R.id.editFirstName);
+        editLastName = (EditText) findViewById(R.id.editLastName);
 
         tools = new ToolBox(this);
     }
@@ -74,8 +76,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             String message = "";
             if (emptyFields.size()==0) {
                 User newUser = new User(editLogin.getText().toString(),
-                        editPassword1.getText().toString(), editMail.getText()
-                        .toString());
+                        editPassword1.getText().toString(), editFirstName.getText().toString(), editLastName.getText().toString());
                 new AddUserTask(this, newUser).execute();
             }else{
                 for (String field : emptyFields)
@@ -90,10 +91,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         ArrayList<String> fieldsEmpty = new ArrayList<String>();
         if (editLogin.getText().toString().equals(""))
             fieldsEmpty.add("Login");
-        if (editMail.getText().toString().equals(""))
-            fieldsEmpty.add("Mail");
         if (editPassword1.getText().toString().equals(""))
             fieldsEmpty.add("Mot de passe");
+        if (editLastName.getText().toString().equals(""))
+            fieldsEmpty.add("Nom de famille");
+        if (editFirstName.getText().toString().equals(""))
+            fieldsEmpty.add("Prénom");
         return fieldsEmpty;
     }
 

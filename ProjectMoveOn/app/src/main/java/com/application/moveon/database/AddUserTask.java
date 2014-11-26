@@ -83,12 +83,15 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
 
         // http post
         try {
+            Log.i("ANTHO", "USER firstname" + newUser.getFirstName() + "last " + newUser.getLastName());
+
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(
-                    "http://mobile.linkibe.fr/appli_hiddenphoto/add_user.php");
+                    "http://martinezhugo.com/pfe/add_user.php");
             MultipartEntity mpEntity = new MultipartEntity();
+            mpEntity.addPart("firstName",new StringBody(newUser.getFirstName()));
+            mpEntity.addPart("lastName",new StringBody(newUser.getLastName()));
             mpEntity.addPart("login",new StringBody(newUser.getLogin()));
-            mpEntity.addPart("mail",new StringBody(newUser.getMail()));
             mpEntity.addPart("password",new StringBody(newUser.getPassword()));
             httppost.setEntity(mpEntity);
             HttpResponse response = httpclient.execute(httppost);
@@ -106,7 +109,7 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    is, "iso-8859-1"), 8);
+                    is, "UTF-8"), 8);
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -123,7 +126,7 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    is, "iso-8859-1"), 8);
+                    is, "UTF-8"), 8);
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -144,7 +147,6 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
         }
 
         id = jobject.getString("id");
-        Log.i("ANTHO", "idrecupere" + id);
 
         return id;
     }
@@ -158,9 +160,9 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
         try {
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpGet httppost = new HttpGet(
-                    "http://mobile.linkibe.fr/appli_hiddenphoto/account_exists.php?login=" + newUser.getLogin() + "&mail=" + newUser.getMail());
-            HttpResponse response = httpclient.execute(httppost);
+            HttpGet httpget = new HttpGet(
+                    "http://martinezhugo.com/pfe/account_exists.php?login=" + newUser.getLogin());
+            HttpResponse response = httpclient.execute(httpget);
             HttpEntity entity = response.getEntity();
             is = entity.getContent();
         } catch (ClientProtocolException e) {
@@ -191,22 +193,12 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
         JSONObject jObject;
         try {
             jArray = new JSONArray(resultString);
-            Log.i("ANTHO","testarray"+jArray.toString());
             jObject = jArray.getJSONObject(0);
             String nbLogin = jObject.getString("nbLogin");
-            String nbEmail = jObject.getString("nbEmail");
-
-            Log.i("ANTHO", "nblogin"+nbLogin);
-            Log.i("ANTHO", "nbEmail"+nbEmail);
 
             if(!nbLogin.equals("0")){
                 error+="Login déjà existant.\n";
             }
-
-            if(!nbEmail.equals("0")){
-                error+="Email déjà utilisé par un autre compte.\n";
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relative_inscription"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#4c006b" >
+    android:layout_height="fill_parent" >
 
      <Button
          android:id="@+id/buttonRegister"
@@ -22,7 +21,7 @@
          android:id="@+id/editPassword1"
          android:layout_width="245dp"
          android:layout_height="30dp"
-         android:layout_below="@+id/editMail"
+         android:layout_below="@+id/editLogin"
          android:layout_centerHorizontal="true"
          android:layout_marginBottom="20dp"
          android:maxLength="12"
@@ -35,30 +34,44 @@
    		 android:gravity="center_horizontal"
          android:textSize="14sp" />
 
-     <EditText
-         android:id="@+id/editMail"
-         android:layout_width="245dp"
-         android:layout_height="30dp"
-         android:layout_below="@+id/editLogin"
-         android:layout_alignLeft="@+id/editLogin"
-         android:layout_marginBottom="18dp"
-         android:padding="5dp"
-         android:layout_centerHorizontal="true"
-         android:background="@drawable/rounded_edit"
-         android:hint="Adresse E-Mail"
-         android:inputType="text"
-         android:textColor="#000"
-         android:ellipsize="start"
-   		 android:gravity="center_horizontal"
-         android:textSize="14sp" >
-     </EditText>
+    <EditText
+    android:id="@+id/editFirstName"
+    android:layout_width="245dp"
+    android:layout_centerHorizontal="true"
+    android:layout_height="30dp"
+    android:layout_below="@+id/logo"
+    android:layout_marginBottom="19dp"
+    android:padding="5dp"
+    android:background="@drawable/rounded_edit"
+    android:hint="Nom"
+    android:inputType="text"
+    android:textColor="#000"
+    android:ellipsize="start"
+    android:gravity="center_horizontal"
+    android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/editLastName"
+        android:layout_width="245dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="30dp"
+        android:layout_below="@+id/editFirstName"
+        android:layout_marginBottom="19dp"
+        android:padding="5dp"
+        android:background="@drawable/rounded_edit"
+        android:hint="Prénom"
+        android:inputType="text"
+        android:textColor="#000"
+        android:ellipsize="start"
+        android:gravity="center_horizontal"
+        android:textSize="14sp" />
 
      <EditText
          android:id="@+id/editLogin"
          android:layout_width="245dp"
          android:layout_centerHorizontal="true"
          android:layout_height="30dp"
-         android:layout_below="@+id/logo"
+         android:layout_below="@+id/editLastName"
          android:layout_marginBottom="19dp"
          android:padding="5dp"
          android:background="@drawable/rounded_edit"

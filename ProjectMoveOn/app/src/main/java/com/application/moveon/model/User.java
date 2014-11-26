@@ -7,19 +7,21 @@ public class User {
     private String id;
     private String login;
     private String password;
-    private String mail;
-
-    public User(String login, String password, String mail){
+    private String firstName;
+    private String lastName;
+    public User(String login, String password, String firstName, String lastName){
         this.login = login;
         this.password = password;
-        this.mail = mail;
+        this.lastName = lastName;
+        this.firstName = firstName;
     }
 
-    public User(String id, String login, String password, String mail){
+    public User(String id, String login, String password, String firstName, String lastName){
         this.id = id;
         this.login = login;
         this.password = password;
-        this.mail = mail;
+        this.lastName = lastName;
+        this.firstName = firstName;
     }
 
     public String getId(){
@@ -46,12 +48,20 @@ public class User {
         this.password = password;
     }
 
-    public String getMail(){
-        return this.mail;
+    public String getFirstName(){
+        return this.firstName;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setFirstName(String firstName){
+        this.firstName = firstName;
+    }
+
+    public String getLastName(){
+        return this.lastName;
+    }
+
+    public void setLastName(String lastName){
+        this.lastName = lastName;
     }
 }
 
