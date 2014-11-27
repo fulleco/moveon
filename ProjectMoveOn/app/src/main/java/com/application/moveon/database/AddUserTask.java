@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -38,11 +39,13 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
     private User newUser;
     private ToolBox tools;
     private String error = "";
+    private AnimationDrawable mailAnimation;
 
-    public AddUserTask(Activity i, User user) {
+    public AddUserTask(Activity i, User user, AnimationDrawable mailAnimation) {
         this.previousActivity = i;
         this.newUser = user;
         tools = new ToolBox(i);
+        this.mailAnimation = mailAnimation;
     }
 
     protected String doInBackground(Void... args) {
@@ -74,6 +77,9 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
                     "Vous pouvez maintenant utiliser MoveOn !");
             Intent i = new Intent(previousActivity, LoginActivity.class);
             previousActivity.startActivity(i);
+            mailAnimation.stop();
+        }else{
+            mailAnimation.stop();
         }
     }
 
