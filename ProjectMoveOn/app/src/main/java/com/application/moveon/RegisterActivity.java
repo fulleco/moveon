@@ -3,12 +3,14 @@ package com.application.moveon;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.application.moveon.database.AddUserTask;
 import com.application.moveon.model.User;
@@ -29,7 +31,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     private EditText editFirstName;
     private ToolBox tools;
 
-    private ProgressDialog progressDialog;
+    private ImageView logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 
         SessionManager session = new SessionManager(this);
         //session.checkLogin(true);
+
+        logo = (ImageView) findViewById(R.id.logo);
 
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
         buttonRegister.setOnClickListener(this);
@@ -75,9 +79,24 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             ArrayList<String> emptyFields = validFields();
             String message = "";
             if (emptyFields.size()==0) {
+                logo.setBackgroundResource(R.drawable.loader_moveon);
+
+                final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
+                logo.post(new Runnable() {
+                    public void run() {
+                        if ( mailAnimation != null ) mailAnimation.start();
+                    }
+                });
+
+                //Calculate the total duration
+                int duration = 0;
+                for(int i = 0; i < mailAnimation.getNumberOfFrames(); i++){
+                    duration += mailAnimation.getDuration(i);
+                }
+
                 User newUser = new User(editLogin.getText().toString(),
                         editPassword1.getText().toString(), editFirstName.getText().toString(), editLastName.getText().toString());
-                new AddUserTask(this, newUser).execute();
+                new AddUserTask(this, newUser, mailAnimation).execute();
             }else{
                 for (String field : emptyFields)
                     message += "-" + field + "\n";

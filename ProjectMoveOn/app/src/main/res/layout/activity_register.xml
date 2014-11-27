@@ -122,16 +122,16 @@
          android:textColor="#FFF"
          android:textStyle="bold" />
 
-     <ImageView
-         android:id="@+id/logo"
-         android:layout_width="77dp"
-         android:layout_height="84dp"
-         android:layout_marginBottom="19dp"
-         android:layout_centerHorizontal="true"
-         android:layout_alignParentTop="true"
-         android:layout_marginTop="30dp"
-         android:adjustViewBounds="true"
-         android:background="@drawable/logo"
-         android:scaleType="fitCenter" />
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
+        android:background="@drawable/loader_planet1"
+        android:scaleType="fitCenter" />
     
 </RelativeLayout>
