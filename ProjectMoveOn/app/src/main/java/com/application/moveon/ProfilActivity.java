@@ -2,29 +2,50 @@ package com.application.moveon;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.application.moveon.database.ConnectTask;
+import com.application.moveon.session.Connectivity;
 import com.application.moveon.session.SessionManager;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-public class HomeActivity extends Activity {
+
+public class ProfilActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        Button editProfilButton = (Button) findViewById(R.id.buttonEditProfil);
-        editProfilButton.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_profil);
+
+        // Remplir les champs par leur valeur actuelle
+        EditText firstname = (EditText) findViewById(R.id.editFirstName);
+        SessionManager session = new SessionManager(this);
+        firstname.setText(session.getUserDetails().get(SessionManager.KEY_FIRSTNAME));
+
+        EditText lastname = (EditText) findViewById(R.id.editLastName);
+        lastname.setText(session.getUserDetails().get(SessionManager.KEY_LASTNAME));
+
+        Button validateButton = (Button) findViewById(R.id.buttonValidate);
+        validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(HomeActivity.this, ProfilActivity.class);
-                startActivity(i);
+
+                // mettre a jour la BDD avec la valeur dans les champs
             }
         });
+
     }
 
 
