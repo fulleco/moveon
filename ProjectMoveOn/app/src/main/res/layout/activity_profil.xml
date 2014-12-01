@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_gravity="center_horizontal"
+    tools:context="com.application.moveon.HomeActivity">
+
+    <TextView
+        android:text="PROFIL"
+        android:id="@+id/titleProfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="80sp"/>
+
+
+    <EditText
+        android:id="@+id/editFirstName"
+        android:layout_width="245dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="30dp"
+        android:layout_below="@+id/titleProfil"
+        android:layout_marginBottom="19dp"
+        android:padding="5dp"
+        android:background="@drawable/rounded_edit"
+        android:hint="Prenom"
+        android:inputType="text"
+        android:textColor="#000"
+        android:ellipsize="start"
+        android:gravity="center_horizontal"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/editLastName"
+        android:layout_width="245dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="30dp"
+        android:layout_below="@+id/editFirstName"
+        android:layout_marginBottom="19dp"
+        android:padding="5dp"
+        android:background="@drawable/rounded_edit"
+        android:hint="Nom"
+        android:inputType="text"
+        android:textColor="#000"
+        android:ellipsize="start"
+        android:gravity="center_horizontal"
+        android:textSize="14sp" />
+
+
+    <Button
+        android:id="@+id/buttonValidate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:adjustViewBounds="true"
+        android:layout_below="@+id/editLastName"
+        android:text="Valider"
+        android:scaleType="centerInside"
+        android:textColor="#FFF"
+        android:textStyle="bold" />
+
+</RelativeLayout>

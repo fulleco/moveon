@@ -37,6 +37,8 @@ public class ConnectTask extends AsyncTask<Void, Void, String> {
     String passTxt;
     SessionManager session;
     String id;
+    String firstname;
+    String lastname;
     ProgressDialog progressBar;
     AnimationDrawable mailAnimation;
 
@@ -92,7 +94,7 @@ public class ConnectTask extends AsyncTask<Void, Void, String> {
 
     protected void onPostExecute(String result) {
         if(result.equals(new String("Connexion"))){
-            session.createLoginSession(loginTxt, passTxt, id);
+            session.createLoginSession(loginTxt, passTxt, id, firstname,lastname);
             mailAnimation.stop();
             //dismissBar();
         }else{
@@ -154,7 +156,9 @@ public class ConnectTask extends AsyncTask<Void, Void, String> {
         }
         if (jArray != null) {
             JSONObject jObject = jArray.getJSONObject(0);
-            id = jObject.getString("id");
+            id = jObject.getString("id_client");
+            firstname = jObject.getString("firstname");
+            lastname = jObject.getString("lastname");
         }
         return (jArray!=null);
     }
