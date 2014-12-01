@@ -16,13 +16,25 @@
         android:layout_height="wrap_content"
         android:textSize="80sp"/>
 
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
+        android:background="@drawable/loader_planet1"
+        android:scaleType="fitCenter" />
+
 
     <EditText
         android:id="@+id/editFirstName"
         android:layout_width="245dp"
         android:layout_centerHorizontal="true"
         android:layout_height="30dp"
-        android:layout_below="@+id/titleProfil"
+        android:layout_below="@+id/logo"
         android:layout_marginBottom="19dp"
         android:padding="5dp"
         android:background="@drawable/rounded_edit"
