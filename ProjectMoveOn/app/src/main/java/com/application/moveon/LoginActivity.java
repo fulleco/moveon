@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends Activity {
 
-    private EditText editLogin;
+    private EditText editEmail;
     private EditText editPassword;
 
     private String id;
@@ -52,7 +52,7 @@ public class LoginActivity extends Activity {
 
         logo = (ImageView) findViewById(R.id.logo);
 
-        editLogin = (EditText) findViewById(R.id.editLogin);
+        editEmail = (EditText) findViewById(R.id.editEmail);
         editPassword = (EditText) findViewById(R.id.editPassword);
 
         Button registerButton = (Button) findViewById(R.id.buttonRegister);
@@ -74,7 +74,7 @@ public class LoginActivity extends Activity {
                     return;
                 }
 
-                final String loginTxt = editLogin.getText().toString();
+                final String loginTxt = editEmail.getText().toString();
                 final String passTxt = editPassword.getText().toString();
 
                 logo.setBackgroundResource(R.drawable.loader_moveon);

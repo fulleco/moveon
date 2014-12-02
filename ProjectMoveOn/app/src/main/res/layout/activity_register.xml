@@ -21,7 +21,7 @@
          android:id="@+id/editPassword1"
          android:layout_width="245dp"
          android:layout_height="30dp"
-         android:layout_below="@+id/editLogin"
+         android:layout_below="@+id/editEmail"
          android:layout_centerHorizontal="true"
          android:layout_marginBottom="20dp"
          android:maxLength="12"
@@ -67,7 +67,7 @@
         android:textSize="14sp" />
 
      <EditText
-         android:id="@+id/editLogin"
+         android:id="@+id/editEmail"
          android:layout_width="245dp"
          android:layout_centerHorizontal="true"
          android:layout_height="30dp"
@@ -75,7 +75,7 @@
          android:layout_marginBottom="19dp"
          android:padding="5dp"
          android:background="@drawable/rounded_edit"
-         android:hint="Pseudo"
+         android:hint="Email"
          android:inputType="text"
          android:textColor="#000"
          android:ellipsize="start"

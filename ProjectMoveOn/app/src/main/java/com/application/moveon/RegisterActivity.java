@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class RegisterActivity extends Activity implements View.OnClickListener {
     private Button buttonRegister;
     private Button buttonConnect;
-    private EditText editLogin;
+    private EditText editEmail;
     private EditText editPassword1;
     private EditText editPassword2;
     private EditText editLastName;
@@ -49,7 +49,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         buttonConnect = (Button) findViewById(R.id.buttonConnect);
         buttonConnect.setOnClickListener(this);
 
-        editLogin = (EditText) findViewById(R.id.editLogin);
+        editEmail = (EditText) findViewById(R.id.editEmail);
         editPassword1 = (EditText) findViewById(R.id.editPassword1);
         editPassword2 = (EditText) findViewById(R.id.editPassword2);
         editFirstName = (EditText) findViewById(R.id.editFirstName);
@@ -94,7 +94,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                     duration += mailAnimation.getDuration(i);
                 }
 
-                User newUser = new User(editLogin.getText().toString(),
+                User newUser = new User(editEmail.getText().toString(),
                         editPassword1.getText().toString(), editFirstName.getText().toString(), editLastName.getText().toString());
                 new AddUserTask(this, newUser, mailAnimation).execute();
             }else{
@@ -108,8 +108,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 
     public ArrayList<String> validFields() {
         ArrayList<String> fieldsEmpty = new ArrayList<String>();
-        if (editLogin.getText().toString().equals(""))
-            fieldsEmpty.add("Login");
+        if (editEmail.getText().toString().equals(""))
+            fieldsEmpty.add("Email");
         if (editPassword1.getText().toString().equals(""))
             fieldsEmpty.add("Mot de passe");
         if (editLastName.getText().toString().equals(""))
