@@ -50,6 +50,12 @@
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_below="@+id/linear_search"/>
 
+        <FrameLayout
+            android:id="@+id/containerMenu"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/buttonEditProfil"/>
+
     </RelativeLayout>
 
     <ListView
@@ -61,11 +67,5 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:background="#111"/>
-
-    <FrameLayout
-        android:id="@+id/containerMenu"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/linear_search"/>
 
 </android.support.v4.widget.DrawerLayout>
