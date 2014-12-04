@@ -1,7 +1,11 @@
 package com.application.moveon;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -9,31 +13,47 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
 
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.tools.ImageHelper;
+import com.application.moveon.tools.ToolBox;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuItem;
+import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuWidget;
+
 import android.location.LocationListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeActivity extends FragmentActivity implements LocationListener {
+public class HomeActivity extends FragmentActivity implements LocationListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap map;
     private MarkerOptions markerOptions;
@@ -58,6 +78,13 @@ public class HomeActivity extends FragmentActivity implements LocationListener {
 
     private Location myLocation = null;
 
+    private RadialMenuWidget pieMenu;
+    public RadialMenuItem menuItem, menuCloseItem, menuExpandItem, menuCacaItem;
+    public RadialMenuItem firstChildItem, secondChildItem, thirdChildItem;
+    private List<RadialMenuItem> children = new ArrayList<RadialMenuItem>();
+
+    private FrameLayout containerMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +97,8 @@ public class HomeActivity extends FragmentActivity implements LocationListener {
                 startActivity(i);
             }
         });
+
+        containerMenu = (FrameLayout) findViewById(R.id.containerMenu);
 
         radius = 10;
 
@@ -101,50 +130,8 @@ public class HomeActivity extends FragmentActivity implements LocationListener {
         btn_find = (Button) findViewById(R.id.btn_find);
         btn_find.setOnClickListener(findClickListener);
 
-        // Getting LocationManager object from System Service LOCATION_SERVICE
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // Creating a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
-
-        // Getting the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
-
-        // Getting Current Location
-        while(myLocation==null)
-            myLocation = locationManager.getLastKnownLocation(provider);
-
-        if (myLocation != null) {
-            onLocationChanged(myLocation);
-        }
-
-        locationManager.requestLocationUpdates(provider, 20000, 0, this);
-
-        // Location myLocation = map.getMyLocation();
-        LatLng myLocationLatlng = new LatLng(myLocation.getLatitude(),
-                myLocation.getLongitude());
-
-        markerOptions = new MarkerOptions();
-        markerOptions.position(myLocationLatlng);
-        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
-                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-        markerOptions.icon(bitmapDescriptor);
-
-        map.addMarker(markerOptions);
-        map.animateCamera(CameraUpdateFactory.newLatLng(myLocationLatlng));
-
-        circle = new CircleOptions();
-
-        // 55 represents percentage of transparency. For 100% transparency,
-        // specify 00.
-        // For 0% transparency ( ie, opaque ) , specify ff
-        // The remaining 6 characters(00ff00) specify the fill color
-        circle.fillColor(0x5500ff00);
-        circle.strokeWidth(2);
-        circle.center(myLocationLatlng);
-        circle.radius(radius*1000);
-
-        map.addCircle(circle);
+        initMap();
+        initMenu();
     }
 
 
@@ -170,6 +157,225 @@ public class HomeActivity extends FragmentActivity implements LocationListener {
         if (id == R.id.action_settings) {
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initMenu(){
+        pieMenu = new RadialMenuWidget(this);
+        menuCloseItem = new RadialMenuItem("close", null);
+        menuCloseItem
+                .setDisplayIcon(android.R.drawable.ic_menu_close_clear_cancel);
+        menuItem = new RadialMenuItem("normal","normal");
+        menuItem.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+            @Override
+            public void execute() {
+                dismissMenu();
+            }
+        });
+
+        firstChildItem = new RadialMenuItem("normal","normal");
+        firstChildItem
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.;
+                        dismissMenu();
+                    }
+                });
+
+        secondChildItem = new RadialMenuItem("contact","contact");
+        secondChildItem.setDisplayIcon(R.drawable.ic_launcher);
+        secondChildItem
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                    }
+                });
+
+        thirdChildItem = new RadialMenuItem("about", "about");
+        thirdChildItem.setDisplayIcon(R.drawable.ic_launcher);
+        thirdChildItem
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        dismissMenu();
+                    }
+                });
+
+        menuExpandItem = new RadialMenuItem("caca", "caca");
+        children.add(firstChildItem);
+        children.add(secondChildItem);
+        children.add(thirdChildItem);
+        menuExpandItem.setMenuChildren(children);
+
+        menuCacaItem = new RadialMenuItem("caca", "caca");
+        menuCacaItem.setMenuChildren(children);
+
+        menuCloseItem
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // menuLayout.removeAllsViews();
+                        dismissMenu();
+                    }
+                });
+
+        // pieMenu.setDismissOnOutsideClick(true, menuLayout);
+        pieMenu.setAnimationSpeed(0L);
+        pieMenu.setTextColor(Color.BLACK, 1000);
+        //pieMenu.setSourceLocation(0, 0);
+        pieMenu.setIconSize(15, 30);
+        pieMenu.setTextSize(15);
+        pieMenu.setOutlineColor(Color.BLACK, 225);
+        pieMenu.setInnerRingColor(Color.RED, 220);
+        pieMenu.setOuterRingColor(Color.RED, 220);
+        pieMenu.setHeader("Anthony Da Mota", 20);
+        pieMenu.setCenterCircle(menuCloseItem);
+
+        pieMenu.addMenuEntry(new ArrayList<RadialMenuItem>() {
+            {
+                add(menuItem);
+                add(menuExpandItem);
+                add(menuCacaItem);
+                add(menuCacaItem);
+            }
+        });
+    }
+
+    private void initMap(){
+        // Getting LocationManager object from System Service LOCATION_SERVICE
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // Creating a criteria object to retrieve provider
+        Criteria criteria = new Criteria();
+
+        // Getting the name of the best provider
+        String provider = locationManager.getBestProvider(criteria, true);
+
+        // Getting Current Location
+        while(myLocation==null)
+            myLocation = locationManager.getLastKnownLocation(provider);
+
+        if (myLocation != null) {
+            onLocationChanged(myLocation);
+        }
+
+        locationManager.requestLocationUpdates(provider, 20000, 0, this);
+
+        // Location myLocation = map.getMyLocation();
+        LatLng myLocationLatlng = new LatLng(myLocation.getLatitude(),
+                myLocation.getLongitude());
+
+        markerOptions = new MarkerOptions();
+        markerOptions.position(myLocationLatlng);
+        //BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
+        //        .defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+        //markerOptions.icon(bitmapDescriptor);
+
+        Bitmap b = BitmapFactory.decodeResource(getResources(),
+                R.drawable.profile_test);
+        Bitmap b_rounded = ImageHelper.getRoundedCornerBitmap(b, 1000, 0);
+        Bitmap b_resized = Bitmap.createScaledBitmap(b_rounded, 60, 60, false);
+        b.recycle();
+
+        View marker_layout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
+        ImageView profilePicture = (ImageView) marker_layout.findViewById(R.id.profile_picture);
+        profilePicture.setImageBitmap(b_resized);
+
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(this, marker_layout)));
+
+
+        //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(b_resized));
+        // Specifies the anchor to be at a particular point in the marker image.
+        //markerOptions.anchor(0.5f, 1);
+
+        markerOptions.title("Anthony Da Mota");
+        map.addMarker(markerOptions);
+        map.animateCamera(CameraUpdateFactory.newLatLng(myLocationLatlng));
+
+        // TEST
+
+        LatLng myLocationLatlng2 = new LatLng(myLocation.getLatitude()+1,
+                myLocation.getLongitude()+5);
+
+        markerOptions.position(myLocationLatlng2);
+        markerOptions.title("Barrack Obama");
+
+        map.addMarker(markerOptions);
+
+        circle = new CircleOptions();
+
+        // 55 represents percentage of transparency. For 100% transparency,
+        // specify 00.
+        // For 0% transparency ( ie, opaque ) , specify ff
+        // The remaining 6 characters(00ff00) specify the fill color
+        circle.fillColor(0x5500ff00);
+        circle.strokeWidth(2);
+        circle.center(myLocationLatlng);
+        circle.radius(radius*1000);
+
+        map.addCircle(circle);
+        map.setOnMarkerClickListener(this);
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        //if(marker.getTitle().equals("MyHome")) // if marker source is clicked
+        //    Toast.makeText(HomeActivity.this, marker.getTitle(),Toast.LENGTH_LONG).show();// display toast
+        map.stopAnimation();
+        showMenu();
+        return true;
+    }
+
+    public void animateMarker(final Marker marker, final LatLng toPosition,
+                              final boolean hideMarker) {
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        Projection proj = map.getProjection();
+        Point startPoint = proj.toScreenLocation(marker.getPosition());
+        final LatLng startLatLng = proj.fromScreenLocation(startPoint);
+        final long duration = 500;
+
+        final Interpolator interpolator = new LinearInterpolator();
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed
+                        / duration);
+                double lng = t * toPosition.longitude + (1 - t)
+                        * startLatLng.longitude;
+                double lat = t * toPosition.latitude + (1 - t)
+                        * startLatLng.latitude;
+                marker.setPosition(new LatLng(lat, lng));
+
+                if (t < 1.0) {
+                    // Post again 16ms later.
+                    handler.postDelayed(this, 16);
+                } else {
+                    if (hideMarker) {
+                        marker.setVisible(false);
+                    } else {
+                        marker.setVisible(true);
+                    }
+                }
+            }
+        });
+    }
+
+    private void showMenu(){
+        pieMenu.show(containerMenu);
+        //map.getUiSettings().setScrollGesturesEnabled(false);
+    }
+
+    private void dismissMenu(){
+        pieMenu.dismiss();
+        //map.getUiSettings().setScrollGesturesEnabled(true);
     }
 
     private class LocateTask extends AsyncTask<String, Void, List<Address>> {
