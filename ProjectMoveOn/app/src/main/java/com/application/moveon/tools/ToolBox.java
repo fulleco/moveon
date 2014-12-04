@@ -144,7 +144,6 @@ public class ToolBox {
 	
 	public static byte[] decodeFileFromResource(String path)
 			throws IOException {
-		Log.i("ANTHO", "path"+ path);
 		File file = new File(path);
 		byte[] fileData = new byte[(int) file.length()];
 		DataInputStream dis = new DataInputStream(new FileInputStream(file));

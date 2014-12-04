@@ -18,6 +18,7 @@ import com.application.moveon.database.UpdateUserTask;
 import com.application.moveon.model.User;
 import com.application.moveon.session.Connectivity;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.tools.ToolBox;
 
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;

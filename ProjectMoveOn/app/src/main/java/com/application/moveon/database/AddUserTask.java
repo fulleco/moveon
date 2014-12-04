@@ -29,7 +29,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.application.moveon.LoginActivity;
-import com.application.moveon.ToolBox;
+import com.application.moveon.tools.ToolBox;
 import com.application.moveon.model.User;
 
 public class AddUserTask extends AsyncTask<Void, Void, String> {
