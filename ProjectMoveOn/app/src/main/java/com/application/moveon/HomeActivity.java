@@ -269,9 +269,9 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
                 });
 
         // pieMenu.setDismissOnOutsideClick(true, menuLayout);
-        pieMenu.setAnimationSpeed(0L);
+        pieMenu.setAnimationSpeed(1000L);
         pieMenu.setTextColor(Color.BLACK, 1000);
-        //pieMenu.setSourceLocation(0, 0);
+        pieMenu.setSourceLocation(0, 0);
         pieMenu.setIconSize(15, 30);
         pieMenu.setTextSize(15);
         pieMenu.setOutlineColor(Color.BLACK, 225);
@@ -279,7 +279,6 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
         pieMenu.setOuterRingColor(Color.RED, 220);
         pieMenu.setHeader("Anthony Da Mota", 20);
         pieMenu.setCenterCircle(menuCloseItem);
-
         pieMenu.addMenuEntry(new ArrayList<RadialMenuItem>() {
             {
                 add(menuItem);
@@ -371,55 +370,34 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
     public boolean onMarkerClick(Marker marker) {
         //if(marker.getTitle().equals("MyHome")) // if marker source is clicked
         //    Toast.makeText(HomeActivity.this, marker.getTitle(),Toast.LENGTH_LONG).show();// display toast
-        map.stopAnimation();
-        showMenu();
+        map.animateCamera(CameraUpdateFactory
+                .newLatLng(marker.getPosition()),400,new GoogleMap.CancelableCallback()
+        {
+            @Override
+            public void onFinish()
+            {
+                map.getUiSettings().setScrollGesturesEnabled(true);
+                showMenu();
+            }
+
+            @Override
+            public void onCancel()
+            {
+                map.getUiSettings().setAllGesturesEnabled(true);
+            }
+        });
+
         return true;
     }
 
-    public void animateMarker(final Marker marker, final LatLng toPosition,
-                              final boolean hideMarker) {
-        final Handler handler = new Handler();
-        final long start = SystemClock.uptimeMillis();
-        Projection proj = map.getProjection();
-        Point startPoint = proj.toScreenLocation(marker.getPosition());
-        final LatLng startLatLng = proj.fromScreenLocation(startPoint);
-        final long duration = 500;
-
-        final Interpolator interpolator = new LinearInterpolator();
-
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                long elapsed = SystemClock.uptimeMillis() - start;
-                float t = interpolator.getInterpolation((float) elapsed
-                        / duration);
-                double lng = t * toPosition.longitude + (1 - t)
-                        * startLatLng.longitude;
-                double lat = t * toPosition.latitude + (1 - t)
-                        * startLatLng.latitude;
-                marker.setPosition(new LatLng(lat, lng));
-
-                if (t < 1.0) {
-                    // Post again 16ms later.
-                    handler.postDelayed(this, 16);
-                } else {
-                    if (hideMarker) {
-                        marker.setVisible(false);
-                    } else {
-                        marker.setVisible(true);
-                    }
-                }
-            }
-        });
-    }
-
     private void showMenu(){
-        pieMenu.show(containerMenu);
+        pieMenu.show(containerMenu, 0, -100);
         //map.getUiSettings().setScrollGesturesEnabled(false);
     }
 
     private void dismissMenu() {
         pieMenu.dismiss();
+        //pieMenu.invalidate();
         //map.getUiSettings().setScrollGesturesEnabled(true);
     }
 
