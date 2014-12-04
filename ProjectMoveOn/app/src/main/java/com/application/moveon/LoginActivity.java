@@ -5,10 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -77,7 +74,7 @@ public class LoginActivity extends Activity {
                 final String loginTxt = editEmail.getText().toString();
                 final String passTxt = editPassword.getText().toString();
 
-                logo.setBackgroundResource(R.drawable.loader_moveon);
+                logo.setBackgroundResource(R.drawable.login_loader);
 
                 final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
                 logo.post(new Runnable() {

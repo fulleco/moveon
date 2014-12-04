@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">
+    <item android:drawable="@drawable/inscription_loader1" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader2" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader3" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader4" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader5" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader6" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader7" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader8" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader9" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader10" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader11" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader12" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader13" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader14" android:duration="100" />
+    <item android:drawable="@drawable/inscription_loader15" android:duration="100" />
+</animation-list>

@@ -46,9 +46,6 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
         buttonRegister.setOnClickListener(this);
 
-        buttonConnect = (Button) findViewById(R.id.buttonConnect);
-        buttonConnect.setOnClickListener(this);
-
         editEmail = (EditText) findViewById(R.id.editEmail);
         editPassword1 = (EditText) findViewById(R.id.editPassword1);
         editPassword2 = (EditText) findViewById(R.id.editPassword2);
@@ -79,7 +76,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             ArrayList<String> emptyFields = validFields();
             String message = "";
             if (emptyFields.size()==0) {
-                logo.setBackgroundResource(R.drawable.loader_moveon);
+                logo.setBackgroundResource(R.drawable.login_loader);
 
                 final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
                 logo.post(new Runnable() {

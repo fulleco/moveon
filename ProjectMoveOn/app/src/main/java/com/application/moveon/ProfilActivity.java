@@ -10,22 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.application.moveon.database.AddUserTask;
-import com.application.moveon.database.ConnectTask;
 import com.application.moveon.database.UpdateUserTask;
 import com.application.moveon.model.User;
-import com.application.moveon.session.Connectivity;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ToolBox;
 
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 
 public class ProfilActivity extends Activity {
@@ -60,7 +51,7 @@ public class ProfilActivity extends Activity {
                 String message = "";
                 if (emptyFields.size()==0) {
 
-                    logo.setBackgroundResource(R.drawable.loader_moveon);
+                    logo.setBackgroundResource(R.drawable.login_loader);
 
                     final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
                     logo.post(new Runnable() {
