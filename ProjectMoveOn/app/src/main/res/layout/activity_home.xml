@@ -50,6 +50,8 @@
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_below="@+id/linear_search"/>
 
+    </RelativeLayout>
+
     <ListView
         android:id="@+id/left_drawer"
         android:layout_width="240dp"
@@ -66,5 +68,4 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/linear_search"/>
 
-</RelativeLayout>
 </android.support.v4.widget.DrawerLayout>
