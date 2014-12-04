@@ -28,6 +28,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -46,6 +50,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
 
@@ -112,6 +117,8 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
     private List<RadialMenuItem> children = new ArrayList<RadialMenuItem>();
 
     private FrameLayout containerMenu;
+
+    private View fMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,6 +206,8 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
         btn_find.setOnClickListener(findClickListener);
 
         initMap();
+        fMap = (View)findViewById(R.id.map);
+
         initMenu();
     }
 
@@ -350,9 +359,9 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
                 });
 
         // pieMenu.setDismissOnOutsideClick(true, menuLayout);
-        pieMenu.setAnimationSpeed(0L);
+        //pieMenu.setAnimationSpeed(1000L);
         pieMenu.setTextColor(Color.BLACK, 1000);
-        //pieMenu.setSourceLocation(0, 0);
+        //pieMenu.setSourceLocation(30, 60);
         pieMenu.setIconSize(15, 30);
         pieMenu.setTextSize(15);
         pieMenu.setOutlineColor(Color.BLACK, 225);
@@ -360,7 +369,6 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
         pieMenu.setOuterRingColor(Color.RED, 220);
         pieMenu.setHeader("Anthony Da Mota", 20);
         pieMenu.setCenterCircle(menuCloseItem);
-
         pieMenu.addMenuEntry(new ArrayList<RadialMenuItem>() {
             {
                 add(menuItem);
@@ -369,6 +377,8 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
                 add(menuCacaItem);
             }
         });
+        //pieMenu.setVisibility(View.GONE);
+        //pieMenu.show(containerMenu);
     }
 
     private void initMap(){
@@ -423,7 +433,6 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
         map.animateCamera(CameraUpdateFactory.newLatLng(myLocationLatlng));
 
         // TEST
-
         LatLng myLocationLatlng2 = new LatLng(myLocation.getLatitude()+1,
                 myLocation.getLongitude()+5);
 
@@ -452,55 +461,69 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
     public boolean onMarkerClick(Marker marker) {
         //if(marker.getTitle().equals("MyHome")) // if marker source is clicked
         //    Toast.makeText(HomeActivity.this, marker.getTitle(),Toast.LENGTH_LONG).show();// display toast
-        map.stopAnimation();
-        showMenu();
+        map.animateCamera(CameraUpdateFactory
+                .newLatLng(marker.getPosition()),400,new GoogleMap.CancelableCallback()
+        {
+            @Override
+            public void onFinish()
+            {
+                map.getUiSettings().setScrollGesturesEnabled(true);
+                showMenu();
+            }
+
+            @Override
+            public void onCancel()
+            {
+                map.getUiSettings().setAllGesturesEnabled(true);
+            }
+        });
+
         return true;
     }
 
-    public void animateMarker(final Marker marker, final LatLng toPosition,
-                              final boolean hideMarker) {
-        final Handler handler = new Handler();
-        final long start = SystemClock.uptimeMillis();
-        Projection proj = map.getProjection();
-        Point startPoint = proj.toScreenLocation(marker.getPosition());
-        final LatLng startLatLng = proj.fromScreenLocation(startPoint);
-        final long duration = 500;
-
-        final Interpolator interpolator = new LinearInterpolator();
-
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                long elapsed = SystemClock.uptimeMillis() - start;
-                float t = interpolator.getInterpolation((float) elapsed
-                        / duration);
-                double lng = t * toPosition.longitude + (1 - t)
-                        * startLatLng.longitude;
-                double lat = t * toPosition.latitude + (1 - t)
-                        * startLatLng.latitude;
-                marker.setPosition(new LatLng(lat, lng));
-
-                if (t < 1.0) {
-                    // Post again 16ms later.
-                    handler.postDelayed(this, 16);
-                } else {
-                    if (hideMarker) {
-                        marker.setVisible(false);
-                    } else {
-                        marker.setVisible(true);
-                    }
-                }
-            }
-        });
-    }
-
     private void showMenu(){
+        //pieMenu.setVisibility(View.GONE);
+        pieMenu.setCenterLocation((int)fMap.getX()+ fMap.getWidth()/2, (int)fMap.getY()+ fMap.getHeight()/2);
         pieMenu.show(containerMenu);
+
+        displayMenuAnimation(0, 1, View.VISIBLE);
+        //pieMenu.show(containerMenu);
         //map.getUiSettings().setScrollGesturesEnabled(false);
     }
 
+    private void displayMenuAnimation(int alpha1, int alpha2,
+                                      final int visibility) {
+
+        AlphaAnimation fadeAnimation = new AlphaAnimation(alpha1, alpha2); // start
+        // alpha,
+        // end
+        // alpha
+        fadeAnimation.setDuration(700); // time for animation in
+        // milliseconds
+        fadeAnimation.setFillAfter(false); // make the transformation persist
+        fadeAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+               pieMenu.setVisibility(visibility);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+        });
+
+        pieMenu.setAnimation(fadeAnimation);
+    }
+
     private void dismissMenu() {
+        displayMenuAnimation(1, 0, View.GONE);
         pieMenu.dismiss();
+        pieMenu.setSelected(false);
+        //pieMenu.invalidate();
         //map.getUiSettings().setScrollGesturesEnabled(true);
     }
 

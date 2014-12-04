@@ -49,13 +49,13 @@
             android:layout_height="fill_parent"
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_below="@+id/linear_search"/>
+
     </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/containerMenu"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/linear_search"/>
+        android:layout_height="fill_parent"/>
 
     <ListView
         android:id="@+id/left_drawer"
