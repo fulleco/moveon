@@ -14,11 +14,13 @@ public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
 
 	String path = "";
 	String destination = "";
+    String email = "";
 	boolean status = false;
 
-	public FtpDownloadTask(String path, String destination) {
+	public FtpDownloadTask(String path, String destination, String email) {
 		this.path = path;
 		this.destination = destination;
+        this.email = email;
 	}
 
 	protected FTPClient doInBackground(String... args) {
@@ -27,9 +29,8 @@ public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
 
 		// connecting to the host
 		try {
-			mFTPClient.connect("91.121.17.174", 21);
-
-			status = mFTPClient.login("app_mobile", "uzhUfgm5gubGlz#mgrz");
+            mFTPClient.connect("ftp.martinezhugo.com", 21);
+            status = mFTPClient.login("martinezhugo", "dj$bG0u8v[");
 		
 		} catch (SocketException e1) {
 			e1.printStackTrace();
@@ -50,7 +51,7 @@ public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
 			try {
 				mFTPClient.setFileType(FTP.BINARY_FILE_TYPE);
 				mFTPClient.enterLocalPassiveMode();
-				mFTPClient.changeWorkingDirectory("appli_hiddenphoto");
+				mFTPClient.changeWorkingDirectory("www/moveon/pfe/");
 				FileOutputStream desFileStream = new FileOutputStream(
 						destination);
 				status = mFTPClient.retrieveFile(path, desFileStream);

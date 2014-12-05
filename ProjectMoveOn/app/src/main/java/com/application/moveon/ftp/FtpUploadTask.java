@@ -18,11 +18,13 @@ public class FtpUploadTask extends AsyncTask<String, Void, FTPClient> {
 	private boolean status = false;
 	private String login = "";
 	private String name = "";
+    private String email = "";
 
-	public FtpUploadTask(File file, String login, String name) {
+	public FtpUploadTask(File file, String login, String name, String email) {
 		this.file = file;
 		this.login = login;
 		this.name = name;
+        this.email = email;
 	}
 
 	protected FTPClient doInBackground(String... args) {
@@ -31,8 +33,8 @@ public class FtpUploadTask extends AsyncTask<String, Void, FTPClient> {
 
 		// connecting to the host
 		try {
-			mFTPClient.connect("91.121.17.174", 21);
-			status = mFTPClient.login("app_mobile", "uzhUfgm5gubGlz#mgrz");
+			mFTPClient.connect("ftp.martinezhugo.com", 21);
+			status = mFTPClient.login("martinezhugo", "dj$bG0u8v[");
 		
 		} catch (SocketException e1) {
 			e1.printStackTrace();
@@ -41,13 +43,15 @@ public class FtpUploadTask extends AsyncTask<String, Void, FTPClient> {
 		}
 
 		try {  
-            FileInputStream srcFileStream = new FileInputStream(file);  
-            boolean status = mFTPClient.makeDirectory("appli_hiddenphoto/"+login+"/");  
+            FileInputStream srcFileStream = new FileInputStream(file);
+            mFTPClient.changeWorkingDirectory("www/moveon/pfe/");
+            status = mFTPClient.makeDirectory(email+"/");
+
             mFTPClient.enterLocalPassiveMode();
             mFTPClient.setFileType(FTP.BINARY_FILE_TYPE, FTP.BINARY_FILE_TYPE);
             mFTPClient.setFileTransferMode(FTP.BINARY_FILE_TYPE);
-            status = mFTPClient.storeFile("appli_hiddenphoto/"+login+"/"+name,  
-                      srcFileStream);  
+            status = mFTPClient.storeFile(email+"/"+name,
+                    srcFileStream);
             Log.e("Status", String.valueOf(status));  
             srcFileStream.close();  
        } catch (Exception e) {  
