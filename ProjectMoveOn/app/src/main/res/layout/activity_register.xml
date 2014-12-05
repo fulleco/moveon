@@ -3,7 +3,8 @@
     android:id="@+id/relative_inscription"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/inscription_background">
+    android:background="@drawable/inscription_background"
+    android:gravity="center">
 
     <ImageView
         android:id="@+id/logo"
@@ -17,16 +18,45 @@
         android:background="@drawable/inscription_loader"
         android:scaleType="fitCenter" />
 
+    <LinearLayout
+        android:id="@+id/linear_photo"
+        android:layout_below="@+id/logo"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true">
+
+
+        <ImageView
+            android:id="@+id/imageProfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/inscription_question_mark"/>
+
+        <Button
+            android:id="@+id/buttonParcourir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/inscription_parcourir"
+            android:scaleType="centerInside"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+
     <EditText
     android:id="@+id/editFirstName"
+    android:layout_below="@+id/linear_photo"
     android:layout_width="245dp"
     android:layout_centerHorizontal="true"
     android:layout_height="30dp"
-    android:layout_below="@+id/logo"
     android:layout_marginBottom="19dp"
     android:padding="5dp"
     android:background="@drawable/rounded_edit"
-    android:hint="Nom"
+    android:hint="Prénom"
     android:inputType="text"
     android:textColor="#000"
     android:ellipsize="start"
@@ -41,7 +71,7 @@
         android:layout_marginBottom="19dp"
         android:padding="5dp"
         android:background="@drawable/rounded_edit"
-        android:hint="Prénom"
+        android:hint="Nom"
         android:inputType="text"
         android:textColor="#000"
         android:ellipsize="start"

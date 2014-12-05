@@ -75,6 +75,6 @@
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
         android:textColor="#000"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
 </RelativeLayout>
