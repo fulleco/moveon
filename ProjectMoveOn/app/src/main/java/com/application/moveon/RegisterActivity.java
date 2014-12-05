@@ -2,8 +2,13 @@ package com.application.moveon;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.application.moveon.database.AddUserTask;
+import com.application.moveon.ftp.FtpUploadTask;
 import com.application.moveon.model.User;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ToolBox;
@@ -33,6 +39,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 
     private ImageView logo;
 
+    private int RESULT_LOAD_IMAGE = 0;
+    private String picturePath;
+    private String namePicture;
+    private ImageView profilePicture;
+    private Button buttonBrowse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +57,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
         buttonRegister.setOnClickListener(this);
+
+        profilePicture = (ImageView)findViewById(R.id.imageProfil);
+        buttonBrowse = (Button)findViewById(R.id.buttonParcourir);
+        buttonBrowse.setOnClickListener(this);
 
         editEmail = (EditText) findViewById(R.id.editEmail);
         editPassword1 = (EditText) findViewById(R.id.editPassword1);
@@ -64,6 +80,14 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(i);
             return;
+        }
+
+        if( v== buttonBrowse){
+            Intent i = new Intent(
+                    Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            startActivityForResult(i, RESULT_LOAD_IMAGE);
         }
 
         if (v == buttonRegister) {
@@ -138,5 +162,35 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK
+                && null != data) {
+            Uri selectedImage = data.getData();
+
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            picturePath = cursor.getString(columnIndex);
+            String extension = picturePath.substring(picturePath.lastIndexOf("."));
+            namePicture = tools.getFileName(selectedImage)+extension;
+            cursor.close();
+
+            BitmapFactory.Options options=new BitmapFactory.Options();
+            options.outHeight = 8;
+            //mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
+            profilePicture.setImageBitmap(tools.decodeSampledBitmapFromResource(picturePath, 200, 200));
+            new FtpUploadTask(picturePath, namePicture, "test").executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        }
+
     }
 }
