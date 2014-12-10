@@ -4,15 +4,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/inscription_background"
-    android:gravity="center">
+    android:gravity="center_horizontal">
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="19dp"
         android:adjustViewBounds="true"
         android:visibility="visible"
         android:background="@drawable/inscription_loader"
@@ -24,14 +25,17 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_marginBottom="18dp"
         android:layout_centerHorizontal="true">
 
 
         <ImageView
             android:id="@+id/imageProfil"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/inscription_question_mark"/>
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/inscription_question_mark"
+            android:layout_gravity="bottom"/>
 
         <Button
             android:id="@+id/buttonParcourir"
@@ -48,27 +52,27 @@
 
 
     <EditText
-    android:id="@+id/editFirstName"
-    android:layout_below="@+id/linear_photo"
-    android:layout_width="245dp"
-    android:layout_centerHorizontal="true"
-    android:layout_height="30dp"
-    android:layout_marginBottom="19dp"
-    android:padding="5dp"
-    android:background="@drawable/rounded_edit"
-    android:hint="Prénom"
-    android:inputType="text"
-    android:textColor="#000"
-    android:ellipsize="start"
-    android:textSize="14sp" />
+        android:id="@+id/editFirstName"
+        android:layout_below="@+id/linear_photo"
+        android:layout_width="245dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="42dp"
+        android:layout_marginBottom="25dp"
+        android:padding="5dp"
+        android:background="@drawable/rounded_edit"
+        android:hint="Prénom"
+        android:inputType="text"
+        android:textColor="#000"
+        android:ellipsize="start"
+        android:textSize="14sp" />
 
     <EditText
         android:id="@+id/editLastName"
         android:layout_width="245dp"
         android:layout_centerHorizontal="true"
-        android:layout_height="30dp"
+        android:layout_height="42dp"
         android:layout_below="@+id/editFirstName"
-        android:layout_marginBottom="19dp"
+        android:layout_marginBottom="25dp"
         android:padding="5dp"
         android:background="@drawable/rounded_edit"
         android:hint="Nom"
@@ -81,9 +85,9 @@
          android:id="@+id/editEmail"
          android:layout_width="245dp"
          android:layout_centerHorizontal="true"
-         android:layout_height="30dp"
+         android:layout_height="42dp"
          android:layout_below="@+id/editLastName"
-         android:layout_marginBottom="19dp"
+         android:layout_marginBottom="25dp"
          android:padding="5dp"
          android:background="@drawable/rounded_edit"
          android:hint="Email"
@@ -95,10 +99,10 @@
     <EditText
         android:id="@+id/editPassword1"
         android:layout_width="245dp"
-        android:layout_height="30dp"
+        android:layout_height="42dp"
         android:layout_below="@+id/editEmail"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="25dp"
         android:maxLength="12"
         android:padding="5dp"
         android:background="@drawable/rounded_edit"
@@ -111,10 +115,10 @@
      <EditText
          android:id="@+id/editPassword2"
          android:layout_width="245dp"
-         android:layout_height="30dp"
+         android:layout_height="42dp"
          android:layout_below="@+id/editPassword1"
          android:layout_alignLeft="@+id/editPassword1"
-         android:layout_marginBottom="16dp"
+         android:layout_marginBottom="25dp"
          android:padding="5dp"
          android:background="@drawable/rounded_edit"
          android:hint="Confirmer le mot de passe"
@@ -130,7 +134,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:adjustViewBounds="true"
-        android:layout_below="@+id/editPassword2"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/button_inscription_selector"
         android:scaleType="centerInside"
         android:textColor="#FFF"

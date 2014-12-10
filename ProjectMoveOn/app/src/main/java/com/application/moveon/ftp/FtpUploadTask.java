@@ -44,11 +44,13 @@ public class FtpUploadTask extends AsyncTask<String, Void, FTPClient> {
 		try {  
             FileInputStream srcFileStream = new FileInputStream(path);
             mFTPClient.changeWorkingDirectory("www/pfe/images/");
-            //status = mFTPClient.makeDirectory(email+"/");
-            //Log.e("Status makeDirectory", String.valueOf(status));
+            status = mFTPClient.makeDirectory(email+"/");
+            Log.e("Status makeDirectory", String.valueOf(status));
             mFTPClient.enterLocalPassiveMode();
             mFTPClient.setFileType(FTP.BINARY_FILE_TYPE, FTP.BINARY_FILE_TYPE);
             mFTPClient.setFileTransferMode(FTP.BINARY_FILE_TYPE);
+
+            Log.i("ANTHO", "path "+email+"/"+name);
             status = mFTPClient.storeFile(email+"/"+name,
                     srcFileStream);
             Log.e("Status upload", String.valueOf(status));
