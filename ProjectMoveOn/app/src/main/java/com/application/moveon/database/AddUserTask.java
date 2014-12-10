@@ -29,6 +29,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.application.moveon.LoginActivity;
+import com.application.moveon.ftp.FtpUploadTask;
 import com.application.moveon.tools.ToolBox;
 import com.application.moveon.model.User;
 
@@ -39,13 +40,15 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
     private User newUser;
     private ToolBox tools;
     private String error = "";
+    private String picturePath = "";
     private AnimationDrawable mailAnimation;
 
-    public AddUserTask(Activity i, User user, AnimationDrawable mailAnimation) {
+    public AddUserTask(Activity i, User user, AnimationDrawable mailAnimation, String picturePath) {
         this.previousActivity = i;
         this.newUser = user;
         tools = new ToolBox(i);
         this.mailAnimation = mailAnimation;
+        this.picturePath = picturePath;
     }
 
     protected String doInBackground(Void... args) {
@@ -73,6 +76,7 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
         // myIntent.putExtra("id", id);
         // startActivity(myIntent);
         if(this.id!=null){
+            new FtpUploadTask(picturePath, "profile.jpg", id).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             tools.alertUser("Inscription terminée",
                     "Vous pouvez maintenant utiliser MoveOn !");
             Intent i = new Intent(previousActivity, LoginActivity.class);
@@ -89,8 +93,6 @@ public class AddUserTask extends AsyncTask<Void, Void, String> {
 
         // http post
         try {
-            Log.i("ANTHO", "USER firstname" + newUser.getFirstName() + "last " + newUser.getLastName());
-
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(
                     "http://martinezhugo.com/pfe/add_user.php");

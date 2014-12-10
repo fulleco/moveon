@@ -3,6 +3,7 @@ package com.application.moveon;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
@@ -20,9 +21,11 @@ import com.application.moveon.database.AddUserTask;
 import com.application.moveon.ftp.FtpUploadTask;
 import com.application.moveon.model.User;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by damota on 25/11/2014.
@@ -45,12 +48,16 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     private ImageView profilePicture;
     private Button buttonBrowse;
 
+    private String idUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
         SessionManager session = new SessionManager(this);
+        HashMap<String, String> infos = session.getUserDetails();
+        idUser = infos.get(SessionManager.KEY_ID);
         //session.checkLogin(true);
 
         logo = (ImageView) findViewById(R.id.logo);
@@ -117,7 +124,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 
                 User newUser = new User(editEmail.getText().toString(),
                         editPassword1.getText().toString(), editFirstName.getText().toString(), editLastName.getText().toString());
-                new AddUserTask(this, newUser, mailAnimation).execute();
+
+                new AddUserTask(this, newUser, mailAnimation, picturePath).execute();
             }else{
                 for (String field : emptyFields)
                     message += "-" + field + "\n";
@@ -187,9 +195,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             BitmapFactory.Options options=new BitmapFactory.Options();
             options.outHeight = 8;
             //mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
-            profilePicture.setImageBitmap(tools.decodeSampledBitmapFromResource(picturePath, 200, 200));
-            new FtpUploadTask(picturePath, namePicture, "test").executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+            Bitmap b_gallery = tools.decodeSampledBitmapFromResource(picturePath, 60, 60);
+            Bitmap b_rounded = ImageHelper.getRoundedCornerBitmap(b_gallery, 15, 0);
+
+            profilePicture.setBackground(null);
+            profilePicture.setImageBitmap(b_rounded);
         }
 
     }
