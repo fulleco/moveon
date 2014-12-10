@@ -8,8 +8,8 @@
 
    <ImageView
         android:id="@+id/logo"
-        android:layout_width="260dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
@@ -17,7 +17,7 @@
         android:adjustViewBounds="true"
         android:visibility="visible"
         android:background="@drawable/inscription_loader"
-        android:scaleType="fitCenter" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:id="@+id/linear_photo"
