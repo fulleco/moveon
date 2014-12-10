@@ -41,13 +41,12 @@ public class UpdateUserTask extends AsyncTask<Void, Void, String> {
     private User newUser;
     private ToolBox tools;
     private String error = "";
-    private AnimationDrawable mailAnimation;
 
-    public UpdateUserTask(Activity i, User user, AnimationDrawable mailAnimation) {
+
+    public UpdateUserTask(Activity i, User user) {
         this.previousActivity = i;
         this.newUser = user;
         tools = new ToolBox(i);
-        this.mailAnimation = mailAnimation;
     }
 
     protected String doInBackground(Void... args) {
@@ -71,9 +70,6 @@ public class UpdateUserTask extends AsyncTask<Void, Void, String> {
                     "Vous pouvez maintenant utiliser MoveOn !");
             Intent i = new Intent(previousActivity, LoginActivity.class);
             previousActivity.startActivity(i);
-            mailAnimation.stop();
-        }else{
-            mailAnimation.stop();
         }
     }
 

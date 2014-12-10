@@ -43,7 +43,7 @@ public class ProfilActivity extends Activity {
         editLastName = (EditText) findViewById(R.id.editLastName);
         editLastName.setText(session.getUserDetails().get(SessionManager.KEY_LASTNAME));
 
-        Button validateButton = (Button) findViewById(R.id.buttonValidate);
+        Button validateButton = (Button) findViewById(R.id.buttonModifier);
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,25 +51,10 @@ public class ProfilActivity extends Activity {
                 String message = "";
                 if (emptyFields.size()==0) {
 
-                    logo.setBackgroundResource(R.drawable.login_loader);
-
-                    final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
-                    logo.post(new Runnable() {
-                        public void run() {
-                            if ( mailAnimation != null ) mailAnimation.start();
-                        }
-                    });
-
-                    //Calculate the total duration
-                    int duration = 0;
-                    for(int i = 0; i < mailAnimation.getNumberOfFrames(); i++){
-                        duration += mailAnimation.getDuration(i);
-                    }
-
                     // mettre a jour la BDD avec la valeur dans les champs
                     User newUser = new User(session.getUserDetails().get(SessionManager.KEY_ID),session.getUserDetails().get(SessionManager.KEY_LOGIN),
                             session.getUserDetails().get(SessionManager.KEY_PASSWORD), editFirstName.getText().toString(), editLastName.getText().toString());
-                    new UpdateUserTask(ProfilActivity.this, newUser, mailAnimation).execute();
+                    new UpdateUserTask(ProfilActivity.this, newUser).execute();
 
                 }else{
                     for (String field : emptyFields)
