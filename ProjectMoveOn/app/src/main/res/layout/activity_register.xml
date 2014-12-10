@@ -6,7 +6,7 @@
     android:background="@drawable/inscription_background"
     android:gravity="center_horizontal">
 
-    <ImageView
+   <ImageView
         android:id="@+id/logo"
         android:layout_width="260dp"
         android:layout_height="50dp"
