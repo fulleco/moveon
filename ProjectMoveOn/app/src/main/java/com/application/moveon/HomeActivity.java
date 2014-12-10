@@ -170,7 +170,7 @@ public class HomeActivity extends FragmentActivity implements LocationListener, 
         editProfilButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(HomeActivity.this, ProfilActivity.class);
+                Intent i = new Intent(HomeActivity.this, ViewProfilActivity.class);
                 startActivity(i);
             }
         });
