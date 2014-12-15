@@ -74,6 +74,8 @@ public class HomeActivity extends FragmentActivity {
 
     private FragmentMap fragmentMap = new FragmentMap();
 
+    private FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +121,9 @@ public class HomeActivity extends FragmentActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         //// End Drawer declaration
 
-        FragmentManager fragmentManager = getFragmentManager();
+        fragmentMap = new FragmentMap();
+        fragmentManager = getFragmentManager();
+
         fragmentManager.beginTransaction()
                 .add(R.id.content_frame, fragmentMap)
                 .commit();
@@ -181,11 +185,8 @@ public class HomeActivity extends FragmentActivity {
     private void selectItem(int position) {
         setTitle(mDrawerArray[position]);
 
-        FragmentManager fragmentManager = getFragmentManager();
-
         if(position == 0) {
             // Insert the fragment by replacing any existing fragment
-
             fragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                     .show(fragmentMap)
