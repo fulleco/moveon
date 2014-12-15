@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list
     xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">
-    <item android:drawable="@drawable/login_loader1" android:duration="100" />
-    <item android:drawable="@drawable/login_loader2" android:duration="100" />
-    <item android:drawable="@drawable/login_loader3" android:duration="100" />
-    <item android:drawable="@drawable/login_loader4" android:duration="100" />
-    <item android:drawable="@drawable/login_loader5" android:duration="100" />
-    <item android:drawable="@drawable/login_loader6" android:duration="100" />
-    <item android:drawable="@drawable/login_loader7" android:duration="100" />
-    <item android:drawable="@drawable/login_loader8" android:duration="100" />
-    <item android:drawable="@drawable/login_loader9" android:duration="100" />
-    <item android:drawable="@drawable/login_loader10" android:duration="100" />
-    <item android:drawable="@drawable/login_loader11" android:duration="100" />
-    <item android:drawable="@drawable/login_loader12" android:duration="100" />
-    <item android:drawable="@drawable/login_loader13" android:duration="100" />
-    <item android:drawable="@drawable/login_loader14" android:duration="100" />
-    <item android:drawable="@drawable/login_loader15" android:duration="100" />
+    <item android:drawable="@drawable/login_loader1" android:duration="80" />
+    <item android:drawable="@drawable/login_loader2" android:duration="80" />
+    <item android:drawable="@drawable/login_loader3" android:duration="80" />
+    <item android:drawable="@drawable/login_loader4" android:duration="80" />
+    <item android:drawable="@drawable/login_loader5" android:duration="80" />
+    <item android:drawable="@drawable/login_loader6" android:duration="80" />
+    <item android:drawable="@drawable/login_loader7" android:duration="80" />
+    <item android:drawable="@drawable/login_loader8" android:duration="80" />
+    <item android:drawable="@drawable/login_loader9" android:duration="80" />
+    <item android:drawable="@drawable/login_loader10" android:duration="80" />
+    <item android:drawable="@drawable/login_loader11" android:duration="80" />
+    <item android:drawable="@drawable/login_loader12" android:duration="80" />
+    <item android:drawable="@drawable/login_loader13" android:duration="80" />
+    <item android:drawable="@drawable/login_loader14" android:duration="80" />
+    <item android:drawable="@drawable/login_loader15" android:duration="80" />
 </animation-list>
