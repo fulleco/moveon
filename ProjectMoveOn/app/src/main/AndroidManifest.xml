@@ -45,14 +45,6 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
-        <activity
-            android:name=".ProfilActivity"
-            android:label="@string/title_activity_profil" >
-        </activity>
-        <activity
-            android:name=".ViewProfilActivity"
-            android:label="@string/title_activity_view_profil" >
-        </activity>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAEa4W2L8-2ny1dI-LJ5D-kE3xY6VX9wcI" />
