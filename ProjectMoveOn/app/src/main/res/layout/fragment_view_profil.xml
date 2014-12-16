@@ -26,9 +26,7 @@
         android:layout_below="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerInside"
-        android:adjustViewBounds="true"
-        android:background="@drawable/button_editer_profil_selector" />
+        android:background="@drawable/button_editer_profil_selector"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
