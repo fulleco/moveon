@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.application.moveon.map.FragmentMap;
+import com.application.moveon.profil.FragmentEditProfil;
 import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.*;
@@ -41,6 +43,7 @@ public class HomeActivity extends FragmentActivity {
 
     private FragmentMap fragmentMap = new FragmentMap();
     private FragmentViewProfil fragmentViewProfil = new FragmentViewProfil();
+    private FragmentEditProfil fragmentEditProfil = new FragmentEditProfil();
     private Fragment lastFragment;
 
     private FragmentManager fragmentManager;
@@ -51,6 +54,22 @@ public class HomeActivity extends FragmentActivity {
     private static final int VIEW_PROFIL_INDEX = 1;
 
     private int RESULT_LOAD_IMAGE = 0;
+
+    public Fragment getLastFragment() {
+        return lastFragment;
+    }
+
+    public void setLastFragment(Fragment lastFragment) {
+        this.lastFragment = lastFragment;
+    }
+
+    public FragmentEditProfil getFragmentEditProfil() {
+        return fragmentEditProfil;
+    }
+
+    public void setFragmentEditProfil(FragmentEditProfil fragmentEditProfil) {
+        this.fragmentEditProfil = fragmentEditProfil;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -273,5 +292,7 @@ public class HomeActivity extends FragmentActivity {
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
+
 
 }
