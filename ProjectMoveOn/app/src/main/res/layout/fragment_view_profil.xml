@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/profil_background"
+    tools:context="com.application.moveon.HomeActivity">
+
+    <ImageView
+        android:id="@+id/imageProfil"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/inscription_question_mark"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_below="@+id/imageProfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"
+        android:text="default value"/>
+
+    <Button
+        android:id="@+id/buttonModifier"
+        android:layout_below="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:background="@drawable/button_editer_profil_selector" />
+
+</RelativeLayout>

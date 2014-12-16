@@ -13,17 +13,6 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin">
 
-        <Button
-            android:id="@+id/buttonEditProfil"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:adjustViewBounds="true"
-            android:text="Edit Profil"
-            android:textColor="#FFF"
-            android:textStyle="bold" />
-
         <LinearLayout
             android:id="@+id/linear_search"
             android:orientation="horizontal"
@@ -36,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:layout_below="@id/buttonEditProfil"
-                android:hint="Rechercher un endroit biatch !" />
+                android:hint="Rechercher un endroit!" />
             <Button
                 android:id="@+id/btn_find"
                 android:layout_width="wrap_content"
