@@ -1,85 +1,63 @@
 package com.application.moveon;
 
-import android.app.Activity;
-import android.content.Context;
+import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.view.View.OnClickListener;
 
 import com.application.moveon.map.FragmentMap;
+import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.session.SessionManager;
-import com.application.moveon.tools.ImageHelper;
+import com.application.moveon.tools.*;
 import com.application.moveon.tools.ToolBox;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuItem;
-import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuWidget;
-
-import android.location.LocationListener;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class HomeActivity extends FragmentActivity {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mDrawerArray;
 
-    private ToolBox tools;
-
     private FragmentMap fragmentMap = new FragmentMap();
+    private FragmentViewProfil fragmentViewProfil = new FragmentViewProfil();
+    private Fragment lastFragment;
 
     private FragmentManager fragmentManager;
+
+    private ToolBox tools;
+
+    private static final int MAP_INDEX = 0;
+    private static final int VIEW_PROFIL_INDEX = 1;
+
+    private int RESULT_LOAD_IMAGE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        tools = new com.application.moveon.tools.ToolBox(this);
 
         //// Drawer declaration
         mTitle = mDrawerTitle = getTitle();
@@ -127,6 +105,7 @@ public class HomeActivity extends FragmentActivity {
         fragmentManager.beginTransaction()
                 .add(R.id.content_frame, fragmentMap)
                 .commit();
+        lastFragment = fragmentMap;
     }
 
 
@@ -182,20 +161,88 @@ public class HomeActivity extends FragmentActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK
+                && null != data) {
+            Uri selectedImage = data.getData();
+
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            fragmentViewProfil.setPicturePath(cursor.getString(columnIndex));
+            String extension = fragmentViewProfil.getPicturePath().substring(fragmentViewProfil.getPicturePath().lastIndexOf("."));
+            fragmentViewProfil.setNamePicture(tools.getFileName(selectedImage) + extension);
+            cursor.close();
+
+            BitmapFactory.Options options=new BitmapFactory.Options();
+            options.outHeight = 8;
+            //mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
+
+            Bitmap b_gallery = tools.decodeSampledBitmapFromResource(fragmentViewProfil.getPicturePath(), 60, 60);
+            Bitmap b_rounded = ImageHelper.getRoundedCornerBitmap(b_gallery, 15, 0);
+
+            fragmentViewProfil.getProfilePicture().setBackground(null);
+            fragmentViewProfil.getProfilePicture().setImageBitmap(b_rounded);
+        }
+
+    }
+
     private void selectItem(int position) {
         setTitle(mDrawerArray[position]);
+        switch (position){
+            case MAP_INDEX :
+                if(lastFragment.getClass() == fragmentMap.getClass())
+                    break;
 
-        if(position == 0) {
-            // Insert the fragment by replacing any existing fragment
-            fragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                    .show(fragmentMap)
-                    .commit();
-        }else{
-            fragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                // Insert the fragment by replacing any existing fragment
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .remove(lastFragment)
+                        .show(fragmentMap)
+                        .commit();
+
+                lastFragment = fragmentMap;
+
+
+                break;
+
+            case VIEW_PROFIL_INDEX :
+                //
+                if(lastFragment.getClass() == fragmentViewProfil.getClass())
+                    break;
+
+                if(lastFragment.getClass() != fragmentMap.getClass()) {
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                            .remove(lastFragment)
+                            .add(R.id.content_frame, fragmentViewProfil)
+                            .commit();
+                }
+                else
+                {
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                     .hide(fragmentMap)
+                    .add(R.id.content_frame, fragmentViewProfil)
                     .commit();
+                }
+                lastFragment = fragmentViewProfil;
+                break;
+
+            default :
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                        .hide(fragmentMap)
+                        .commit();
+                break;
+
         }
 
         mDrawerLayout.closeDrawer(mDrawerList);
