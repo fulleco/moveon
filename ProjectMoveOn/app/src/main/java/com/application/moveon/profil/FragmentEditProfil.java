@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.application.moveon.ProfilActivity;
 import com.application.moveon.R;
 import com.application.moveon.database.UpdateUserTask;
 import com.application.moveon.model.User;

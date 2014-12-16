@@ -1,9 +1,7 @@
 package com.application.moveon.map;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -27,7 +25,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.application.moveon.ProfilActivity;
 import com.application.moveon.R;
 import com.application.moveon.tools.ImageHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
