@@ -17,14 +17,12 @@
             android:id="@+id/linear_search"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:layout_below="@id/buttonEditProfil"
             android:layout_width="fill_parent">
             <EditText
                 android:id="@+id/et_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:layout_below="@id/buttonEditProfil"
                 android:hint="Rechercher un endroit!" />
             <Button
                 android:id="@+id/btn_find"

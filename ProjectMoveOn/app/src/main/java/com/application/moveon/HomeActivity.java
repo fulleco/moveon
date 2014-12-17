@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.application.moveon.map.FragmentLocationChooser;
 import com.application.moveon.map.FragmentMap;
 import com.application.moveon.profil.FragmentEditProfil;
 import com.application.moveon.profil.FragmentViewProfil;
@@ -42,6 +43,7 @@ public class HomeActivity extends FragmentActivity {
     private FragmentMap fragmentMap = new FragmentMap();
     private FragmentViewProfil fragmentViewProfil = new FragmentViewProfil();
     private FragmentEditProfil fragmentEditProfil = new FragmentEditProfil();
+    private FragmentLocationChooser fragmentLocationChooser;
     private Fragment currentFragment;
 
     private FragmentManager fragmentManager;
@@ -50,6 +52,7 @@ public class HomeActivity extends FragmentActivity {
 
     private static final int MAP_INDEX = 0;
     private static final int VIEW_PROFIL_INDEX = 1;
+    private static final int LOCATION_CHOOSER = 2;
 
     private int RESULT_LOAD_IMAGE = 0;
 
@@ -117,6 +120,7 @@ public class HomeActivity extends FragmentActivity {
         //// End Drawer declaration
 
         fragmentMap = new FragmentMap();
+        fragmentLocationChooser = new FragmentLocationChooser();
         fragmentManager = getFragmentManager();
 
         fragmentManager.beginTransaction()
@@ -220,6 +224,10 @@ public class HomeActivity extends FragmentActivity {
 
             case VIEW_PROFIL_INDEX :
                 switchFragment(fragmentViewProfil);
+                break;
+
+            case LOCATION_CHOOSER :
+                switchFragment(fragmentLocationChooser);
                 break;
 
             default :
