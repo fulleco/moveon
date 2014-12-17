@@ -12,9 +12,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.application.moveon.database.ConnectTask;
+import com.application.moveon.rest.Connect_Callback;
+import com.application.moveon.rest.MoveOnService;
+import com.application.moveon.rest.RestClient;
 import com.application.moveon.session.Connectivity;
 import com.application.moveon.session.SessionManager;
 
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -39,6 +43,9 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        final RestClient r = new RestClient();
+        final MoveOnService mos = r.getApiService();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -71,33 +78,48 @@ public class LoginActivity extends Activity {
                     return;
                 }
 
-                final String loginTxt = editEmail.getText().toString();
-                final String passTxt = editPassword.getText().toString();
+                ArrayList<String> emptyfields = validFields();
 
-                logo.setBackgroundResource(R.drawable.login_loader);
+                if(validFields().size() == 0){
 
-                final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
-                logo.post(new Runnable() {
-                    public void run() {
-                        if ( mailAnimation != null ) mailAnimation.start();
+                    final String mail = editEmail.getText().toString();
+                    final String password = editPassword.getText().toString();
+
+                    logo.setBackgroundResource(R.drawable.login_loader);
+
+                    final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
+                    logo.post(new Runnable() {
+                        public void run() {
+                            if ( mailAnimation != null ) mailAnimation.start();
+                        }
+                    });
+
+                    //Calculate the total duration
+                    int duration = 0;
+                    for(int i = 0; i < mailAnimation.getNumberOfFrames(); i++){
+                        duration += mailAnimation.getDuration(i);
                     }
-                });
 
-                //Calculate the total duration
-                int duration = 0;
-                for(int i = 0; i < mailAnimation.getNumberOfFrames(); i++){
-                    duration += mailAnimation.getDuration(i);
+                    Connect_Callback c = new Connect_Callback(LoginActivity.this, mail,password,session,mailAnimation);
+                    mos.selectuser(mail,password,c);
+
+
+                }else{
+                    Toast.makeText(LoginActivity.this, "Veuillez remplir les deux champs.", Toast.LENGTH_SHORT).show();
                 }
 
-                int corePoolSize = 80;
-                int maximumPoolSize = 90;
-                int keepAliveTime = 20;
 
-                BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(maximumPoolSize);
-                Executor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, workQueue);
 
-                new ConnectTask(LoginActivity.this, loginTxt, passTxt, session, id, mailAnimation).executeOnExecutor(threadPoolExecutor);
             }
         });
+    }
+
+    public ArrayList<String> validFields() {
+        ArrayList<String> fieldsEmpty = new ArrayList<String>();
+        if (editEmail.getText().toString().equals(""))
+            fieldsEmpty.add("Email");
+        if (editPassword.getText().toString().equals(""))
+            fieldsEmpty.add("Mot de passe");
+        return fieldsEmpty;
     }
 }

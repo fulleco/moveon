@@ -34,4 +34,10 @@ dependencies {
     compile 'com.google.android.gms:play-services:4.2.42'
     compile files('src/main/libs/gson-2.2.4.jar')
     compile files('src/main/libs/radial-menu-v4.jar')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.squareup.retrofit:retrofit:1.8.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'org.parceler:parceler-api:0.2.7'
+    provided 'org.parceler:parceler:0.2.7'
 }

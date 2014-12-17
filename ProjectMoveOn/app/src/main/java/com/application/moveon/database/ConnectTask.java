@@ -105,9 +105,9 @@ public class ConnectTask extends AsyncTask<Void, Void, String> {
 	private void dismissBar(){
 		if(progressBar != null && progressBar.isShowing())
         {
-			progressBar.dismiss();
-        }
-	}
+        progressBar.dismiss();
+    }
+}
 
     @SuppressWarnings("unchecked")
     public boolean userAlreadyExists(String login, String password) throws InterruptedException, ExecutionException, JSONException{
