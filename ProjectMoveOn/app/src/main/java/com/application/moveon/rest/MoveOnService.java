@@ -1,9 +1,5 @@
 package com.application.moveon.rest;
-import com.application.moveon.rest.modele.User;
-import com.squareup.okhttp.Call;
-
-import org.json.JSONObject;
-
+import com.application.moveon.rest.modele.UserPojo;
 
 
 import retrofit.Callback;
@@ -11,7 +7,6 @@ import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
-import retrofit.http.PUT;
 import retrofit.http.Query;
 
 /**
@@ -29,9 +24,9 @@ public interface MoveOnService {
                  @Query("password") String password,
                  @Query("imageprofile") String imageprofile, Callback<Boolean> cb);
 
-    @GET("/select_usertest")
+    @GET("/select_user")
     void selectuser(@Query("login") String login,
-                    @Query("password") String password, Callback<User> cb);
+                    @Query("password") String password, Callback<UserPojo> cb);
 
     @FormUrlEncoded
     @POST("/update_usertest")

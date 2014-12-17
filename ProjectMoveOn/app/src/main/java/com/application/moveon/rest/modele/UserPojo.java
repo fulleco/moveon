@@ -8,7 +8,7 @@ import org.parceler.Parcel;
  * Created by Hugo on 02/12/2014.
  */
 @Parcel
-public class User {
+public class UserPojo {
 
     @SerializedName("id_client")
     private String id_client;

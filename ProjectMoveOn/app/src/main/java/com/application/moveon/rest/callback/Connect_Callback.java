@@ -1,15 +1,12 @@
-package com.application.moveon.rest;
+package com.application.moveon.rest.callback;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.application.moveon.LoginActivity;
-import com.application.moveon.rest.modele.User;
+import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
-import com.squareup.okhttp.Call;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -18,7 +15,7 @@ import retrofit.client.Response;
 /**
  * Created by Hugo on 16/12/2014.
  */
-public class Connect_Callback implements Callback<User> {
+public class Connect_Callback implements Callback<UserPojo> {
 
 
     private LoginActivity act;
@@ -37,7 +34,7 @@ public class Connect_Callback implements Callback<User> {
 
 
     @Override
-    public void success(User aUser, Response response) {
+    public void success(UserPojo aUser, Response response) {
         if(aUser.getFirstname() == null){
 
             act.runOnUiThread(new Runnable() {
