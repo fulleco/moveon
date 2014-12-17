@@ -19,7 +19,6 @@ public class Register_Callback implements Callback<String> {
     private Activity previousActivity;
     private User newUser;
     private ToolBox tools;
-    private String error = "";
     private String picturePath = "";
     private AnimationDrawable mailAnimation;
 
@@ -27,6 +26,7 @@ public class Register_Callback implements Callback<String> {
         this.previousActivity = i;
         this.newUser = user;
         this.mailAnimation = mailAnimation;
+        this.picturePath = picturePath;
     }
 
     @Override

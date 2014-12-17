@@ -58,6 +58,7 @@ public class Connect_Callback implements Callback<UserPojo> {
     @Override
     public void failure(RetrofitError error) {
         Log.i("Hugo", error.getMessage());
+        mailAnimation.stop();
     }
 
 

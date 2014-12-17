@@ -11,19 +11,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.application.moveon.database.ConnectTask;
-import com.application.moveon.rest.Connect_Callback;
+import com.application.moveon.rest.callback.Connect_Callback;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.session.Connectivity;
 import com.application.moveon.session.SessionManager;
 
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 
 public class LoginActivity extends Activity {
