@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,26 +50,21 @@ public class FragmentViewProfil extends Fragment {
         profilePicture = (ImageView)view.findViewById(R.id.imageProfil);
         buttonEditer = (Button) view.findViewById(R.id.buttonModifier);
 
-        View.OnClickListener btEditClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               /* activity.getFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .remove(((HomeActivity)activity).getLastFragment())
-                        .add(R.id.content_frame, ((HomeActivity)activity).getFragmentEditProfil())
-                        .commit();
-                        */
-
-            }
-        };
-
-        buttonEditer.setOnClickListener(btEditClickListener);
-
         // Remplir les champs par leur valeur actuelle
         name = (TextView) view.findViewById(R.id.textViewName);
         name.setText(session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " " + session.getUserDetails().get(SessionManager.KEY_LASTNAME));
 
+        //TODO
+        //profilPicture = get picture here
 
+        View.OnClickListener btEditClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)activity).switchFragment(((HomeActivity)activity).getFragmentEditProfil());
+            }
+        };
+
+        buttonEditer.setOnClickListener(btEditClickListener);
 
         return view;
     }

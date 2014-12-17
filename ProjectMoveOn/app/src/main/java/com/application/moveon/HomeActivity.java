@@ -11,9 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,7 +42,7 @@ public class HomeActivity extends FragmentActivity {
     private FragmentMap fragmentMap = new FragmentMap();
     private FragmentViewProfil fragmentViewProfil = new FragmentViewProfil();
     private FragmentEditProfil fragmentEditProfil = new FragmentEditProfil();
-    private Fragment lastFragment;
+    private Fragment currentFragment;
 
     private FragmentManager fragmentManager;
 
@@ -55,12 +53,12 @@ public class HomeActivity extends FragmentActivity {
 
     private int RESULT_LOAD_IMAGE = 0;
 
-    public Fragment getLastFragment() {
-        return lastFragment;
+    public Fragment getCurrentFragment() {
+        return currentFragment;
     }
 
-    public void setLastFragment(Fragment lastFragment) {
-        this.lastFragment = lastFragment;
+    public void setCurrentFragment(Fragment currentFragment) {
+        this.currentFragment = currentFragment;
     }
 
     public FragmentEditProfil getFragmentEditProfil() {
@@ -124,7 +122,7 @@ public class HomeActivity extends FragmentActivity {
         fragmentManager.beginTransaction()
                 .add(R.id.content_frame, fragmentMap)
                 .commit();
-        lastFragment = fragmentMap;
+        currentFragment = fragmentMap;
     }
 
 
@@ -217,42 +215,11 @@ public class HomeActivity extends FragmentActivity {
         setTitle(mDrawerArray[position]);
         switch (position){
             case MAP_INDEX :
-                if(lastFragment.getClass() == fragmentMap.getClass())
-                    break;
-
-                // Insert the fragment by replacing any existing fragment
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .remove(lastFragment)
-                        .show(fragmentMap)
-                        .commit();
-
-                lastFragment = fragmentMap;
-
-
+                switchFragment(fragmentMap);
                 break;
 
             case VIEW_PROFIL_INDEX :
-                //
-                if(lastFragment.getClass() == fragmentViewProfil.getClass())
-                    break;
-
-                if(lastFragment.getClass() != fragmentMap.getClass()) {
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                            .remove(lastFragment)
-                            .add(R.id.content_frame, fragmentViewProfil)
-                            .commit();
-                }
-                else
-                {
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                    .hide(fragmentMap)
-                    .add(R.id.content_frame, fragmentViewProfil)
-                    .commit();
-                }
-                lastFragment = fragmentViewProfil;
+                switchFragment(fragmentViewProfil);
                 break;
 
             default :
@@ -291,6 +258,40 @@ public class HomeActivity extends FragmentActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    public void switchFragment(Fragment newFragment)
+    {
+        if(currentFragment.getClass() == newFragment.getClass())
+            return;
+
+        if(currentFragment.getClass() == fragmentMap.getClass()) {
+            fragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                    .hide(currentFragment)
+                    .add(R.id.content_frame, newFragment)
+                    .commit();
+        }
+        else {
+            if(newFragment.getClass() == fragmentMap.getClass())
+            {
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .remove(currentFragment)
+                        .show(newFragment)
+                        .commit();
+            }
+            else {
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .remove(currentFragment)
+                        .add(R.id.content_frame, newFragment)
+                        .commit();
+            }
+        }
+
+        currentFragment = newFragment;
+
     }
 
 

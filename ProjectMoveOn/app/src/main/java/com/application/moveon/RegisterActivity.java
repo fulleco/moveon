@@ -107,7 +107,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             ArrayList<String> emptyFields = validFields();
             String message = "";
             if (emptyFields.size()==0) {
-                logo.setBackgroundResource(R.drawable.login_loader);
+                logo.setBackgroundResource(R.drawable.inscription_loader);
 
                 final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
                 logo.post(new Runnable() {
