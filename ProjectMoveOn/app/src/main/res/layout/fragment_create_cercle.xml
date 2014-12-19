@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_inscription"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/inscription_background"
+    android:layout_centerHorizontal="true"
+    android:paddingTop="50dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50dp"
+        android:text="Creer cercle"
+        android:layout_centerHorizontal="true"/>
+
+    <EditText
+        android:id="@+id/editNameCercle"
+        android:layout_below="@+id/title"
+        android:layout_width="245dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="42dp"
+        android:layout_marginBottom="25dp"
+        android:padding="5dp"
+        android:background="@drawable/rounded_edit"
+        android:hint="Nom du cercle"
+        android:inputType="text"
+        android:textColor="#000"
+        android:ellipsize="start"
+        android:textSize="14sp" />
+    <LinearLayout
+        android:id="@+id/linearDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editNameCercle"
+        android:layout_centerHorizontal="true">
+        <Button
+            android:id="@+id/buttonDateDebut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="date debut" />
+
+        <Button
+            android:id="@+id/buttonDateFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="date fin" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearDate"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/buttonLocalisation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Localisation"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
+        <Button
+            android:id="@+id/buttonParticipant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ajouter Participant"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
+        </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonValider"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Valider"
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

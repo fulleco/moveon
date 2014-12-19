@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.application.moveon.cercle.FragmentCreateCercle;
 import com.application.moveon.map.FragmentLocationChooser;
 import com.application.moveon.map.FragmentMap;
 import com.application.moveon.profil.FragmentEditProfil;
@@ -43,7 +44,9 @@ public class HomeActivity extends FragmentActivity {
     private FragmentMap fragmentMap = new FragmentMap();
     private FragmentViewProfil fragmentViewProfil = new FragmentViewProfil();
     private FragmentEditProfil fragmentEditProfil = new FragmentEditProfil();
-    private FragmentLocationChooser fragmentLocationChooser;
+    private FragmentLocationChooser fragmentLocationChooser = new FragmentLocationChooser();
+    private FragmentCreateCercle fragmentCreateCercle = new FragmentCreateCercle();
+
     private Fragment currentFragment;
 
     private FragmentManager fragmentManager;
@@ -53,6 +56,7 @@ public class HomeActivity extends FragmentActivity {
     private static final int MAP_INDEX = 0;
     private static final int VIEW_PROFIL_INDEX = 1;
     private static final int LOCATION_CHOOSER = 2;
+    private static final int CREATE_CERCLE_INDEX = 3;
 
     private int RESULT_LOAD_IMAGE = 0;
 
@@ -71,6 +75,16 @@ public class HomeActivity extends FragmentActivity {
     public void setFragmentEditProfil(FragmentEditProfil fragmentEditProfil) {
         this.fragmentEditProfil = fragmentEditProfil;
     }
+
+    public FragmentLocationChooser getFragmentLocationChooser() {
+        return fragmentLocationChooser;
+    }
+
+    public void setFragmentLocationChooser(FragmentLocationChooser fragmentLocationChooser) {
+        this.fragmentLocationChooser = fragmentLocationChooser;
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,6 +242,10 @@ public class HomeActivity extends FragmentActivity {
 
             case LOCATION_CHOOSER :
                 switchFragment(fragmentLocationChooser);
+                break;
+
+            case CREATE_CERCLE_INDEX :
+                switchFragment(fragmentCreateCercle);
                 break;
 
             default :

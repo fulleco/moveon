@@ -114,9 +114,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
             }
         };
 
-        btn_find = (Button) view.findViewById(R.id.btn_find);
-        btn_find.setOnClickListener(findClickListener);
-
         initMap();
         fMap = (View)view.findViewById(R.id.map);
 
