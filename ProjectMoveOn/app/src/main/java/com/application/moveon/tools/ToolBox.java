@@ -102,7 +102,7 @@ public class ToolBox {
 		return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 	}
 
-	public int calculateInSampleSize(BitmapFactory.Options options,
+	public static int calculateInSampleSize(BitmapFactory.Options options,
 			int reqWidth, int reqHeight) {
 		// Raw height and width of image
 		final int height = options.outHeight;
@@ -126,7 +126,7 @@ public class ToolBox {
 		return inSampleSize;
 	}
 
-	public Bitmap decodeSampledBitmapFromResource(String picturePath, int reqWidth, int reqHeight) {
+	public static Bitmap decodeSampledBitmapFromResource(String picturePath, int reqWidth, int reqHeight) {
 
 		// First decode with inJustDecodeBounds=true to check dimensions
 		final BitmapFactory.Options options = new BitmapFactory.Options();
