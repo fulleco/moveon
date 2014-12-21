@@ -68,8 +68,8 @@ public class FragmentCreateCercle extends Fragment{
         tools.setCurrentDateOnView(editDateDebut,c);
         tools.setCurrentTimeOnView(editTimeDebut,c);
 
-        tools.setCurrentTimeOnView(editTimeFin,c);
         tools.setCurrentDateOnView(editDateFin,c);
+        tools.setCurrentTimeOnView(editTimeFin,c);
 
 
         nomCercle = (EditText) view.findViewById(R.id.editNameCercle);
