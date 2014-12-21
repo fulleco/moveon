@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,10 +23,12 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.EditText;
 
 public class ToolBox {
 
 	private Activity activity;
+    private Calendar c = Calendar.getInstance();
 
 	public ToolBox(Activity activity) {
 		this.activity = activity;
@@ -151,4 +156,18 @@ public class ToolBox {
 		dis.close();
 		return fileData;
 	}
+
+    public void setCurrentDateOnView(EditText edtField,Calendar c){
+        String dateFormat = "dd-MM-yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.FRANCE);
+        edtField.setText(sdf.format(c.getTime()));
+        edtField.setText(sdf.format(c.getTime()));
+    }
+
+    public void setCurrentTimeOnView(EditText edtField,Calendar c){
+        String dateFormat = "HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.FRANCE);
+        edtField.setText(sdf.format(c.getTime()));
+        edtField.setText(sdf.format(c.getTime()));
+    }
 }

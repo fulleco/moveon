@@ -30,29 +30,68 @@
         android:ellipsize="start"
         android:textSize="14sp" />
     <LinearLayout
-        android:id="@+id/linearDate"
+        android:id="@+id/linearDebutPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editNameCercle"
-        android:layout_centerHorizontal="true">
-        <Button
-            android:id="@+id/buttonDateDebut"
+        android:layout_centerHorizontal="true"
+       >
+       <TextView
+           android:id="@+id/textTimeDebut"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Time"/>
+        <EditText
+            android:id="@+id/editTimeDebut"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="date debut" />
+            android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/buttonDateFin"
+        <TextView
+            android:id="@+id/textDateDebut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="date fin" />
+            android:text="Date"/>
+        <EditText
+            android:id="@+id/editDateDebut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:editable="false"
+            android:onClick="dateOnClick" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearFinPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearDebutPicker"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/textTimeFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time"/>
+        <EditText
+            android:id="@+id/editTimeFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textDateFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"/>
+        <EditText
+            android:id="@+id/editDateFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearDate"
+        android:layout_below="@+id/linearFinPicker"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true">
         <Button
