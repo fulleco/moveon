@@ -25,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.tools.ImageHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -95,24 +96,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         // Recuperer la map
         map = supportMapFragment.getMap();
-
-        View.OnClickListener findClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                cursor = 0;
-                map.clear();
-
-                EditText etLocation = (EditText) v.findViewById(R.id.et_location);
-
-                // Recuperer l'adresse demandee
-                String location = etLocation.getText().toString();
-
-                if (location != null && !location.equals("")) {
-                    new LocateTask().execute(location);
-                }
-            }
-        };
 
         initMap();
         fMap = (View)view.findViewById(R.id.map);
@@ -244,8 +227,13 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         //        .defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
         //markerOptions.icon(bitmapDescriptor);
 
-        Bitmap b = BitmapFactory.decodeResource(getResources(),
-                R.drawable.profile_test);
+        HomeActivity h = (HomeActivity)getActivity();
+        Bitmap b = h.getProfilePicture();
+        if(b==null){
+            b= BitmapFactory.decodeResource(getResources(),
+                    R.drawable.profile_test);
+        }
+
         Bitmap b_rounded = ImageHelper.getRoundedCornerBitmap(b, 1000, 0);
         Bitmap b_resized = Bitmap.createScaledBitmap(b_rounded, 60, 60, false);
         b.recycle();

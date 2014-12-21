@@ -23,11 +23,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="Rechercher un endroit!" />
+                android:hint="Rechercher" />
             <Button
                 android:id="@+id/btn_location_find"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Chercher" />
+            <Button
+                android:id="@+id/btn_location_validate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
                 android:text="Valider" />
         </LinearLayout>
 

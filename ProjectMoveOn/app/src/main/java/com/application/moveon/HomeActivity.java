@@ -29,6 +29,7 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.application.moveon.cercle.FragmentCreateCercle;
+import com.application.moveon.ftp.FtpDownloadTask;
 import com.application.moveon.map.FragmentLocationChooser;
 import com.application.moveon.map.FragmentMap;
 import com.application.moveon.profil.FragmentEditProfil;
@@ -36,7 +37,8 @@ import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.*;
 import com.application.moveon.tools.ToolBox;
-
+import java.io.File;
+import java.util.HashMap;
 import java.util.Calendar;
 
 public class HomeActivity extends FragmentActivity {
@@ -68,6 +70,8 @@ public class HomeActivity extends FragmentActivity {
 
     private int RESULT_LOAD_IMAGE = 0;
 
+    private Bitmap profilePicture;
+
     public Fragment getCurrentFragment() {
         return currentFragment;
     }
@@ -92,7 +96,19 @@ public class HomeActivity extends FragmentActivity {
         this.fragmentLocationChooser = fragmentLocationChooser;
     }
 
+    public Bitmap getProfilePicture(){
+        File cacheDir = getBaseContext().getCacheDir();
+        if(profilePicture == null){
+            Bitmap bitmapDownloaded = ToolBox.decodeSampledBitmapFromResource(
+                    cacheDir.getAbsolutePath() + "/profile.jpg", 100, 100);
+            this.profilePicture = bitmapDownloaded;
+        }
+        return this.profilePicture;
+    }
 
+    public void setProfilePicture(Bitmap profilePicture){
+        this.profilePicture = profilePicture;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +116,15 @@ public class HomeActivity extends FragmentActivity {
         setContentView(R.layout.activity_home);
 
         tools = new com.application.moveon.tools.ToolBox(this);
+
+        SessionManager session = new SessionManager(this);
+        HashMap<String, String> userInfos = session.getUserDetails();
+        String idUser = userInfos.get(SessionManager.KEY_ID);
+
+        File cacheDir = getBaseContext().getCacheDir();
+
+        new FtpDownloadTask("www/pfe/images/"+idUser+"/profile.jpg",
+                cacheDir.getAbsolutePath() + "/profile.jpg", profilePicture).execute();
 
         //// Drawer declaration
         mTitle = mDrawerTitle = getTitle();

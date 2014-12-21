@@ -1,5 +1,6 @@
 package com.application.moveon.ftp;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.SocketException;
@@ -8,19 +9,23 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import com.application.moveon.tools.ToolBox;
 
 public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
 
 	String path = "";
 	String destination = "";
-    String email = "";
 	boolean status = false;
+    Bitmap profilePicture;
 
-	public FtpDownloadTask(String path, String destination, String email) {
+	public FtpDownloadTask(String path, String destination, Bitmap profilePicture) {
 		this.path = path;
 		this.destination = destination;
-        this.email = email;
+        this.profilePicture = profilePicture;
 	}
 
 	protected FTPClient doInBackground(String... args) {
@@ -51,12 +56,13 @@ public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
 			try {
 				mFTPClient.setFileType(FTP.BINARY_FILE_TYPE);
 				mFTPClient.enterLocalPassiveMode();
-				mFTPClient.changeWorkingDirectory("www/moveon/pfe/");
-				FileOutputStream desFileStream = new FileOutputStream(
-						destination);
-				status = mFTPClient.retrieveFile(path, desFileStream);
-				desFileStream.close();
+				mFTPClient.changeWorkingDirectory(path);
 
+                FileOutputStream desFileStream = new FileOutputStream(
+						destination, false);
+                status = mFTPClient.retrieveFile(path, desFileStream);
+
+				desFileStream.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

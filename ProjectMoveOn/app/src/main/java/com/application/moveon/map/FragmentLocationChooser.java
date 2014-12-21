@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -54,6 +55,7 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
     private String finalAdressString = "";
 
     private Button btn_find;
+    private Button btn_validate;
 
     private Address currentAddress;
     private List<Address> addresses;
@@ -141,7 +143,6 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
                             public void onFinish() {
                                 map.getUiSettings().setScrollGesturesEnabled(true);
                                 selectedMarker = m;
-
                                 supportMapFragment.getView().setVisibility(View.VISIBLE);
                                 resultsList.setVisibility(View.GONE);
                                 //showMenu();
@@ -174,8 +175,19 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
             }
         };
 
+        View.OnClickListener validateClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStackImmediate();
+                Log.i("ANTHO", "clic valider");
+            }
+        };
+
         btn_find = (Button) view.findViewById(R.id.btn_location_find);
         btn_find.setOnClickListener(findClickListener);
+
+        btn_validate = (Button) view.findViewById(R.id.btn_location_validate);
+        btn_validate.setOnClickListener(validateClickListener);
 
         nbResultsText = (TextView) view.findViewById(R.id.text_nb_results);
 
@@ -244,6 +256,7 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
                 mOptions.title(marker.getTitle());
                 mOptions.position(marker.getPosition());
                 selectedMarker = mOptions;
+                btn_validate.setEnabled(true);
                 marker.showInfoWindow();
                 //showMenu();
             }
@@ -374,7 +387,7 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
             }
         };
 
-        a.setDuration(1200);
+        a.setDuration(600);
         v.startAnimation(a);
     }
 
