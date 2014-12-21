@@ -1,5 +1,6 @@
 package com.application.moveon;
 
+import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.app.FragmentManager;
@@ -21,6 +22,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.application.moveon.cercle.FragmentCreateCercle;
@@ -32,9 +35,9 @@ import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.*;
 import com.application.moveon.tools.ToolBox;
-
 import java.io.File;
 import java.util.HashMap;
+import java.util.Calendar;
 
 public class HomeActivity extends FragmentActivity {
 
@@ -44,6 +47,7 @@ public class HomeActivity extends FragmentActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mDrawerArray;
+    private Calendar c = Calendar.getInstance();
 
     private FragmentMap fragmentMap = new FragmentMap();
     private FragmentViewProfil fragmentViewProfil = new FragmentViewProfil();
@@ -347,6 +351,20 @@ public class HomeActivity extends FragmentActivity {
 
     }
 
+    public void dateOnClick(View view){
+        new DatePickerDialog(HomeActivity.this,date,
+                c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH)).show();
+        tools.setCurrentDateOnView((EditText)view,c);
 
+    }
+
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener(){
+        @Override
+        public  void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            c.set(Calendar.YEAR, year);
+            c.set(Calendar.MONTH,monthOfYear);
+            c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+        }
+    };
 
 }
