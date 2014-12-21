@@ -15,7 +15,6 @@ import android.widget.EditText;
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.session.SessionManager;
-import com.application.moveon.tools.TimePickerFragment;
 import com.application.moveon.tools.ToolBox;
 
 import java.text.SimpleDateFormat;
