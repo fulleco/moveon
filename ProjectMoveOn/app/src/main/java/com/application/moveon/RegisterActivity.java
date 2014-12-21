@@ -20,6 +20,9 @@ import android.widget.ImageView;
 import com.application.moveon.database.AddUserTask;
 import com.application.moveon.ftp.FtpUploadTask;
 import com.application.moveon.model.User;
+import com.application.moveon.rest.MoveOnService;
+import com.application.moveon.rest.RestClient;
+import com.application.moveon.rest.callback.Register_Callback;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
@@ -49,11 +52,16 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     private Button buttonBrowse;
 
     private String idUser;
+    private MoveOnService mos;
+    private Register_Callback rc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        RestClient r = new RestClient(false);
+        mos = r.getApiService();
 
         SessionManager session = new SessionManager(this);
         HashMap<String, String> infos = session.getUserDetails();
@@ -125,7 +133,9 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 User newUser = new User(editEmail.getText().toString(),
                         editPassword1.getText().toString(), editFirstName.getText().toString(), editLastName.getText().toString());
 
-                new AddUserTask(this, newUser, mailAnimation, picturePath).execute();
+                rc = new Register_Callback(RegisterActivity.this, newUser, mailAnimation, picturePath, tools);
+                mos.userexists(newUser.getLogin(), rc);
+
             }else{
                 for (String field : emptyFields)
                     message += "-" + field + "\n";

@@ -38,7 +38,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final RestClient r = new RestClient();
+        final RestClient r = new RestClient(true);
         final MoveOnService mos = r.getApiService();
 
         progressDialog = new ProgressDialog(this);
