@@ -335,7 +335,7 @@ public class HomeActivity extends FragmentActivity {
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                         .remove(currentFragment)
-                        .show(newFragment)
+                        .show(fragmentMap)
                         .commit();
             }
             else {
