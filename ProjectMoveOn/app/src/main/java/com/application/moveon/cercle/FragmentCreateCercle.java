@@ -15,7 +15,6 @@ import android.widget.EditText;
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.session.SessionManager;
-import com.application.moveon.tools.TimePickerFragment;
 import com.application.moveon.tools.ToolBox;
 
 import java.text.SimpleDateFormat;
@@ -68,8 +67,8 @@ public class FragmentCreateCercle extends Fragment{
         tools.setCurrentDateOnView(editDateDebut,c);
         tools.setCurrentTimeOnView(editTimeDebut,c);
 
-        tools.setCurrentTimeOnView(editTimeFin,c);
         tools.setCurrentDateOnView(editDateFin,c);
+        tools.setCurrentTimeOnView(editTimeFin,c);
 
 
         nomCercle = (EditText) view.findViewById(R.id.editNameCercle);

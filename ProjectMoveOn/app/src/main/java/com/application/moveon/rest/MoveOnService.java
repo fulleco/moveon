@@ -1,4 +1,5 @@
 package com.application.moveon.rest;
+import com.application.moveon.rest.callback.Register_Callback;
 import com.application.moveon.rest.modele.UserPojo;
 
 
@@ -14,15 +15,15 @@ import retrofit.http.Query;
  */
 public interface MoveOnService {
 
-    @GET("/account_existstest")
-    void user(@Query("login") String id, Callback<Boolean> cb);
+    @GET("/account_exists")
+    void userexists(@Query("login") String id, Register_Callback cb);
 
-    @POST("/add_usertest")
-    void adduser(@Query("firstName") String firstname,
+    @POST("/add_user")
+    Boolean adduser(@Query("firstName") String firstname,
                  @Query("lastName") String lastname,
                  @Query("login") String login,
                  @Query("password") String password,
-                 @Query("imageprofile") String imageprofile, Callback<Boolean> cb);
+                 @Query("imageprofile") String imageprofile);
 
     @GET("/select_user")
     void selectuser(@Query("login") String login,

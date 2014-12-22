@@ -34,8 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editNameCercle"
-        android:layout_centerHorizontal="true"
-       >
+        android:layout_centerHorizontal="true">
        <TextView
            android:id="@+id/textTimeDebut"
            android:layout_width="wrap_content"
@@ -44,7 +43,10 @@
         <EditText
             android:id="@+id/editTimeDebut"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:onClick="timeOnClick"
+            android:editable="false"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/textDateDebut"
@@ -55,9 +57,9 @@
             android:id="@+id/editDateDebut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:onClick="dateOnClick"
             android:editable="false"
-            android:onClick="dateOnClick" />
+            android:clickable="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -74,17 +76,24 @@
         <EditText
             android:id="@+id/editTimeFin"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:onClick="timeOnClick"
+            android:editable="false"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/textDateFin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date"/>
+
         <EditText
             android:id="@+id/editDateFin"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:onClick="dateOnClick"
+            android:editable="false"
+            android:clickable="true" />
     </LinearLayout>
 
     <LinearLayout

@@ -2,6 +2,7 @@ package com.application.moveon;
 
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
@@ -25,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TimePicker;
 
 import com.application.moveon.cercle.FragmentCreateCercle;
 import com.application.moveon.ftp.FtpDownloadTask;
@@ -351,20 +353,36 @@ public class HomeActivity extends FragmentActivity {
 
     }
 
-    public void dateOnClick(View view){
+    public void dateOnClick(final View textField){
+
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener(){
+            @Override
+            public  void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH,monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                tools.setCurrentDateOnView((EditText)textField,c);
+            }
+        };
+
         new DatePickerDialog(HomeActivity.this,date,
                 c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH)).show();
-        tools.setCurrentDateOnView((EditText)view,c);
-
     }
 
-    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener(){
-        @Override
-        public  void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            c.set(Calendar.YEAR, year);
-            c.set(Calendar.MONTH,monthOfYear);
-            c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-        }
-    };
+    public void timeOnClick(final View textField){
+        TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener(){
+            @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute){
+                c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                c.set(Calendar.MINUTE,minute);
+                tools.setCurrentTimeOnView((EditText)textField,c);
+            }
+        };
+
+                new TimePickerDialog(HomeActivity.this, time, c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),true).show();
+    }
+
+
+
 
 }
