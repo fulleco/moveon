@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import com.application.moveon.R;
 import com.application.moveon.database.UpdateUserTask;
 import com.application.moveon.model.User;
+import com.application.moveon.rest.MoveOnService;
+import com.application.moveon.rest.RestClient;
+import com.application.moveon.rest.callback.EditUser_Callback;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ToolBox;
 
@@ -34,6 +37,7 @@ public class FragmentEditProfil extends Fragment {
 
     SessionManager session;
     private FragmentActivity activity;
+    private MoveOnService mos;
 
     private int RESULT_LOAD_IMAGE = 0;
     private String picturePath;
@@ -48,6 +52,8 @@ public class FragmentEditProfil extends Fragment {
 
         activity = (FragmentActivity)getActivity();
         session = new SessionManager(activity);
+        RestClient r = new RestClient(true);
+        mos = r.getApiService();
 
         tools = new ToolBox(activity);
         logo = (ImageView) view.findViewById(R.id.logo);
@@ -77,7 +83,7 @@ public class FragmentEditProfil extends Fragment {
                       // mettre a jour la BDD avec la valeur dans les champs
                       User newUser = new User(session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_EMAIL),
                               session.getUserDetails().get(SessionManager.KEY_PASSWORD), editFirstName.getText().toString(), editLastName.getText().toString());
-                      new UpdateUserTask(activity, newUser).execute();
+                      mos.updateuser(newUser.getFirstName(),newUser.getLastName(),newUser.getPassword(), newUser.getLogin(), newUser.getId(), new EditUser_Callback(newUser,tools));
 
                   } else {
                       for (String field : emptyFields)

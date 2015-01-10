@@ -1,4 +1,5 @@
 package com.application.moveon.rest;
+import com.application.moveon.rest.callback.EditUser_Callback;
 import com.application.moveon.rest.callback.Register_Callback;
 import com.application.moveon.rest.modele.UserPojo;
 
@@ -30,9 +31,11 @@ public interface MoveOnService {
                     @Query("password") String password, Callback<UserPojo> cb);
 
     @FormUrlEncoded
-    @POST("/update_usertest")
+    @POST("/update_user")
     void updateuser(@Field("firstname") String firstname,
                     @Field("lastname") String lastname,
-                    @Field("id") String id, Callback<String> cb);
+                    @Field("password") String password,
+                    @Field("email") String email,
+                    @Field("id") String id, EditUser_Callback cb);
 
 }
