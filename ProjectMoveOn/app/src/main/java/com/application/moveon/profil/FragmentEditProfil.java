@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.application.moveon.R;
-import com.application.moveon.database.UpdateUserTask;
 import com.application.moveon.model.User;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;

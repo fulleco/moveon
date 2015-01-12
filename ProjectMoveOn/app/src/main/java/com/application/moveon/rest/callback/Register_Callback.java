@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.application.moveon.LoginActivity;
 import com.application.moveon.ftp.FtpUploadTask;
@@ -46,7 +47,7 @@ public class Register_Callback implements Callback<Boolean> {
             msgOnUiThread("Inscription impossible","L'email saisie est déjà utilisé");
 
         }else{
-            if(mos.adduser(newUser.getFirstName(),newUser.getLastName(),newUser.getLogin(),newUser.getPassword(),picturePath)){
+            if(mos.adduser(newUser.getFirstName(),newUser.getLastName(),newUser.getLogin(),newUser.getPassword(),picturePath)!= 0){
                 new FtpUploadTask(picturePath, "profile.jpg", newUser.getId()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 msgOnUiThread("Inscription reussie",  "Vous êtes maintenant inscript sur moveon");
                 Intent i = new Intent(previousActivity, LoginActivity.class);
@@ -73,8 +74,7 @@ public class Register_Callback implements Callback<Boolean> {
             previousActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    tools.alertUser(title,
-                            msg);
+                    Toast.makeText(previousActivity, msg, Toast.LENGTH_SHORT).show();
                 }
             });
             Thread.sleep(400);

@@ -20,7 +20,7 @@ public interface MoveOnService {
     void userexists(@Query("login") String id, Register_Callback cb);
 
     @POST("/add_user")
-    Boolean adduser(@Query("firstName") String firstname,
+    int adduser(@Query("firstName") String firstname,
                  @Query("lastName") String lastname,
                  @Query("login") String login,
                  @Query("password") String password,

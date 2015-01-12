@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.application.moveon.database.AddUserTask;
 import com.application.moveon.ftp.FtpUploadTask;
 import com.application.moveon.model.User;
 import com.application.moveon.rest.MoveOnService;
