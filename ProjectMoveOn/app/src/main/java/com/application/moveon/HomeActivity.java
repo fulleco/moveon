@@ -381,8 +381,4 @@ public class HomeActivity extends FragmentActivity {
 
                 new TimePickerDialog(HomeActivity.this, time, c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),true).show();
     }
-
-
-
-
 }

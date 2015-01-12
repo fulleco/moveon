@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -84,11 +85,24 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
     private RelativeLayout layoutResults;
 
     private int nbResults;
+    private static View view;
+
+    private boolean canGetLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_location, container, false);
+
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
+        try {
+            view = inflater.inflate(R.layout.fragment_location, container, false);
+        } catch (InflateException e) {
+        /* map is already there, just return view as it is */
+        }
 
         activity = (FragmentActivity)getActivity();
 
@@ -203,7 +217,7 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
     }
 
     private void initMap(){
-        // Getting LocationManager object from System Service LOCATION_SERVICE
+        /*// Getting LocationManager object from System Service LOCATION_SERVICE
         LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 
         // Creating a criteria object to retrieve provider
@@ -222,7 +236,8 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
 
         //locationManager.requestLocationUpdates(provider, 20000, 0, this);
 
-        // Location myLocation = map.getMyLocation();
+        // Location myLocation = map.getMyLocation();*/
+        Location myLocation = getLocation();
         LatLng myLocationLatlng = new LatLng(myLocation.getLatitude(),
                 myLocation.getLongitude());
 
@@ -414,5 +429,61 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
 
         a.setDuration(600);
         v.startAnimation(a);
+    }
+
+    public static long MIN_TIME_BW_UPDATES = 2000;
+    public static float MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;
+
+    public Location getLocation() {
+
+        Location location = null;
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        try {
+
+            // getting GPS status
+            boolean isGPSEnabled = locationManager
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // getting network status
+            boolean isNetworkEnabled = locationManager
+                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if (!isGPSEnabled && !isNetworkEnabled) {
+                // no network provider is enabled
+                Log.i("ANTHO", "pas de gps ni network");
+            } else {
+                canGetLocation = true;
+                if (isNetworkEnabled) {
+                    locationManager.requestLocationUpdates(
+                            LocationManager.NETWORK_PROVIDER,
+                            MIN_TIME_BW_UPDATES,MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                    Log.i("ANTHO", "Network Enabled");
+                    if (locationManager != null) {
+                        location = locationManager
+                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+                }
+                // if GPS Enabled get lat/long using GPS Services
+                if (isGPSEnabled) {
+                    if (location == null) {
+                        locationManager.requestLocationUpdates(
+                                LocationManager.GPS_PROVIDER,
+                                MIN_TIME_BW_UPDATES,
+                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                        Log.d("ANTHO", "GPS Enabled");
+                        if (locationManager != null) {
+                            location = locationManager
+                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return location;
     }
 }

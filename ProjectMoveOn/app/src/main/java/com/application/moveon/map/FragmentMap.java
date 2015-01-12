@@ -1,6 +1,7 @@
 package com.application.moveon.map;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,8 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +73,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     private Location myLocation = null;
 
     private RadialMenuWidget pieMenu;
-    public RadialMenuItem menuItem, menuCloseItem, menuExpandItem, menuCacaItem;
+    public RadialMenuItem menuItem, menuCloseItem, menuExpandItem, menutestItem;
     public RadialMenuItem firstChildItem, secondChildItem, thirdChildItem;
     private List<RadialMenuItem> children = new ArrayList<RadialMenuItem>();
 
@@ -79,11 +82,26 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     private View fMap;
 
     private FragmentActivity activity;
+    private static View view;
+
+    private boolean canGetLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_map, container, false);
+        //View view = inflater.inflate(R.layout.fragment_map, container, false);
+
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
+        try {
+            view = inflater.inflate(R.layout.fragment_map, container, false);
+        } catch (InflateException e) {
+        /* map is already there, just return view as it is */
+        }
+
         containerMenu = (FrameLayout) view.findViewById(R.id.containerMenu);
 
         radius = 10;
@@ -96,12 +114,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         // Recuperer la map
         map = supportMapFragment.getMap();
-
-        initMap();
         fMap = (View)view.findViewById(R.id.map);
-
+        //new LoadMapTask().execute();
+        initMap();
         initMenu();
-
         return view;
     }
 
@@ -156,14 +172,14 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                     }
                 });
 
-        menuExpandItem = new RadialMenuItem("caca", "caca");
+        menuExpandItem = new RadialMenuItem("test", "test");
         children.add(firstChildItem);
         children.add(secondChildItem);
         children.add(thirdChildItem);
         menuExpandItem.setMenuChildren(children);
 
-        menuCacaItem = new RadialMenuItem("caca", "caca");
-        menuCacaItem.setMenuChildren(children);
+        menutestItem = new RadialMenuItem("test", "test");
+        menutestItem.setMenuChildren(children);
 
         menuCloseItem
                 .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
@@ -189,8 +205,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
             {
                 add(menuItem);
                 add(menuExpandItem);
-                add(menuCacaItem);
-                add(menuCacaItem);
+                add(menutestItem);
+                add(menutestItem);
             }
         });
         //pieMenu.setVisibility(View.GONE);
@@ -198,6 +214,9 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     }
 
     private void initMap(){
+
+        /*
+
         // Getting LocationManager object from System Service LOCATION_SERVICE
         LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 
@@ -215,9 +234,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
             onLocationChanged(myLocation);
         }
 
-        locationManager.requestLocationUpdates(provider, 20000, 0, this);
+        locationManager.requestLocationUpdates(provider, 20000, 0, this);*/
 
         // Location myLocation = map.getMyLocation();
+        Location myLocation = getLocation();
         LatLng myLocationLatlng = new LatLng(myLocation.getLatitude(),
                 myLocation.getLongitude());
 
@@ -229,6 +249,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         HomeActivity h = (HomeActivity)getActivity();
         Bitmap b = h.getProfilePicture();
+
         if(b==null){
             b= BitmapFactory.decodeResource(getResources(),
                     R.drawable.profile_test);
@@ -452,5 +473,92 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         // TODO Auto-generated method stub
+    }
+
+    public class LoadMapTask extends AsyncTask<Void, Void, String> {
+
+        ProgressDialog progressBar;
+
+        public LoadMapTask() {
+        }
+
+        protected void onPreExecute()
+        {
+            //progressBar.show();
+        }
+
+        protected String doInBackground(Void... args) {
+            Log.i("ANTHO", "async");
+            initMap();
+            initMenu();
+            return new String("Done");
+        }
+
+        protected void onPostExecute(String result) {
+            Log.i("ANTHO", "async fin");
+        }
+
+        private void dismissBar(){
+            if(progressBar != null && progressBar.isShowing())
+            {
+                progressBar.dismiss();
+            }
+        }
+    }
+
+    public static long MIN_TIME_BW_UPDATES = 2000;
+    public static float MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;
+
+    public Location getLocation() {
+
+        Location location = null;
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        try {
+
+            // getting GPS status
+            boolean isGPSEnabled = locationManager
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // getting network status
+            boolean isNetworkEnabled = locationManager
+                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if (!isGPSEnabled && !isNetworkEnabled) {
+                // no network provider is enabled
+                Log.i("ANTHO", "pas de gps ni network");
+            } else {
+                canGetLocation = true;
+                if (isNetworkEnabled) {
+                    locationManager.requestLocationUpdates(
+                            LocationManager.NETWORK_PROVIDER,
+                            MIN_TIME_BW_UPDATES,MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                    Log.i("ANTHO", "Network Enabled");
+                    if (locationManager != null) {
+                        location = locationManager
+                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+                }
+                // if GPS Enabled get lat/long using GPS Services
+                if (isGPSEnabled) {
+                    if (location == null) {
+                        locationManager.requestLocationUpdates(
+                                LocationManager.GPS_PROVIDER,
+                                MIN_TIME_BW_UPDATES,
+                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                        Log.d("ANTHO", "GPS Enabled");
+                        if (locationManager != null) {
+                            location = locationManager
+                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return location;
     }
 }
