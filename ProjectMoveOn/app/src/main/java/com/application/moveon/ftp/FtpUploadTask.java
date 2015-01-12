@@ -26,6 +26,8 @@ public class FtpUploadTask extends AsyncTask<String, Void, FTPClient> {
 	}
 
 	protected FTPClient doInBackground(String... args) {
+
+        Log.i("ANTHO", "UPLOAD avant connec");
 		
 		FTPClient mFTPClient = new FTPClient();
 
@@ -41,6 +43,8 @@ public class FtpUploadTask extends AsyncTask<String, Void, FTPClient> {
 			e1.printStackTrace();
 		}
 
+        Log.i("ANTHO", "path UPLOAD");
+
 		try {  
             FileInputStream srcFileStream = new FileInputStream(path);
             mFTPClient.changeWorkingDirectory("www/pfe/images/");
@@ -55,7 +59,8 @@ public class FtpUploadTask extends AsyncTask<String, Void, FTPClient> {
                     srcFileStream);
             Log.e("Status upload", String.valueOf(status));
             srcFileStream.close();  
-       } catch (Exception e) {  
+       } catch (Exception e) {
+            Log.i("ANTHO", "Exception" + e.getMessage().toString());
             e.printStackTrace();  
        }  
 		return mFTPClient;
