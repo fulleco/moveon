@@ -1,5 +1,7 @@
 package com.application.moveon.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by Quentin Bitschene on 21/12/2014.
  */
@@ -10,6 +12,8 @@ public class Cercle {
     private String dateFin;
     private String timeDebut;
     private String timeFin;
+
+    private ArrayList<User> participants;
 
     //TODO remplace String by class
     private String localisation;
@@ -22,6 +26,7 @@ public class Cercle {
         this.timeDebut = timeDebut;
         this.timeFin = timeFin;
         this.localisation = localisation;
+        participants = new ArrayList<User>();
     }
 
     public String getId() {
@@ -78,5 +83,13 @@ public class Cercle {
 
     public void setLocalisation(String localisation) {
         this.localisation = localisation;
+    }
+
+    public ArrayList<User> getParticipants(){
+        return this.participants;
+    }
+
+    public void setParticipants(ArrayList<User> participants){
+        this.participants = participants;
     }
 }

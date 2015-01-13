@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.application.moveon.HomeActivity;
+import com.application.moveon.LoginActivity;
+import com.application.moveon.RegisterActivity;
 
 import java.util.HashMap;
 
@@ -76,14 +79,17 @@ public class SessionManager {
      * Else won't do anything
      * */
     public void checkLogin(boolean redirect){
+
+        Log.i("ANTHO", "connecté ? " + isLoggedIn());
         // Check login status
         if(!this.isLoggedIn()){
 
-            if(_context.getClass().equals(HomeActivity.class))
+            if(_context.getClass().equals(LoginActivity.class)
+                    &&(_context.getClass().equals(RegisterActivity.class)))
                 return;
 
             // user is not logged in redirect him to Login Activity
-            Intent i = new Intent(_context, HomeActivity.class);
+            Intent i = new Intent(_context, LoginActivity.class);
 
             // Closing all the Activities
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

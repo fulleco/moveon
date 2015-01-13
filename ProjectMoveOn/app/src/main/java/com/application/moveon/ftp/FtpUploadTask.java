@@ -60,7 +60,6 @@ public class FtpUploadTask extends AsyncTask<String, Void, FTPClient> {
             Log.e("Status upload", String.valueOf(status));
             srcFileStream.close();  
        } catch (Exception e) {
-            Log.i("ANTHO", "Exception" + e.getMessage().toString());
             e.printStackTrace();  
        }  
 		return mFTPClient;

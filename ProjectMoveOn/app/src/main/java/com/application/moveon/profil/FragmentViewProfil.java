@@ -2,6 +2,8 @@ package com.application.moveon.profil;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -49,6 +51,15 @@ public class FragmentViewProfil extends Fragment {
 
         profilePicture = (ImageView)view.findViewById(R.id.imageProfil);
         buttonEditer = (Button) view.findViewById(R.id.buttonModifier);
+
+        HomeActivity h = (HomeActivity)getActivity();
+        Bitmap b = h.getProfilePicture();
+
+        if(b==null){
+            b= BitmapFactory.decodeResource(getResources(),
+                    R.drawable.profile_test);
+        }
+        profilePicture.setImageBitmap(b);
 
         // Remplir les champs par leur valeur actuelle
         name = (TextView) view.findViewById(R.id.textViewName);

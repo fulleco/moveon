@@ -47,8 +47,9 @@ public class Register_Callback implements Callback<Boolean> {
             msgOnUiThread("Inscription impossible","L'email saisie est déjà utilisé");
 
         }else{
-            if(mos.adduser(newUser.getFirstName(),newUser.getLastName(),newUser.getLogin(),newUser.getPassword(),picturePath)!= 0){
-                new FtpUploadTask(picturePath, "profile.jpg", newUser.getId()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            int id = mos.adduser(newUser.getFirstName(),newUser.getLastName(),newUser.getLogin(),newUser.getPassword(),picturePath);
+            if(id!= 0){
+                new FtpUploadTask(picturePath, "profile.jpg", Integer.toString(id)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 msgOnUiThread("Inscription reussie",  "Vous êtes maintenant inscript sur moveon");
                 Intent i = new Intent(previousActivity, LoginActivity.class);
                 previousActivity.startActivity(i);

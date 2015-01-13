@@ -33,6 +33,7 @@ import com.application.moveon.ftp.FtpDownloadTask;
 import com.application.moveon.map.FragmentLocationChooser;
 import com.application.moveon.map.FragmentMap;
 import com.application.moveon.profil.FragmentEditProfil;
+import com.application.moveon.profil.FragmentFriends;
 import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.*;
@@ -56,6 +57,7 @@ public class HomeActivity extends FragmentActivity {
     private FragmentEditProfil fragmentEditProfil = new FragmentEditProfil();
     private FragmentLocationChooser fragmentLocationChooser = new FragmentLocationChooser();
     private FragmentCreateCercle fragmentCreateCercle = new FragmentCreateCercle();
+    private FragmentFriends fragmentFriends = new FragmentFriends();
 
     private Fragment currentFragment;
 
@@ -67,10 +69,13 @@ public class HomeActivity extends FragmentActivity {
     private static final int VIEW_PROFIL_INDEX = 1;
     private static final int LOCATION_CHOOSER = 2;
     private static final int CREATE_CERCLE_INDEX = 3;
+    private static final int FRIENDS = 4;
 
     private int RESULT_LOAD_IMAGE = 0;
 
     private Bitmap profilePicture;
+
+    private SessionManager session;
 
     public Fragment getCurrentFragment() {
         return currentFragment;
@@ -78,6 +83,14 @@ public class HomeActivity extends FragmentActivity {
 
     public void setCurrentFragment(Fragment currentFragment) {
         this.currentFragment = currentFragment;
+    }
+
+    public FragmentFriends getFragmentFriends() {
+        return fragmentFriends;
+    }
+
+    public void setFragmentEditProfil(FragmentFriends fragmentFriends) {
+        this.fragmentFriends = fragmentFriends;
     }
 
     public FragmentEditProfil getFragmentEditProfil() {
@@ -117,7 +130,9 @@ public class HomeActivity extends FragmentActivity {
 
         tools = new com.application.moveon.tools.ToolBox(this);
 
-        SessionManager session = new SessionManager(this);
+        session = new SessionManager(this);
+        session.checkLogin(false);
+
         HashMap<String, String> userInfos = session.getUserDetails();
         String idUser = userInfos.get(SessionManager.KEY_ID);
 
@@ -279,6 +294,10 @@ public class HomeActivity extends FragmentActivity {
 
             case CREATE_CERCLE_INDEX :
                 switchFragment(fragmentCreateCercle);
+                break;
+
+            case FRIENDS :
+                switchFragment(fragmentFriends);
                 break;
 
             default :

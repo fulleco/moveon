@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/inscription_background"
+    tools:context="com.application.moveon.HomeActivity">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
+        android:background="@drawable/editer_header"
+        android:layout_marginBottom="18dp"
+        android:scaleType="fitCenter" />
+
+    <LinearLayout
+        android:id="@+id/linear_photo"
+        android:layout_below="@+id/logo"
+        android:orientation="horizontal"
+        android:layout_height="42dp"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true">
+
+
+        <EditText
+            android:id="@+id/edit_add_login"
+            android:layout_width="180dp"
+            android:layout_height="fill_parent"
+            android:padding="5dp"
+            android:background="@drawable/rounded_edit"
+            android:hint="Email"
+            android:inputType="text"
+            android:textColor="#000"
+            android:ellipsize="start"
+            android:textSize="14sp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"/>
+
+        <Button
+            android:id="@+id/buttonAdd"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/friends_add_user"
+            android:scaleType="centerInside"
+            android:textColor="#FFF"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

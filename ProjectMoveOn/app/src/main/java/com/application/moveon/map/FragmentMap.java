@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
+import com.application.moveon.model.Cercle;
 import com.application.moveon.tools.ImageHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -116,7 +117,9 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         map = supportMapFragment.getMap();
         fMap = (View)view.findViewById(R.id.map);
         //new LoadMapTask().execute();
-        initMap();
+
+        // Cercle test
+        initMap(null);
         initMenu();
         return view;
     }
@@ -213,7 +216,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         //pieMenu.show(containerMenu);
     }
 
-    private void initMap(){
+    private void initMap(Cercle cercle){
 
         /*
 
@@ -257,7 +260,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         Bitmap b_rounded = ImageHelper.getRoundedCornerBitmap(b, 1000, 0);
         Bitmap b_resized = Bitmap.createScaledBitmap(b_rounded, 60, 60, false);
-        b.recycle();
 
         View marker_layout = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
         ImageView profilePicture = (ImageView) marker_layout.findViewById(R.id.profile_picture);
@@ -473,37 +475,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         // TODO Auto-generated method stub
-    }
-
-    public class LoadMapTask extends AsyncTask<Void, Void, String> {
-
-        ProgressDialog progressBar;
-
-        public LoadMapTask() {
-        }
-
-        protected void onPreExecute()
-        {
-            //progressBar.show();
-        }
-
-        protected String doInBackground(Void... args) {
-            Log.i("ANTHO", "async");
-            initMap();
-            initMenu();
-            return new String("Done");
-        }
-
-        protected void onPostExecute(String result) {
-            Log.i("ANTHO", "async fin");
-        }
-
-        private void dismissBar(){
-            if(progressBar != null && progressBar.isShowing())
-            {
-                progressBar.dismiss();
-            }
-        }
     }
 
     public static long MIN_TIME_BW_UPDATES = 2000;
