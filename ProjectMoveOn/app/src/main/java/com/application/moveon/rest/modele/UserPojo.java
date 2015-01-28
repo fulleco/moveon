@@ -1,14 +1,17 @@
 package com.application.moveon.rest.modele;
 
+import com.application.moveon.model.User;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
+
+import java.util.Comparator;
 
 /**
  * Created by Hugo on 02/12/2014.
  */
 @Parcel
-public class UserPojo {
+public class UserPojo implements Comparable<UserPojo>{
 
     @SerializedName("id_client")
     private String id_client;
@@ -28,7 +31,9 @@ public class UserPojo {
     @SerializedName("imageprofile")
     private String imageprofile;
 
-
+    public int compareTo(UserPojo o) {
+        return this.getFirstname().compareTo(o.getFirstname());
+    }
 
     public String getFirstname() {
         return firstname;

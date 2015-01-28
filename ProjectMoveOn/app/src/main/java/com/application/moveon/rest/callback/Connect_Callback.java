@@ -18,8 +18,6 @@ import retrofit.client.Response;
  */
 public class Connect_Callback implements Callback<UserPojo> {
 
-
-    MoveOnService mo;
     private LoginActivity act;
     private String mail;
     private String password;

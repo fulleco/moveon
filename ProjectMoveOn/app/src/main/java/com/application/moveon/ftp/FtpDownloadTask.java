@@ -20,12 +20,10 @@ public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
 	String path = "";
 	String destination = "";
 	boolean status = false;
-    Bitmap profilePicture;
 
 	public FtpDownloadTask(String path, String destination, Bitmap profilePicture) {
 		this.path = path;
 		this.destination = destination;
-        this.profilePicture = profilePicture;
 	}
 
 	protected FTPClient doInBackground(String... args) {
@@ -61,6 +59,7 @@ public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
                 FileOutputStream desFileStream = new FileOutputStream(
 						destination, false);
                 status = mFTPClient.retrieveFile(path, desFileStream);
+
 
 				desFileStream.close();
 			} catch (IOException e) {

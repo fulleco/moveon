@@ -28,12 +28,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
 
+import com.application.moveon.Friends.FragmentFriendDemands;
 import com.application.moveon.cercle.FragmentCreateCercle;
 import com.application.moveon.ftp.FtpDownloadTask;
 import com.application.moveon.map.FragmentLocationChooser;
 import com.application.moveon.map.FragmentMap;
 import com.application.moveon.profil.FragmentEditProfil;
-import com.application.moveon.profil.FragmentFriends;
+import com.application.moveon.Friends.FragmentFriends;
 import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.*;
@@ -58,6 +59,8 @@ public class HomeActivity extends FragmentActivity {
     private FragmentLocationChooser fragmentLocationChooser = new FragmentLocationChooser();
     private FragmentCreateCercle fragmentCreateCercle = new FragmentCreateCercle();
     private FragmentFriends fragmentFriends = new FragmentFriends();
+    private FragmentFriendDemands fragmentFriendDemands = new FragmentFriendDemands();
+
 
     private Fragment currentFragment;
 
@@ -70,6 +73,7 @@ public class HomeActivity extends FragmentActivity {
     private static final int LOCATION_CHOOSER = 2;
     private static final int CREATE_CERCLE_INDEX = 3;
     private static final int FRIENDS = 4;
+    private static final int DEMANDS = 5;
 
     private int RESULT_LOAD_IMAGE = 0;
 
@@ -236,6 +240,14 @@ public class HomeActivity extends FragmentActivity {
         }
     }
 
+    public FragmentFriendDemands getFragmentFriendDemands() {
+        return fragmentFriendDemands;
+    }
+
+    public void setFragmentFriendDemands(FragmentFriendDemands fragmentFriendDemands) {
+        this.fragmentFriendDemands = fragmentFriendDemands;
+    }
+
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -298,6 +310,9 @@ public class HomeActivity extends FragmentActivity {
 
             case FRIENDS :
                 switchFragment(fragmentFriends);
+                break;
+            case DEMANDS :
+                switchFragment(fragmentFriendDemands);
                 break;
 
             default :
