@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_contact"
+    android:layout_width="fill_parent"
+    android:background="@android:color/transparent"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_marginLeft="30dp"
+    android:layout_height="40dp" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_selection"
+        android:background="@android:color/transparent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_profile"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/profile_picture"
+                android:layout_width="45dp"
+                android:layout_height="fill_parent"
+                android:scaleType="centerInside"/>
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFF"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_modif"
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:visibility="gone"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/button_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
+
+            <Button
+                android:id="@+id/button_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
+
+            <Button
+                android:id="@+id/button_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
