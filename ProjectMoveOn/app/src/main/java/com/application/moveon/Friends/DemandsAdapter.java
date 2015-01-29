@@ -1,9 +1,8 @@
-package com.application.moveon.Friends;
+package com.application.moveon.friends;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.AnswerDemand_Callback;
 import com.application.moveon.rest.modele.DemandsPojo;
-import com.application.moveon.rest.modele.UserPojo;
-import com.application.moveon.session.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

@@ -31,14 +31,10 @@ public class AddFriend_Callback implements Callback<Integer> {
         }else if(aint == 2){
             Toast.makeText(activity, "Vous avez déjà demandé cet utilisateur en ami", Toast.LENGTH_SHORT).show();
             p.hide();
-        }else if(aint == 3){
+        }else if(aint == 3) {
             Toast.makeText(activity, "Ce compte n'existe pas", Toast.LENGTH_SHORT).show();
             p.hide();
-        }else if(aint==4){
-            Toast.makeText(activity, "Vous avez deja demandé cette personne en ami", Toast.LENGTH_SHORT).show();
-            p.hide();
-        }
-        else{
+        }else{
             Toast.makeText(activity, "Problème lors de la demande en ami", Toast.LENGTH_SHORT).show();
             p.hide();
         }

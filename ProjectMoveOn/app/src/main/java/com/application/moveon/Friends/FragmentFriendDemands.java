@@ -1,4 +1,4 @@
-package com.application.moveon.Friends;
+package com.application.moveon.friends;
 
 import android.app.Fragment;
 import android.os.Bundle;

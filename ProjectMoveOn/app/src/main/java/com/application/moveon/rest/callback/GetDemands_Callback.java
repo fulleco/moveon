@@ -1,15 +1,13 @@
 package com.application.moveon.rest.callback;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.application.moveon.Friends.DemandsAdapter;
-import com.application.moveon.Friends.UserAdapter;
+import com.application.moveon.friends.DemandsAdapter;
 import com.application.moveon.R;
 import com.application.moveon.rest.modele.DemandsPojo;
-import com.application.moveon.rest.modele.UserPojo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +31,25 @@ public class GetDemands_Callback implements Callback<DemandsPojo[]>{
 
     @Override
     public void success(DemandsPojo[] strings, Response response) {
-        if(strings == null) return;
+        final TextView textv = (TextView)activity.findViewById(R.id.no_demands);
+        final DemandsPojo[] condition = strings;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                if(condition == null){
+
+                    textv.setText("Vous n'avez pas de demande d'ami en attente");
+
+                }else {
+
+                    textv.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        if(condition == null)return;
+
         ArrayList<DemandsPojo> datas = new ArrayList<DemandsPojo>(Arrays.asList(strings));
         Collections.sort(datas);
         final ListView lv = (ListView) activity.findViewById(R.id.list_demands);

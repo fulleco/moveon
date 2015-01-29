@@ -28,13 +28,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
 
-import com.application.moveon.Friends.FragmentFriendDemands;
+import com.application.moveon.friends.FragmentFriendDemands;
 import com.application.moveon.cercle.FragmentCreateCercle;
 import com.application.moveon.ftp.FtpDownloadTask;
 import com.application.moveon.map.FragmentLocationChooser;
 import com.application.moveon.map.FragmentMap;
 import com.application.moveon.profil.FragmentEditProfil;
-import com.application.moveon.Friends.FragmentFriends;
+import com.application.moveon.friends.FragmentFriends;
 import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.*;

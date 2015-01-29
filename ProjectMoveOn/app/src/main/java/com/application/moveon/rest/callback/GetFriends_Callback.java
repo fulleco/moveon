@@ -5,7 +5,7 @@ import android.app.ProgressDialog;
 import android.widget.ListView;
 
 import com.application.moveon.R;
-import com.application.moveon.Friends.UserAdapter;
+import com.application.moveon.friends.UserAdapter;
 import com.application.moveon.rest.modele.UserPojo;
 
 import java.util.ArrayList;

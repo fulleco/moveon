@@ -1,4 +1,4 @@
-package com.application.moveon.Friends;
+package com.application.moveon.friends;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -79,8 +79,18 @@ public class FragmentFriends extends Fragment {
                 progressDialog.setMessage("Envoie de la demande...");
                 progressDialog.show();
 
+                String mail = session.getUserDetails().get(SessionManager.KEY_EMAIL);
+
+
+
                 String val = add_friend.getText().toString();
-                if(val.equals(""))Toast.makeText(activity, "veuillez entrer un identifiant", Toast.LENGTH_SHORT).show();
+                if(val.equals("")){
+                    Toast.makeText(activity, "Veuillez entrer un identifiant", Toast.LENGTH_SHORT).show();
+                    progressDialog.hide();
+                }else if(val.equals(mail)){
+                    Toast.makeText(activity, "Vous êtes déjà votre ami", Toast.LENGTH_SHORT).show();
+                    progressDialog.hide();
+                }
                 else{
                     mainmos.addfriend( session.getUserDetails().get(SessionManager.KEY_EMAIL), val, new AddFriend_Callback(activity, progressDialog));
                 }
