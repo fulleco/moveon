@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.application.moveon.friends.FragmentFriendDemands;
@@ -39,6 +40,8 @@ import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.*;
 import com.application.moveon.tools.ToolBox;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Calendar;
@@ -52,6 +55,8 @@ public class HomeActivity extends FragmentActivity {
     private CharSequence mTitle;
     private String[] mDrawerArray;
     private Calendar c = Calendar.getInstance();
+
+
 
     private FragmentMap fragmentMap = new FragmentMap();
     private FragmentViewProfil fragmentViewProfil = new FragmentViewProfil();
@@ -185,6 +190,8 @@ public class HomeActivity extends FragmentActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         //// End Drawer declaration
 
+
+
         fragmentMap = new FragmentMap();
         fragmentLocationChooser = new FragmentLocationChooser();
         fragmentManager = getFragmentManager();
@@ -193,6 +200,8 @@ public class HomeActivity extends FragmentActivity {
                 .add(R.id.content_frame, fragmentMap)
                 .commit();
         currentFragment = fragmentMap;
+
+
     }
 
 

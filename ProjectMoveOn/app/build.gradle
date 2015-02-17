@@ -13,7 +13,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -39,6 +39,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'org.parceler:parceler-api:0.2.7'
+    compile 'com.sothree.slidinguppanel:library:3.0.0'
     provided 'org.parceler:parceler:0.2.7'
     compile files('libs/picasso-2.4.0.jar')
 }
