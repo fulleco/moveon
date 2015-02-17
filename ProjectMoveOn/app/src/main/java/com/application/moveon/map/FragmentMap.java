@@ -20,12 +20,14 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.application.moveon.HomeActivity;
@@ -40,8 +42,8 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuItem;
-import com.touchmenotapps.widget.radialmenu.menu.v1.RadialMenuWidget;
+import com.application.moveon.menu.v1.RadialMenuItem;
+import com.application.moveon.menu.v1.RadialMenuWidget;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,6 +81,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     private List<RadialMenuItem> children = new ArrayList<RadialMenuItem>();
 
     private FrameLayout containerMenu;
+    private RelativeLayout containerMap;
 
     private View fMap;
 
@@ -120,16 +123,29 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         // Cercle test
         initMap(null);
-        initMenu();
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        fMap.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+        {
+            @Override
+            public void onGlobalLayout()
+            {
+                // gets called after layout has been done but before display.
+                fMap.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                final int x = (int)fMap.getX()+ fMap.getWidth()/2;
+                final int y = (int)fMap.getY()+ fMap.getHeight()/2;
+                initMenu(x, y);
+            }
+        });
     }
 
-    private void initMenu(){
+    private void initMenu(int x, int y){
         pieMenu = new RadialMenuWidget(activity);
         menuCloseItem = new RadialMenuItem("close", null);
         menuCloseItem
@@ -195,13 +211,20 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         // pieMenu.setDismissOnOutsideClick(true, menuLayout);
         //pieMenu.setAnimationSpeed(1000L);
-        pieMenu.setTextColor(Color.BLACK, 1000);
+        //pieMenu.setTextColor(Color.WHITE, 1000);
         //pieMenu.setSourceLocation(30, 60);
         pieMenu.setIconSize(15, 30);
         pieMenu.setTextSize(15);
-        pieMenu.setOutlineColor(Color.BLACK, 225);
-        pieMenu.setInnerRingColor(Color.RED, 220);
-        pieMenu.setOuterRingColor(Color.RED, 220);
+        //pieMenu.setOutlineColor(Color.WHITE, 225);
+        //pieMenu.setInnerRingColor(Color.RED, 220);
+
+        Bitmap shaderBmp = BitmapFactory.decodeResource(getResources(), R.drawable.pattern);
+        Bitmap shaderOuterBmp = BitmapFactory.decodeResource(getResources(), R.drawable.pattern_outer);
+        pieMenu.setInnerRingShader(shaderBmp, 190);
+        pieMenu.setOuterRingShader(shaderOuterBmp, 240);
+        pieMenu.setTextColor(Color.WHITE, 255);
+        //pieMenu.setOuterRingShader(shaderBmp, 160);
+        //pieMenu.setOuterRingColor(Color.WHITE, 220);
         pieMenu.setHeader("Anthony Da Mota", 20);
         pieMenu.setCenterCircle(menuCloseItem);
         pieMenu.addMenuEntry(new ArrayList<RadialMenuItem>() {
@@ -212,6 +235,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                 add(menutestItem);
             }
         });
+        pieMenu.setCenterLocation(x,y);
+        //pieMenu.setSourceLocation((int)fMap.getX()+ fMap.getWidth()/2, (int)fMap.getY()+ fMap.getHeight()/2);
         //pieMenu.setVisibility(View.GONE);
         //pieMenu.show(containerMenu);
     }
@@ -327,10 +352,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     private void showMenu(){
         //pieMenu.setVisibility(View.GONE);
-        pieMenu.setCenterLocation((int)fMap.getX()+ fMap.getWidth()/2, (int)fMap.getY()+ fMap.getHeight()/2);
+        pieMenu.setAnimationSpeed(500L);
         pieMenu.show(containerMenu);
 
-        displayMenuAnimation(0, 1, View.VISIBLE);
+        //displayMenuAnimation(0, 1, View.VISIBLE);
         //pieMenu.show(containerMenu);
         //map.getUiSettings().setScrollGesturesEnabled(false);
     }
@@ -364,7 +389,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     }
 
     private void dismissMenu() {
-        displayMenuAnimation(1, 0, View.GONE);
+        //displayMenuAnimation(1, 0, View.GONE);
         pieMenu.dismiss();
         pieMenu.setSelected(false);
         //pieMenu.invalidate();
