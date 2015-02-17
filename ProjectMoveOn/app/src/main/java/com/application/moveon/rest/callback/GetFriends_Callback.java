@@ -48,7 +48,7 @@ public class GetFriends_Callback implements Callback<UserPojo[]> {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                lv.setAdapter(a);
+                if(lv != null)lv.setAdapter(a);
             }
         });
 

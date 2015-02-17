@@ -1,6 +1,7 @@
 package com.application.moveon.rest.callback;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,27 +24,31 @@ import retrofit.client.Response;
 public class GetDemands_Callback implements Callback<DemandsPojo[]>{
     private String mail;
     private Activity activity;
+    private ProgressDialog p;
 
-    public GetDemands_Callback(String mail, Activity activity) {
+    public GetDemands_Callback(String mail, Activity activity, ProgressDialog p) {
         this.mail = mail;
         this.activity = activity;
+        this.p = p;
     }
 
     @Override
     public void success(DemandsPojo[] strings, Response response) {
+
         final TextView textv = (TextView)activity.findViewById(R.id.no_demands);
         final DemandsPojo[] condition = strings;
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
+                p.hide();
                 if(condition == null){
-
+                    textv.setVisibility(View.VISIBLE);
                     textv.setText("Vous n'avez pas de demande d'ami en attente");
+
 
                 }else {
 
-                    textv.setVisibility(View.GONE);
+                    textv.setVisibility(View.INVISIBLE);
                 }
             }
         });

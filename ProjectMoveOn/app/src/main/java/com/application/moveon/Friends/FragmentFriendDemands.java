@@ -1,6 +1,7 @@
 package com.application.moveon.friends;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class FragmentFriendDemands extends Fragment {
 
     private FragmentActivity activity;
     private ToolBox tools;
+    private ProgressDialog p;
 
     MoveOnService childmos;
 
@@ -49,7 +51,12 @@ public class FragmentFriendDemands extends Fragment {
 
         String mail = session.getUserDetails().get(SessionManager.KEY_EMAIL);
 
-        childmos.getdemands(mail, new GetDemands_Callback(mail, activity));
+        p = new ProgressDialog(getActivity());
+        p.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        p.setMessage("Récupération des demandes");
+        p.show();
+
+        childmos.getdemands(mail, new GetDemands_Callback(mail, activity, p));
 
         if (!Connectivity.isConnected(getActivity())) {
             Toast.makeText(getActivity(), "Pas de connexion.",
