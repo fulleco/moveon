@@ -44,6 +44,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.application.moveon.menu.v1.RadialMenuItem;
 import com.application.moveon.menu.v1.RadialMenuWidget;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -90,6 +91,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     private boolean canGetLocation;
 
+    private SlidingUpPanelLayout mSlidingPanel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -120,6 +123,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         map = supportMapFragment.getMap();
         fMap = (View)view.findViewById(R.id.map);
         //new LoadMapTask().execute();
+
+        mSlidingPanel = (SlidingUpPanelLayout) view
+                .findViewById(R.id.sliding_layout);
+        mSlidingPanel.setAnchorPoint(0.45f);
 
         // Cercle test
         initMap(null);
