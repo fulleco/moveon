@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
+import com.application.moveon.friends.FriendPickerDialog;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ToolBox;
 
@@ -38,6 +39,7 @@ public class FragmentCreateCercle extends Fragment{
     private Calendar c;
 
     private Button buttonLocalisation;
+    private Button buttonAjouterParticipants;
     private Button buttonValider;
 
     @Override
@@ -72,6 +74,19 @@ public class FragmentCreateCercle extends Fragment{
 
 
         nomCercle = (EditText) view.findViewById(R.id.editNameCercle);
+
+
+        buttonAjouterParticipants = (Button) view.findViewById(R.id.buttonParticipants);
+        buttonAjouterParticipants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO
+                //step 1 : afficher pop-up
+                FriendPickerDialog pickerDialog = new FriendPickerDialog();
+                pickerDialog.show(getFragmentManager(), "missiles");
+            }
+        });
+
         buttonValider = (Button) view.findViewById(R.id.buttonValider);
         buttonValider.setOnClickListener(new View.OnClickListener() {
             @Override
