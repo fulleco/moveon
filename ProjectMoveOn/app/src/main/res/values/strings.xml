@@ -26,4 +26,20 @@
         <item>Item 8</item>
     </string-array>
 
+    <string-array name="test_friend_picker">
+        <item>Ami 1</item>
+        <item>Ami 2</item>
+        <item>Ami 3</item>
+        <item>Ami 4</item>
+        <item>Ami 5</item>
+        <item>Ami 6</item>
+        <item>Ami 7</item>
+        <item>Ami 8</item>
+        <item>Ami 9</item>
+    </string-array>
+
+    <string name="friend_picker_title">Ajouter Participants</string>
+    <string name="ok">ok</string>
+    <string name="cancel">Cancel</string>
+
 </resources>
