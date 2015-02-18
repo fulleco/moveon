@@ -1,9 +1,11 @@
 package com.application.moveon.rest;
 import com.application.moveon.rest.callback.AddFriend_Callback;
+import com.application.moveon.rest.callback.AddMessage_Callback;
 import com.application.moveon.rest.callback.AnswerDemand_Callback;
 import com.application.moveon.rest.callback.EditUser_Callback;
 import com.application.moveon.rest.callback.GetDemands_Callback;
 import com.application.moveon.rest.callback.GetFriends_Callback;
+import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.rest.callback.Register_Callback;
 import com.application.moveon.rest.modele.UserPojo;
 
@@ -31,6 +33,16 @@ public interface MoveOnService {
                  @Query("password") String password,
                  @Query("imageprofile") String imageprofile);
 
+    @FormUrlEncoded
+    @POST("/add_message")
+    void addMessage(@Field("id_circle") String idCircle,
+                @Field("id_sender") String idSender,
+                @Field("id_receiver") String idReceiver,
+                @Field("content") String content,
+                @Field("date") String date,
+                @Field("seen") int seen,
+                AddMessage_Callback c);
+
     @GET("/select_user")
     void selectuser(@Query("login") String login,
                     @Query("password") String password, Callback<UserPojo> cb);
@@ -49,6 +61,10 @@ public interface MoveOnService {
                    @Field("receiver") String receiver,
                    AddFriend_Callback cb);
 
+    @GET("/get_messages")
+    void getmessages(@Query("id_receiver") String idReceiver,
+                    GetMessage_Callback cb);
+
     @GET("/get_friends")
     void getfriends(@Query("login") String mail,
                     GetFriends_Callback cb);
@@ -63,5 +79,4 @@ public interface MoveOnService {
                       @Field("accept") boolean accept,
                       AnswerDemand_Callback cb
                       );
-
 }

@@ -601,7 +601,7 @@ public class RadialMenuWidget extends View {
 				paint.setStyle(Paint.Style.FILL);
 				c.drawCircle(xPosition, yPosition, cRadius, paint);
 				helper.onCloseAnimation(this, xPosition, yPosition, xSource,
-                        ySource, 500L, mWindow);
+                        ySource, 300L, mWindow);
 			} else {
 				paint.setColor(defaultColor);
 				paint.setAlpha(defaultAlpha);

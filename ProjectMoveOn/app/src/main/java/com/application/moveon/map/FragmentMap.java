@@ -33,6 +33,11 @@ import android.widget.Toast;
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.model.Cercle;
+import com.application.moveon.rest.MoveOnService;
+import com.application.moveon.rest.RestClient;
+import com.application.moveon.rest.callback.AddFriend_Callback;
+import com.application.moveon.rest.callback.AddMessage_Callback;
+import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ImageHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -93,6 +98,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     private SlidingUpPanelLayout mSlidingPanel;
 
+    private ProgressDialog progressDialog;
+
+    private MoveOnService mainmos;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,6 +119,13 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         }
 
         containerMenu = (FrameLayout) view.findViewById(R.id.containerMenu);
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(true);
+
+        RestClient r = new RestClient(false);
+        mainmos = (new RestClient(true)).getApiService();
 
         radius = 10;
 
@@ -161,7 +177,13 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         menuItem.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
             @Override
             public void execute() {
+                // Can edit based on preference. Also can add animations
+                // here.;
+                Log.i("ANTHO", "TEST MESSAGE");
                 dismissMenu();
+                progressDialog.setMessage("Envoi de la demande...");
+                progressDialog.show();
+                mainmos.addMessage( "1", "1", "1", "TEST", "date", 0, new AddMessage_Callback(activity, progressDialog));
             }
         });
 
@@ -172,7 +194,11 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                     public void execute() {
                         // Can edit based on preference. Also can add animations
                         // here.;
+                        Log.i("ANTHO", "TEST MESSAGE");
                         dismissMenu();
+                        progressDialog.setMessage("Envoi de la demande...");
+                        progressDialog.show();
+                        mainmos.addMessage( "1", "1", "1", "TEST", "date", 0, new AddMessage_Callback(activity, progressDialog));
                     }
                 });
 
@@ -359,7 +385,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     private void showMenu(){
         //pieMenu.setVisibility(View.GONE);
-        pieMenu.setAnimationSpeed(500L);
+        pieMenu.setAnimationSpeed(300L);
         pieMenu.show(containerMenu);
 
         //displayMenuAnimation(0, 1, View.VISIBLE);
