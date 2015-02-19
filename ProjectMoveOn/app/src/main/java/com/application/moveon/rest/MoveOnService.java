@@ -1,6 +1,7 @@
 package com.application.moveon.rest;
 import com.application.moveon.rest.callback.AddFriend_Callback;
 import com.application.moveon.rest.callback.AnswerDemand_Callback;
+import com.application.moveon.rest.callback.CreateCircle_Callback;
 import com.application.moveon.rest.callback.EditUser_Callback;
 import com.application.moveon.rest.callback.GetDemands_Callback;
 import com.application.moveon.rest.callback.GetFriends_Callback;
@@ -63,5 +64,16 @@ public interface MoveOnService {
                       @Field("accept") boolean accept,
                       AnswerDemand_Callback cb
                       );
+
+    @FormUrlEncoded
+    @POST("/create_circle")
+    void createcircle(@Field("title") String title,
+                      @Field("creator")String creator,
+                      @Field("users") UserPojo[] host,
+                      @Field("date_debut") String date,
+                      @Field("date_fin") String date_fin,
+                      @Field("latitude") float latitude,
+                      @Field("longitude") float longitude,
+                      @Field("rayon") int rayon, CreateCircle_Callback cb);
 
 }
