@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
-        sothree:umanoPanelHeight="68dp"
+        sothree:umanoPanelHeight="40dp"
         sothree:umanoShadowHeight="4dp">
 
         <fragment
@@ -19,12 +19,12 @@
             android:layout_height="fill_parent"
             class="com.google.android.gms.maps.SupportMapFragment"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|top"
-            android:text="The Awesome Sliding Up Panel"
-            android:textSize="16sp" />
+        <fragment
+            android:id="@+id/slidingContent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            class="com.application.moveon.menu.FragmentSlidingMenu"/>
+
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
     <FrameLayout

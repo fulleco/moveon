@@ -36,10 +36,16 @@
         <item>Ami 7</item>
         <item>Ami 8</item>
         <item>Ami 9</item>
+        <item>Ami 10</item>
+        <item>Ami 11</item>
+        <item>Ami 12</item>
+        <item>Ami 13</item>
     </string-array>
 
     <string name="friend_picker_title">Ajouter Participants</string>
     <string name="ok">ok</string>
     <string name="cancel">Cancel</string>
+    <string name="tab_info_cercle">Infos Cercle</string>
+    <string name="tab_list_cercle">Liste Cercle</string>
 
 </resources>
