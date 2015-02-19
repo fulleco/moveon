@@ -1,10 +1,12 @@
 package com.application.moveon.rest;
 import com.application.moveon.rest.callback.AddFriend_Callback;
+import com.application.moveon.rest.callback.AddMessage_Callback;
 import com.application.moveon.rest.callback.AnswerDemand_Callback;
 import com.application.moveon.rest.callback.CreateCircle_Callback;
 import com.application.moveon.rest.callback.EditUser_Callback;
 import com.application.moveon.rest.callback.GetDemands_Callback;
 import com.application.moveon.rest.callback.GetFriends_Callback;
+import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.rest.callback.Register_Callback;
 import com.application.moveon.rest.modele.UserPojo;
 
@@ -75,5 +77,20 @@ public interface MoveOnService {
                       @Field("latitude") float latitude,
                       @Field("longitude") float longitude,
                       @Field("rayon") int rayon, CreateCircle_Callback cb);
+
+    @FormUrlEncoded
+    @POST("/add_message")
+    void addMessage(@Field("id_circle") String idCircle,
+                    @Field("id_sender") String idSender,
+                    @Field("id_receiver") String idReceiver,
+                    @Field("content") String content,
+                    @Field("date") String date,
+                    @Field("seen") int seen,
+                    AddMessage_Callback c);
+
+    @GET("/get_messages")
+    void getmessages(@Query("id_receiver") String idReceiver,
+                     GetMessage_Callback cb);
+
 
 }
