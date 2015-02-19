@@ -102,6 +102,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     private MoveOnService mainmos;
 
+    private SessionManager session;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -119,6 +121,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         }
 
         containerMenu = (FrameLayout) view.findViewById(R.id.containerMenu);
+
+        session = new SessionManager(getActivity());
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -183,7 +187,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                 dismissMenu();
                 progressDialog.setMessage("Envoi de la demande...");
                 progressDialog.show();
-                mainmos.addMessage( "1", "1", "1", "TEST", "date", 0, new AddMessage_Callback(activity, progressDialog));
+
+                mainmos.addMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "TEST", "date", 0, new AddMessage_Callback(activity, progressDialog));
             }
         });
 
@@ -198,7 +203,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         dismissMenu();
                         progressDialog.setMessage("Envoi de la demande...");
                         progressDialog.show();
-                        mainmos.addMessage( "1", "1", "1", "TEST", "date", 0, new AddMessage_Callback(activity, progressDialog));
+                        mainmos.addMessage("1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "TEST", "date", 0, new AddMessage_Callback(activity, progressDialog));
                     }
                 });
 
@@ -332,14 +337,14 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         markerOptions.title("Anthony Da Mota");
         map.addMarker(markerOptions);
-        map.animateCamera(CameraUpdateFactory.newLatLng(myLocationLatlng));
+        map.animateCamera(CameraUpdateFactory.newLatLng(myLocationLatlng), 200, null);
 
         // TEST
         LatLng myLocationLatlng2 = new LatLng(myLocation.getLatitude()+1,
                 myLocation.getLongitude()+5);
 
         markerOptions.position(myLocationLatlng2);
-        markerOptions.title("Barrack Obama");
+        markerOptions.title("Anthony Da Mota");
 
         map.addMarker(markerOptions);
 
@@ -515,8 +520,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 //		c.fillColor(0x5500ff00);
 //		c.strokeWidth(2);
 //		c.radius(radius*1000);
-        map.animateCamera(CameraUpdateFactory.zoomTo(15));
-        map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        //map.animateCamera(CameraUpdateFactory.zoomTo(15));
+        //map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
 //		map.addCircle(c);
     }
 

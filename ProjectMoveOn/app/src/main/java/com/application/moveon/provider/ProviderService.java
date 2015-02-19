@@ -13,6 +13,9 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import com.application.moveon.R;
+import com.application.moveon.rest.MoveOnService;
+import com.application.moveon.rest.RestClient;
+import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.session.SessionManager;
 
 import org.json.JSONException;
@@ -28,6 +31,7 @@ public class ProviderService extends Service {
     private NotificationManager notifManager;
     private SessionManager session;
     private String idUser;
+    private MoveOnService mainmos;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -52,6 +56,8 @@ public class ProviderService extends Service {
         session.checkLogin(false);
         idUser = session.getUserDetails().get(SessionManager.KEY_ID);
         //new NotifTask().execute();
+
+        mainmos.getmessages(idUser, new GetMessage_Callback(this));
     }
 /*
     private class NotifTask extends AsyncTask<Void, Void, Void> {
@@ -212,6 +218,8 @@ public class ProviderService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("ANTHO", "startcommand");
+        RestClient r = new RestClient(false);
+        mainmos = (new RestClient(true)).getApiService();
         handleIntent(intent);
         return START_NOT_STICKY;
     }
