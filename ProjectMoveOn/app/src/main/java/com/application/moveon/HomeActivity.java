@@ -1,7 +1,9 @@
 package com.application.moveon;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.app.FragmentManager;
@@ -12,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -211,6 +214,21 @@ public class HomeActivity extends FragmentActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Intent intentNotifications = new Intent(
+                this,
+                com.application.moveon.provider.ProviderService.class);
+        PendingIntent pi = PendingIntent.getService(this, 0, intentNotifications, 0);
+        am.cancel(pi);
+        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + 10 * 1000,
+                10 * 1000, pi);
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -421,7 +439,6 @@ public class HomeActivity extends FragmentActivity {
                 tools.setCurrentTimeOnView((EditText)textField,c);
             }
         };
-
                 new TimePickerDialog(HomeActivity.this, time, c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),true).show();
     }
 }

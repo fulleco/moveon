@@ -76,7 +76,7 @@ public class FragmentFriends extends Fragment {
             public void onClick(View view) {
                 //TODO ADD
 
-                progressDialog.setMessage("Envoie de la demande...");
+                progressDialog.setMessage("Envoi de la demande...");
                 progressDialog.show();
 
                 String mail = session.getUserDetails().get(SessionManager.KEY_EMAIL);
