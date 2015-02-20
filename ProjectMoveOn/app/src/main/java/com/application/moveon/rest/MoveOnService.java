@@ -63,7 +63,7 @@ public interface MoveOnService {
 
     @GET("/get_friends")
     void getfriends(@Query("login") String mail,
-                    GetFriends_Callback cb);
+                    Callback<UserPojo[]> cb);
 
     @GET("/get_demands")
     void getdemands(@Query("login") String mail,

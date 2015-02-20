@@ -1,5 +1,7 @@
 package com.application.moveon.rest.modele;
 
+import android.os.Parcelable;
+
 import com.application.moveon.model.User;
 import com.google.gson.annotations.SerializedName;
 
@@ -82,4 +84,6 @@ public class UserPojo implements Comparable<UserPojo>{
     public void setId_client(String id_client) {
         this.id_client = id_client;
     }
+
+
 }
