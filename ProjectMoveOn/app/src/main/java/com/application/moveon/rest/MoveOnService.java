@@ -8,6 +8,7 @@ import com.application.moveon.rest.callback.GetDemands_Callback;
 import com.application.moveon.rest.callback.GetFriends_Callback;
 import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.rest.callback.Register_Callback;
+import com.application.moveon.rest.callback.UpdatePosition_Callback;
 import com.application.moveon.rest.modele.UserPojo;
 
 
@@ -45,6 +46,14 @@ public interface MoveOnService {
                     @Field("password") String password,
                     @Field("email") String email,
                     @Field("id") String id, EditUser_Callback cb);
+
+    @FormUrlEncoded
+    @POST("/update_position")
+    void updateuser(
+            @Field("id") String id,
+            @Field("latitude") double latitude,
+            @Field("longitude") double longitude,
+            UpdatePosition_Callback cb);
 
     @FormUrlEncoded
     @POST("/add_friend")

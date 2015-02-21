@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.application.moveon.HomeActivity;
@@ -16,6 +17,7 @@ import java.util.HashMap;
  * Created by damota on 24/11/2014.
  */
 public class SessionManager {
+
     // Shared Preferences
     SharedPreferences pref;
 
@@ -44,7 +46,7 @@ public class SessionManager {
     // Constructor
     public SessionManager(Context context){
         this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        pref = PreferenceManager.getDefaultSharedPreferences(context);
         editor = pref.edit();
     }
 
@@ -149,6 +151,14 @@ public class SessionManager {
         _context.startActivity(i);
 
         ((Activity) _context).finish();
+    }
+
+    public SharedPreferences getPref() {
+        return pref;
+    }
+
+    public void setPref(SharedPreferences pref) {
+        this.pref = pref;
     }
 
     /**
