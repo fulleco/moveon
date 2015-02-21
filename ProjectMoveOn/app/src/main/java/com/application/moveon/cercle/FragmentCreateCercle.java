@@ -3,6 +3,7 @@ package com.application.moveon.cercle;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
+import com.application.moveon.rest.callback.CreateCircle_Callback;
 import com.application.moveon.rest.callback.GetFriendsPicker_Callback;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ToolBox;
@@ -46,12 +48,18 @@ public class FragmentCreateCercle extends Fragment{
     private Button buttonAjouterParticipants;
     private Button buttonValider;
 
+    private ProgressDialog progressDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_cercle, container, false);
         RestClient r = new RestClient(true);
-        MoveOnService mos = r.getApiService();
+        final MoveOnService mos = r.getApiService();
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(true);
 
         activity = (FragmentActivity)getActivity();
         session = new SessionManager(activity);
@@ -89,10 +97,25 @@ public class FragmentCreateCercle extends Fragment{
         buttonValider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+               String susers = new String ();
                if(users != null){
-                   Log.i("HUGO", users.get(0));
+
+                   for(String s : users){
+                       susers += s + " ";
+                   }
+                   susers = susers.substring(0, susers.length() -1);
                }
                 Log.i("HUGO", editTimeDebut.getText().toString());
+                progressDialog.setMessage("Création en cours");
+                progressDialog.show();
+                mos.createcircle(nomCercle.getText().toString(), session.getUserDetails().get(SessionManager.KEY_EMAIL)
+                        ,susers
+                        ,editDateDebut.toString() +" " + editTimeDebut.toString()
+                        , editDateFin.toString() + " " + editTimeFin
+                        ,0
+                        ,0
+                        ,0
+                        , new CreateCircle_Callback(getActivity(),progressDialog));
             }
         });
 

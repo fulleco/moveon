@@ -16,7 +16,7 @@ import java.util.Comparator;
 public class UserPojo implements Comparable<UserPojo>{
 
     @SerializedName("id_client")
-    private String id_client;
+    private int id_client;
 
     @SerializedName("firstName")
     private String firstname;
@@ -77,11 +77,11 @@ public class UserPojo implements Comparable<UserPojo>{
         this.imageprofile = imageprofile;
     }
 
-    public String getId_client() {
+    public int getId_client() {
         return id_client;
     }
 
-    public void setId_client(String id_client) {
+    public void setId_client(int id_client) {
         this.id_client = id_client;
     }
 

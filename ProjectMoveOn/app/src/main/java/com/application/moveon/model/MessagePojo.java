@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by damota on 25/11/2014.
  */
-public class Message implements Comparable<Message>{
+public class MessagePojo implements Comparable<MessagePojo>{
 
     @SerializedName("id")
     private String id;
@@ -34,7 +34,7 @@ public class Message implements Comparable<Message>{
     @SerializedName("seen")
     private int seen;
 
-    public Message(){
+    public MessagePojo(){
         this.id = null;
         this.id_circle = null;
         this.id_sender = null;
@@ -46,7 +46,7 @@ public class Message implements Comparable<Message>{
         this.setFirstname_sender(null);
     }
 
-    public Message(String id, String id_circle, String id_sender, String id_receiver, String content, String date, int seen, String lastname_sender, String firstname_sender){
+    public MessagePojo(String id, String id_circle, String id_sender, String id_receiver, String content, String date, int seen, String lastname_sender, String firstname_sender){
         this.id = id;
         this.id_circle = id_circle;
         this.id_sender = id_sender;
@@ -58,7 +58,7 @@ public class Message implements Comparable<Message>{
         this.setFirstname_sender(firstname_sender);
     }
 
-    public int compareTo(Message m) {
+    public int compareTo(MessagePojo m) {
         return this.id_sender.compareTo(m.getId_sender());
     }
 

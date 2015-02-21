@@ -71,7 +71,7 @@ public interface MoveOnService {
     @POST("/create_circle")
     void createcircle(@Field("title") String title,
                       @Field("creator")String creator,
-                      @Field("users") UserPojo[] host,
+                      @Field("users") String hosts,
                       @Field("date_debut") String date,
                       @Field("date_fin") String date_fin,
                       @Field("latitude") float latitude,

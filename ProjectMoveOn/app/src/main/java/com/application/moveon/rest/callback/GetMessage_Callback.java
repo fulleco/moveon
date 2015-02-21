@@ -1,21 +1,14 @@
 package com.application.moveon.rest.callback;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
-import com.application.moveon.friends.UserAdapter;
-import com.application.moveon.model.Message;
-import com.application.moveon.rest.modele.UserPojo;
+import com.application.moveon.model.MessagePojo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +21,7 @@ import retrofit.client.Response;
 /**
  * Created by user on 18/02/2015.
  */
-public class GetMessage_Callback implements Callback<Message[]> {
+public class GetMessage_Callback implements Callback<MessagePojo[]> {
 
     private NotificationManager notifManager;
     private Context context;
@@ -38,12 +31,12 @@ public class GetMessage_Callback implements Callback<Message[]> {
     }
 
     @Override
-    public void success(Message[] messagePojos, Response response) {
+    public void success(MessagePojo[] messagePojos, Response response) {
 
         if(messagePojos == null) return;
-        ArrayList<Message> messages = new ArrayList<Message>(Arrays.asList(messagePojos));
+        ArrayList<MessagePojo> messages = new ArrayList<MessagePojo>(Arrays.asList(messagePojos));
         Collections.sort(messages);
-        for(Message m : messages){
+        for(MessagePojo m : messages){
             createNotification(m.getContent(), m.getFirstname_sender() + " " + m.getLastname_sender());
         }
     }

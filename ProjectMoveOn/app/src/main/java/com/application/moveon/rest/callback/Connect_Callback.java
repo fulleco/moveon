@@ -43,7 +43,7 @@ public class Connect_Callback implements Callback<UserPojo> {
             });
             mailAnimation.stop();
         } else {
-            session.createLoginSession(mail, password, aUser.getId_client(), aUser.getFirstname(), aUser.getLastname());
+            session.createLoginSession(mail, password, String.valueOf(aUser.getId_client()), aUser.getFirstname(), aUser.getLastname());
             mailAnimation.stop();
         }
     }
