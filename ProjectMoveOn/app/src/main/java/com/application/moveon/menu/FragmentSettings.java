@@ -59,6 +59,10 @@ public class FragmentSettings extends PreferenceFragment implements SharedPrefer
        {
            Log.d("QUENTIN : ", "LISTENING! - Pref changed for: " + key + " pref: " +
                    sharedPreferences.getBoolean(key,false));
+           if(sharedPreferences.getBoolean(key,true))
+                myActivity.startNotification();
+           else
+                myActivity.stopNotification();
 
        }else if (key.equals(getResources().getString(R.string.pref_loc_key))) {
            Log.d("QUENTIN : ", "LISTENING! - Pref changed for: " + key + " pref: " +

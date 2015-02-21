@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="notificationFrequency" >
-        <item>5</item>
-        <item>15</item>
-        <item>30</item>
+        <item>5 secondes</item>
+        <item>15 secondes</item>
+        <item>30 secondes</item>
+        <item>60 secondes</item>
     </string-array>
     <string-array name="notificationFrequencyValues">
         <item>5</item>
         <item>15</item>
         <item>30</item>
+        <item>60</item>
     </string-array>
 </resources>

@@ -273,6 +273,8 @@ public class HomeActivity extends FragmentActivity {
         this.fragmentFriendDemands = fragmentFriendDemands;
     }
 
+
+
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -445,8 +447,14 @@ public class HomeActivity extends FragmentActivity {
 
     public void changeNotificationFrequency()
     {
-        String key_value = getResources().getString(R.string.pref_freq_key);
-        String second = session.getPref().getString(key_value,null);
+        String sync_key_value = getResources().getString(R.string.pref_sync_key);
+        boolean isNotifOn = session.getPref().getBoolean(sync_key_value, true);
+
+        if(!isNotifOn)
+            return;
+
+        String freq_key_value = getResources().getString(R.string.pref_freq_key);
+        int second = Integer.valueOf(session.getPref().getString(freq_key_value, "15"));
 
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -456,9 +464,37 @@ public class HomeActivity extends FragmentActivity {
         PendingIntent pi = PendingIntent.getService(this, 0, intentNotifications, 0);
         am.cancel(pi);
         am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + 15 * 1000,
-                15 * 1000, pi);
+                SystemClock.elapsedRealtime() + second * 1000,
+                second * 1000, pi);
 
+    }
 
+    public void stopNotification()
+    {
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Intent intentNotifications = new Intent(
+                this,
+                com.application.moveon.provider.ProviderService.class);
+        PendingIntent pi = PendingIntent.getService(this, 0, intentNotifications, 0);
+        am.cancel(pi);
+    }
+
+    public void startNotification()
+    {
+
+        String key_value = getResources().getString(R.string.pref_freq_key);
+        int second = Integer.valueOf(session.getPref().getString(key_value, "15"));
+
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Intent intentNotifications = new Intent(
+                this,
+                com.application.moveon.provider.ProviderService.class);
+        PendingIntent pi = PendingIntent.getService(this, 0, intentNotifications, 0);
+        am.cancel(pi);
+        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + second * 1000,
+                second * 1000, pi);
     }
 }
