@@ -19,10 +19,10 @@
         <item>Map</item>
         <item>Profil</item>
         <item>Localisation</item>
-        <item>Creation Cercle</item>
+        <item>Creation de Cercle</item>
         <item>Amis</item>
         <item>Demandes</item>
-        <item>Item 7</item>
+        <item>Settings</item>
         <item>Item 8</item>
     </string-array>
 
@@ -47,5 +47,14 @@
     <string name="cancel">Cancel</string>
     <string name="tab_info_cercle">Infos Cercle</string>
     <string name="tab_list_cercle">Liste Cercle</string>
+    
+    <string name="pref_sync">Notifications</string>
+    <string name="pref_sync_summ">Permet de ne plus recevoir de notification.</string>
+
+    <string name="pref_loc">Montrer sa position</string>
+    <string name="pref_loc_summ">Permet de montrer sa position aux autres.</string>
+
+    <string name="pref_refresh">Taux de rafraichissement</string>
+    <string name="pref_refresh_summ">Permet de mettre à jour plus ou moins souvent ses notifications.</string>
 
 </resources>

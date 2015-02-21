@@ -64,12 +64,14 @@ public class ProviderService extends Service implements LocationListener {
         }
 
         session = new SessionManager(ProviderService.this);
-        session.checkLogin(false);
+        //session.checkLogin(false);
         idUser = session.getUserDetails().get(SessionManager.KEY_ID);
         //new NotifTask().execute();
 
-        mainmos.getmessages(idUser, new GetMessage_Callback(this));
-        mainmos.updateuser(idUser, currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
+        if((idUser!=null)||(idUser!="")) {
+            mainmos.getmessages(idUser, new GetMessage_Callback(this));
+            mainmos.updateuser(idUser, currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
+        }
     }
 /*
     private class NotifTask extends AsyncTask<Void, Void, Void> {

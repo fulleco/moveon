@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="pref_sync"
+        android:title="@string/pref_sync"
+        android:summary="@string/pref_sync_summ"
+        android:defaultValue="true" />
+
+    <SwitchPreference
+        android:key="pref_loc"
+        android:title="@string/pref_loc"
+        android:summary="@string/pref_loc_summ"
+        android:defaultValue="true" />
+
+    <com.application.moveon.tools.NumberPickerPreference
+        android:key="MY_PICKER"
+        android:title="@string/pref_refresh"
+        android:summary="@string/pref_refresh_summ"
+        android:defaultValue="15"
+        android:persistent="true"/>
+
+</PreferenceScreen>

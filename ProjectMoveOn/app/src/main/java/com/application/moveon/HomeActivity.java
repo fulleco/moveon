@@ -37,6 +37,7 @@ import com.application.moveon.cercle.FragmentCreateCercle;
 import com.application.moveon.ftp.FtpDownloadTask;
 import com.application.moveon.map.FragmentLocationChooser;
 import com.application.moveon.map.FragmentMap;
+import com.application.moveon.menu.FragmentSettings;
 import com.application.moveon.profil.FragmentEditProfil;
 import com.application.moveon.friends.FragmentFriends;
 import com.application.moveon.profil.FragmentViewProfil;
@@ -68,6 +69,7 @@ public class HomeActivity extends FragmentActivity {
     private FragmentCreateCercle fragmentCreateCercle = new FragmentCreateCercle();
     private FragmentFriends fragmentFriends = new FragmentFriends();
     private FragmentFriendDemands fragmentFriendDemands = new FragmentFriendDemands();
+    private FragmentSettings fragmentSettings = new FragmentSettings();
 
 
     private Fragment currentFragment;
@@ -82,6 +84,7 @@ public class HomeActivity extends FragmentActivity {
     private static final int CREATE_CERCLE_INDEX = 3;
     private static final int FRIENDS = 4;
     private static final int DEMANDS = 5;
+    private static final int SETTINGS = 6;
 
     private int RESULT_LOAD_IMAGE = 0;
 
@@ -143,7 +146,6 @@ public class HomeActivity extends FragmentActivity {
         tools = new com.application.moveon.tools.ToolBox(this);
 
         session = new SessionManager(this);
-        session.checkLogin(false);
 
         HashMap<String, String> userInfos = session.getUserDetails();
         String idUser = userInfos.get(SessionManager.KEY_ID);
@@ -219,6 +221,7 @@ public class HomeActivity extends FragmentActivity {
     @Override
     public void onResume(){
         super.onResume();
+
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         Intent intentNotifications = new Intent(
@@ -229,6 +232,12 @@ public class HomeActivity extends FragmentActivity {
         am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + 10 * 1000,
                 10 * 1000, pi);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        session.checkLogin(false);
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -340,6 +349,9 @@ public class HomeActivity extends FragmentActivity {
                 break;
             case DEMANDS :
                 switchFragment(fragmentFriendDemands);
+                break;
+            case SETTINGS :
+                switchFragment(fragmentSettings);
                 break;
 
             default :
