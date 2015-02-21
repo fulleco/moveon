@@ -87,19 +87,19 @@ public class RadialMenuWidget extends View {
 												// background
 
 	private int wedgeQty = 1; // Number of wedges
-	private com.application.moveon.menu.v1.RadialMenuWedge[] Wedges = new com.application.moveon.menu.v1.RadialMenuWedge[wedgeQty];
-	private com.application.moveon.menu.v1.RadialMenuWedge selected = null; // Keeps track of which wedge is
+	private RadialMenuWedge[] Wedges = new com.application.moveon.menu.v1.RadialMenuWedge[wedgeQty];
+	private RadialMenuWedge selected = null; // Keeps track of which wedge is
 												// selected
-	private com.application.moveon.menu.v1.RadialMenuWedge enabled = null; // Keeps track of which wedge is
+	private RadialMenuWedge enabled = null; // Keeps track of which wedge is
 											// enabled for outer ring
 	private Rect[] iconRect = new Rect[wedgeQty];
 
 	private int wedgeQty2 = 1; // Number of wedges
-	private com.application.moveon.menu.v1.RadialMenuWedge[] Wedges2 = new com.application.moveon.menu.v1.RadialMenuWedge[wedgeQty2];
-	private com.application.moveon.menu.v1.RadialMenuWedge selected2 = null; // Keeps track of which wedge is
+	private RadialMenuWedge[] Wedges2 = new com.application.moveon.menu.v1.RadialMenuWedge[wedgeQty2];
+	private RadialMenuWedge selected2 = null; // Keeps track of which wedge is
 												// selected
 	private Rect[] iconRect2 = new Rect[wedgeQty2];
-	private com.application.moveon.menu.v1.RadialMenuInterface wedge2Data = null; // Keeps track off which menuItem
+	private RadialMenuInterface wedge2Data = null; // Keeps track off which menuItem
 												// data is being used for the
 												// outer ring
 
@@ -187,7 +187,7 @@ public class RadialMenuWidget extends View {
 
 			// Checks if a pie slice is selected in first Wedge
 			for (int i = 0; i < Wedges.length; i++) {
-				com.application.moveon.menu.v1.RadialMenuWedge f = Wedges[i];
+				RadialMenuWedge f = Wedges[i];
 				double slice = (2 * Math.PI) / wedgeQty;
 				double start = (2 * Math.PI) * (0.75) - (slice / 2); // this is
 																		// done

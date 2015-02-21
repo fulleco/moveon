@@ -24,7 +24,7 @@ public class AddMessage_Callback implements Callback<Integer> {
     public void success(Integer aint, Response response) {
         if(aint == 1){
 
-            Toast.makeText(activity, "Le message a bien été envoyé envoyée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Le message a bien été envoyé", Toast.LENGTH_SHORT).show();
             p.hide();
         }else{
             Toast.makeText(activity, "Problème lors de l'envoi du message", Toast.LENGTH_SHORT).show();

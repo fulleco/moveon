@@ -69,7 +69,10 @@ public class GetMessage_Callback implements Callback<Message[]> {
                 .setContentText(text.toString())
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setTicker("MoveOn !")
-                .setContentIntent(pIntent);
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
+                .addAction(R.drawable.ic_launcher, "En retard !", pIntent)
+                .addAction(R.drawable.ic_launcher, "J'arrive !", pIntent);
 
         if (!text.toString().equals(longText.toString())) {
             noti.setStyle(

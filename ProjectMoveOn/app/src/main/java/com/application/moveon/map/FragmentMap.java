@@ -82,9 +82,13 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     private Location myLocation = null;
 
     private RadialMenuWidget pieMenu;
-    public RadialMenuItem menuItem, menuCloseItem, menuExpandItem, menutestItem;
-    public RadialMenuItem firstChildItem, secondChildItem, thirdChildItem;
-    private List<RadialMenuItem> children = new ArrayList<RadialMenuItem>();
+    public RadialMenuItem menuCloseItem, menuExpandInfo, menuExpandAlert, menuExpandQuestion, menuExpandSmiley;
+    public RadialMenuItem childItemWhereAreYou, childItemHowAreYou, childItemIncoming, childItemLate,
+                          childItemLost, childItemArrived, childItemLeaving, childItemJoinMe, childItemSos, childItemCigaret;
+    private List<RadialMenuItem> childrenInfos = new ArrayList<RadialMenuItem>();
+    private List<RadialMenuItem> childrenQuestions = new ArrayList<RadialMenuItem>();
+    private List<RadialMenuItem> childrenAlert = new ArrayList<RadialMenuItem>();
+    private List<RadialMenuItem> childrenSmiley = new ArrayList<RadialMenuItem>();
 
     private FrameLayout containerMenu;
     private RelativeLayout containerMap;
@@ -172,71 +176,169 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         });
     }
 
+    private void sendMessage(String idCircle, String idSender, String idReceiver, String content, String date){
+        progressDialog.setMessage("Envoi du message...");
+        progressDialog.show();
+        mainmos.addMessage(idCircle, idSender,
+               idReceiver, content, date,
+                0, new AddMessage_Callback(activity, progressDialog));
+    }
+
     private void initMenu(int x, int y){
         pieMenu = new RadialMenuWidget(activity);
         menuCloseItem = new RadialMenuItem("close", null);
         menuCloseItem
                 .setDisplayIcon(android.R.drawable.ic_menu_close_clear_cancel);
-        menuItem = new RadialMenuItem("normal","normal");
-        menuItem.setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
-            @Override
-            public void execute() {
-                // Can edit based on preference. Also can add animations
-                // here.;
-                Log.i("ANTHO", "TEST MESSAGE");
-                dismissMenu();
-                progressDialog.setMessage("Envoi de la demande...");
-                progressDialog.show();
 
-                mainmos.addMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "TEST", "date", 0, new AddMessage_Callback(activity, progressDialog));
-            }
-        });
-
-        firstChildItem = new RadialMenuItem("normal","normal");
-        firstChildItem
+        childItemWhereAreYou = new RadialMenuItem("T'es où ?","T'es où ?");
+        childItemWhereAreYou
                 .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
                     @Override
                     public void execute() {
                         // Can edit based on preference. Also can add animations
                         // here.;
-                        Log.i("ANTHO", "TEST MESSAGE");
                         dismissMenu();
-                        progressDialog.setMessage("Envoi de la demande...");
-                        progressDialog.show();
-                        mainmos.addMessage("1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "TEST", "date", 0, new AddMessage_Callback(activity, progressDialog));
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "T'es où ?", "date");
                     }
                 });
 
-        secondChildItem = new RadialMenuItem("contact","contact");
-        secondChildItem.setDisplayIcon(R.drawable.ic_launcher);
-        secondChildItem
+        childItemHowAreYou = new RadialMenuItem("Ça va ?","Ça va ?");
+        childItemHowAreYou
                 .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
                     @Override
                     public void execute() {
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Ça va ?", "date");
                     }
                 });
 
-        thirdChildItem = new RadialMenuItem("about", "about");
-        thirdChildItem.setDisplayIcon(R.drawable.ic_launcher);
-        thirdChildItem
+        menuExpandQuestion = new RadialMenuItem("Question", "Question");
+        childrenQuestions.add(childItemWhereAreYou);
+        childrenQuestions.add(childItemHowAreYou);
+        menuExpandQuestion.setMenuChildren(childrenQuestions);
+
+        childItemIncoming = new RadialMenuItem("en route","en route");
+        childItemIncoming.setDisplayIcon(R.drawable.rocket);
+        childItemIncoming
                 .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
                     @Override
                     public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
                         dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "J'arrive !", "J'arrive !");
                     }
                 });
 
-        menuExpandItem = new RadialMenuItem("test", "test");
-        children.add(firstChildItem);
-        children.add(secondChildItem);
-        children.add(thirdChildItem);
-        menuExpandItem.setMenuChildren(children);
+        childItemLate = new RadialMenuItem("en retard !","en retard !");
+        childItemLate.setDisplayIcon(R.drawable.watch);
+        childItemLate
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Je suis en retard !", "date");
+                    }
+                });
 
-        menutestItem = new RadialMenuItem("test", "test");
-        menutestItem.setMenuChildren(children);
+        childItemLost = new RadialMenuItem("perdu","perdu");
+        childItemLost.setDisplayIcon(R.drawable.crying);
+        childItemLost
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Je suis perdu...", "date");
+                    }
+                });
+
+        childItemArrived = new RadialMenuItem("arrivé","arrivé");
+        childItemArrived.setDisplayIcon(R.drawable.fire);
+        childItemArrived
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Je suis perdu...", "date");
+                    }
+                });
+
+        menuExpandInfo = new RadialMenuItem("Je suis...", "Je suis...");
+        childrenInfos.add(childItemIncoming);
+        childrenInfos.add(childItemLost);
+        childrenInfos.add(childItemLate);
+        childrenInfos.add(childItemArrived);
+        menuExpandInfo.setMenuChildren(childrenInfos);
+
+        childItemLeaving = new RadialMenuItem("Je pars !","Je pars !");
+        childItemLeaving.setDisplayIcon(R.drawable.door);
+        childItemLeaving
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Je pars !", "date");
+                    }
+                });
+
+        childItemJoinMe = new RadialMenuItem("Rejoins-moi","Rejoins-moi");
+        childItemJoinMe.setDisplayIcon(R.drawable.running);
+        childItemJoinMe
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Rejoins-moi", "date");
+                    }
+                });
+
+        childItemSos = new RadialMenuItem("SOS","SOS");
+        childItemSos.setDisplayIcon(R.drawable.help);
+        childItemSos
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "J'ai besoin d'aide !", "date");
+                    }
+                });
+
+        childItemCigaret = new RadialMenuItem("Clope","Clope");
+        childItemCigaret.setDisplayIcon(R.drawable.cigarette);
+        childItemCigaret
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Pause clope ?", "date");
+                    }
+                });
+
+        menuExpandAlert = new RadialMenuItem("Alerte", "Alerte");
+        childrenAlert.add(childItemLeaving);
+        childrenAlert.add(childItemSos);
+        childrenAlert.add(childItemJoinMe);
+        childrenAlert.add(childItemCigaret);
+        menuExpandAlert.setMenuChildren(childrenAlert);
+
+        menuExpandSmiley = new RadialMenuItem("Smiley", "Smiley");
+        //menuSmiley.setMenuChildren(alertInfos);
 
         menuCloseItem
                 .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
@@ -267,10 +369,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         pieMenu.setCenterCircle(menuCloseItem);
         pieMenu.addMenuEntry(new ArrayList<RadialMenuItem>() {
             {
-                add(menuItem);
-                add(menuExpandItem);
-                add(menutestItem);
-                add(menutestItem);
+                add(menuExpandInfo);
+                add(menuExpandAlert);
+                add(menuExpandQuestion);
+                add(menuExpandSmiley);
             }
         });
         pieMenu.setCenterLocation(x,y);
