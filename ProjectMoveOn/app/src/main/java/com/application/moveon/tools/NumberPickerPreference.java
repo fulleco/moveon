@@ -75,8 +75,9 @@ public class NumberPickerPreference extends DialogPreference {
         numPicker.setMaxValue(max);
         numPicker.setMinValue(min);
         numPicker.setDisplayedValues(showValue);
+        numPicker.setWrapSelectorWheel(true);
         numPicker.setValue(this.getPersistedInt(DEFAULT_VALUE));
-        numPicker.setWrapSelectorWheel(false);
+
 
         return view;
     }

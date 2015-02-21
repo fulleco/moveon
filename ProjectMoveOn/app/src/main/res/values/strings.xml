@@ -57,4 +57,8 @@
     <string name="pref_refresh">Taux de rafraichissement</string>
     <string name="pref_refresh_summ">Permet de mettre à jour plus ou moins souvent ses notifications.</string>
 
+    <string name="pref_sync_key" >PREF_SYNC_KEY</string>
+    <string name="pref_loc_key" >PREF_LOC_KEY</string>
+    <string name="pref_freq_key" >PREF_FREQ_KEY</string>
+
 </resources>

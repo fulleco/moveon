@@ -3,10 +3,10 @@ package com.application.moveon;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,39 +16,38 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.application.moveon.friends.FragmentFriendDemands;
 import com.application.moveon.cercle.FragmentCreateCercle;
+import com.application.moveon.friends.FragmentFriendDemands;
+import com.application.moveon.friends.FragmentFriends;
 import com.application.moveon.ftp.FtpDownloadTask;
 import com.application.moveon.map.FragmentLocationChooser;
 import com.application.moveon.map.FragmentMap;
 import com.application.moveon.menu.FragmentSettings;
 import com.application.moveon.profil.FragmentEditProfil;
-import com.application.moveon.friends.FragmentFriends;
 import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.session.SessionManager;
-import com.application.moveon.tools.*;
+import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class HomeActivity extends FragmentActivity {
 
@@ -59,7 +58,6 @@ public class HomeActivity extends FragmentActivity {
     private CharSequence mTitle;
     private String[] mDrawerArray;
     private Calendar c = Calendar.getInstance();
-
 
 
     private FragmentMap fragmentMap = new FragmentMap();
@@ -222,16 +220,7 @@ public class HomeActivity extends FragmentActivity {
     public void onResume(){
         super.onResume();
 
-        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        Intent intentNotifications = new Intent(
-                this,
-                com.application.moveon.provider.ProviderService.class);
-        PendingIntent pi = PendingIntent.getService(this, 0, intentNotifications, 0);
-        am.cancel(pi);
-        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + 10 * 1000,
-                10 * 1000, pi);
+        changeNotificationFrequency();
     }
 
     @Override
@@ -452,5 +441,24 @@ public class HomeActivity extends FragmentActivity {
             }
         };
                 new TimePickerDialog(HomeActivity.this, time, c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),true).show();
+    }
+
+    public void changeNotificationFrequency()
+    {
+        String key_value = getResources().getString(R.string.pref_freq_key);
+        String second = session.getPref().getString(key_value,null);
+
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Intent intentNotifications = new Intent(
+                this,
+                com.application.moveon.provider.ProviderService.class);
+        PendingIntent pi = PendingIntent.getService(this, 0, intentNotifications, 0);
+        am.cancel(pi);
+        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + 15 * 1000,
+                15 * 1000, pi);
+
+
     }
 }
