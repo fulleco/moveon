@@ -22,6 +22,9 @@ public class DemandsPojo implements Comparable<DemandsPojo>{
     @SerializedName("status")
     private int status;
 
+    @SerializedName("imageprofile")
+    private String imagesender;
+
 
     public String getSender() {
         return sender;

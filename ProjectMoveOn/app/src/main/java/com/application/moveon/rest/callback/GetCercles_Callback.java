@@ -2,10 +2,13 @@ package com.application.moveon.rest.callback;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.application.moveon.R;
+import com.application.moveon.cercle.CercleAdapter;
 import com.application.moveon.friends.UserAdapter;
+import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.UserPojo;
 
 import java.util.ArrayList;
@@ -17,28 +20,44 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Created by Hugo on 13/01/2015.
+ * Created by Quentin Bitschene on 13/01/2015.
  */
-public class GetFriends_Callback implements Callback<UserPojo[]> {
+public class GetCercles_Callback implements Callback<CerclePojo[]> {
 
     private String id;
     private Activity activity;
-    private UserAdapter adapter;
+    //private UserAdapter adapter;
     private ListView list;
     private ProgressDialog progressDialog;
-    private ArrayList<UserPojo> formatedata;
+    private ArrayList<CerclePojo> formatedata;
 
-    public GetFriends_Callback(Activity activity, ListView list, UserAdapter adapter) {
-        this.adapter = adapter;
+    public GetCercles_Callback(Activity activity, ListView list) {
+        //this.adapter = adapter;
         this.activity = activity;
         this.list = list;
-        this.formatedata = new ArrayList<UserPojo>();
+        this.formatedata = new ArrayList<CerclePojo>();
 
     }
 
     @Override
-    public void success(UserPojo[] userPojos, Response response) {
+    public void success(CerclePojo[] cerclePojos, Response response) {
 
+        Log.i("QUENTIN", "BIEN JOUE BOBY");
+
+        if(cerclePojos == null) return;
+        ArrayList<CerclePojo> datas = new ArrayList<CerclePojo>(Arrays.asList(cerclePojos));
+
+
+        final CercleAdapter a = new CercleAdapter(datas, activity.getBaseContext());
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(list != null)list.setAdapter(a);
+            }
+        });
+
+        /*
         if(userPojos == null) return;
         ArrayList<UserPojo> datas = new ArrayList<UserPojo>(Arrays.asList(userPojos));
         Collections.sort(datas);
@@ -51,14 +70,14 @@ public class GetFriends_Callback implements Callback<UserPojo[]> {
                 if(lv != null)lv.setAdapter(a);
             }
         });
-
-
-
+        */
 
     }
 
     @Override
     public void failure(RetrofitError error) {
+
+        Log.i("QUENTIN", "CEST MOVAY  BOBY");
 
     }
 }

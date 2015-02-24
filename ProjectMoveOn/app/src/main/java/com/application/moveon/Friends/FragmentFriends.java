@@ -17,10 +17,10 @@ import com.application.moveon.R;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.AddFriend_Callback;
-import com.application.moveon.rest.callback.GetFriends_Callback;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.Connectivity;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.ToolBox;
 
 import java.util.ArrayList;
@@ -50,6 +50,8 @@ public class FragmentFriends extends Fragment {
     private Button addButton;
     private ProgressDialog progressDialog;
 
+    private ListView lv;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +72,12 @@ public class FragmentFriends extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(true);
 
-        childmos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL), new GetFriends_Callback(activity, mainList,mainAdapter));
+        MoveOnDB bd = MoveOnDB.getInstance();
+        bd.open();
+
+        lv = (ListView)view.findViewById(R.id.list_contacts);
+        lv.setAdapter(new UserAdapter(bd.getFriends(),activity.getBaseContext()));
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

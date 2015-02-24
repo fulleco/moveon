@@ -37,6 +37,10 @@ public class UserPojo implements Comparable<UserPojo>{
         return this.getFirstname().compareTo(o.getFirstname());
     }
 
+    @Override
+    public boolean equals(Object o){
+        return o.getClass().equals(UserPojo.class) && ((UserPojo) o).getLogin().equals(this.getLogin());
+    }
     public String getFirstname() {
         return firstname;
     }
