@@ -18,9 +18,6 @@ public class CerclePojo {
     @SerializedName("id_creator")
     private int id_creator;
 
-    @SerializedName("list_users")
-    private UserPojo[] guests;
-
     @SerializedName("titre")
     private String titre;
 
@@ -39,10 +36,9 @@ public class CerclePojo {
     @SerializedName("rayon")
     private int rayon;
 
-    public CerclePojo(int id_cercle, int id_creator, UserPojo[] guests, String titre, String date_debut, String date_fin, float latitude, float longitude, int rayon) {
+    public CerclePojo(int id_cercle, int id_creator, String titre, String date_debut, String date_fin, float latitude, float longitude, int rayon) {
         this.id_cercle = id_cercle;
         this.id_creator = id_creator;
-        this.guests = guests;
         this.titre = titre;
         this.date_debut = date_debut;
         this.date_fin = date_fin;
@@ -109,14 +105,6 @@ public class CerclePojo {
 
     public void setRayon(int rayon) {
         this.rayon = rayon;
-    }
-
-    public UserPojo[] getGuests() {
-        return guests;
-    }
-
-    public void setGuests(UserPojo[] guests) {
-        this.guests = guests;
     }
 
     public int getId_cercle() {
