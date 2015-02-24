@@ -5,7 +5,6 @@ import com.application.moveon.rest.callback.AnswerDemand_Callback;
 import com.application.moveon.rest.callback.CreateCircle_Callback;
 import com.application.moveon.rest.callback.EditUser_Callback;
 import com.application.moveon.rest.callback.GetDemands_Callback;
-import com.application.moveon.rest.callback.GetFriends_Callback;
 import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.rest.callback.Register_Callback;
 import com.application.moveon.rest.callback.UpdatePosition_Callback;
@@ -17,7 +16,6 @@ import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
-import retrofit.http.PUT;
 import retrofit.http.Query;
 
 /**
