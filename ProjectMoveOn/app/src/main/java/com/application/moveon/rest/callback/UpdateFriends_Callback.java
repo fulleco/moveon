@@ -33,9 +33,14 @@ public class UpdateFriends_Callback implements Callback<UserPojo[]> {
     public void success(UserPojo[] userPojos, Response response) {
 
         MoveOnDB bdd = MoveOnDB.getInstance();
+        ArrayList<UserPojo> datas;
 
-        if(userPojos == null) return;
-        ArrayList<UserPojo> datas = new ArrayList<UserPojo>(Arrays.asList(userPojos));
+        if(userPojos == null) {
+            datas =new ArrayList<UserPojo>();
+        }else{
+            datas = new ArrayList<UserPojo>(Arrays.asList(userPojos));
+        }
+
         bdd.updateFriends(datas);
 
         Flags.setFriendflag(true);
