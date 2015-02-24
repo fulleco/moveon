@@ -10,6 +10,11 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.application.moveon.R;
+import com.application.moveon.rest.callback.GetMessage_Callback;
+
+import java.security.Provider;
+
 public class BootReceiver extends BroadcastReceiver{
 
 	@Override
@@ -21,7 +26,8 @@ public class BootReceiver extends BroadcastReceiver{
 		//if(prefs.getBoolean("prefNotification", false)){
 		//	minutes=Integer.parseInt(prefs.getString("prefNotificationFrequency", ""));
 		//}
-        int seconds = 5;
+        String freq_key_value = context.getResources().getString(R.string.pref_freq_key);
+        int seconds = Integer.valueOf(prefs.getString(freq_key_value, "15"));
 		AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); 
 		Intent i = new Intent(context, ProviderService.class);
 		PendingIntent pi = PendingIntent.getService(context, 0, i, 0); 

@@ -5,10 +5,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.model.MessagePojo;
+import com.application.moveon.provider.ProviderReceiver;
+import com.application.moveon.tools.ImageHelper;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +31,8 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
     private NotificationManager notifManager;
     private Context context;
 
+    public static String OK_ACTION = "OK";
+
     public GetMessage_Callback(Context context){
         this.context = context;
     }
@@ -37,35 +44,48 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
         ArrayList<MessagePojo> messages = new ArrayList<MessagePojo>(Arrays.asList(messagePojos));
         Collections.sort(messages);
         for(MessagePojo m : messages){
-            createNotification(m.getContent(), m.getFirstname_sender() + " " + m.getLastname_sender());
+            createNotification(m);
         }
     }
 
-    public void createNotification(String content, String sender) {
+    public void createNotification(MessagePojo m) {
 
         Intent intent = new Intent(context, HomeActivity.class);
+        intent.putExtra("SENDER", m.getId_sender());
+        intent.putExtra("RECEIVER", m.getId_receiver());
+        intent.putExtra("CIRCLE", m.getId_circle());
+
+        Intent intentOk = new Intent(context, ProviderReceiver.class);
+        intent.putExtra("SENDER", m.getId_sender());
+        intent.putExtra("RECEIVER", m.getId_receiver());
+        intent.putExtra("CIRCLE", m.getId_circle());
+        intent.setAction(OK_ACTION);
+
+        PendingIntent pIntentOk = PendingIntent.getBroadcast(context, 0,
+                intentOk, 0);
+
         // intent.putExtra("mail", email);
         PendingIntent pIntent = PendingIntent.getActivity(context, 0,
                 intent, 0);
         notifManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         StringBuilder text = new StringBuilder();
         StringBuilder longText = new StringBuilder();
-        String title = "Nouveau message !";
+        String title = "Nouveau message de " + m.getFirstname_sender();
 
-        text.append("Nouveau message de : " + sender);
+        text.append("Découvrez-le vite !");
 
-        longText.append("TEST" + content);
+        longText.append(m.getContent());
 
         Notification.Builder noti = null;
+
         Notification notification;
         noti = new Notification.Builder(context).setContentTitle(title)
                 .setContentText(text.toString())
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setTicker("MoveOn !")
                 .setContentIntent(pIntent)
-                .setAutoCancel(true)
-                .addAction(R.drawable.ic_launcher, "En retard !", pIntent)
-                .addAction(R.drawable.ic_launcher, "J'arrive !", pIntent);
+                .addAction(R.drawable.holo_map, "Voir la carte", pIntent)
+                .addAction(R.drawable.holo_check, "Ok", pIntentOk);
 
         if (!text.toString().equals(longText.toString())) {
             noti.setStyle(

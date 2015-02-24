@@ -22,6 +22,8 @@ public class AddMessage_Callback implements Callback<Integer> {
 
     @Override
     public void success(Integer aint, Response response) {
+        if(activity == null)
+            return;
         if(aint == 1){
 
             Toast.makeText(activity, "Le message a bien été envoyé", Toast.LENGTH_SHORT).show();
@@ -34,6 +36,9 @@ public class AddMessage_Callback implements Callback<Integer> {
 
     @Override
     public void failure(RetrofitError error) {
+        if(activity == null)
+            return;
+
         Toast.makeText(activity, "Impossible de contacter le serveur", Toast.LENGTH_SHORT).show();
         p.hide();
     }

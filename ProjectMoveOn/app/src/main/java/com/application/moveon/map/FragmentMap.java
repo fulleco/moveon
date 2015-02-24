@@ -84,7 +84,9 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     private RadialMenuWidget pieMenu;
     public RadialMenuItem menuCloseItem, menuExpandInfo, menuExpandAlert, menuExpandQuestion, menuExpandSmiley;
     public RadialMenuItem childItemWhereAreYou, childItemHowAreYou, childItemIncoming, childItemLate,
-                          childItemLost, childItemArrived, childItemLeaving, childItemJoinMe, childItemSos, childItemCigaret;
+                          childItemLost, childItemArrived, childItemLeaving, childItemJoinMe, childItemSos, childItemCigaret,
+                          childrenEating, childrenCute, childrenSad, childrenDoubt, childrenBigSmile, childrenHaha,
+                          childrenUpset, childrenCrying;
     private List<RadialMenuItem> childrenInfos = new ArrayList<RadialMenuItem>();
     private List<RadialMenuItem> childrenQuestions = new ArrayList<RadialMenuItem>();
     private List<RadialMenuItem> childrenAlert = new ArrayList<RadialMenuItem>();
@@ -337,8 +339,92 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         childrenAlert.add(childItemCigaret);
         menuExpandAlert.setMenuChildren(childrenAlert);
 
+        childrenEating = new RadialMenuItem("","");
+        childrenEating.setDisplayIcon(R.drawable.eating);
+        childrenEating
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Pause clope ?", "date");
+                    }
+                });
+
+        childrenCute = new RadialMenuItem("","");
+        childrenCute.setDisplayIcon(R.drawable.cute);
+        childrenCute
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Pause clope ?", "date");
+                    }
+                });
+
+        childrenBigSmile = new RadialMenuItem("","");
+        childrenBigSmile.setDisplayIcon(R.drawable.big_smile);
+        childrenBigSmile
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Pause clope ?", "date");
+                    }
+                });
+
+        childrenHaha = new RadialMenuItem("","");
+        childrenHaha.setDisplayIcon(R.drawable.haha);
+        childrenHaha
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Pause clope ?", "date");
+                    }
+                });
+
+        childrenUpset = new RadialMenuItem("","");
+        childrenUpset.setDisplayIcon(R.drawable.upset);
+        childrenUpset
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Pause clope ?", "date");
+                    }
+                });
+
+        childrenCrying = new RadialMenuItem("","");
+        childrenCrying.setDisplayIcon(R.drawable.crying);
+        childrenCrying
+                .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
+                    @Override
+                    public void execute() {
+                        // Can edit based on preference. Also can add animations
+                        // here.
+                        dismissMenu();
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Pause clope ?", "date");
+                    }
+                });
+
         menuExpandSmiley = new RadialMenuItem("Smiley", "Smiley");
-        //menuSmiley.setMenuChildren(alertInfos);
+        childrenSmiley.add(childrenBigSmile);
+        childrenSmiley.add(childrenCute);
+        childrenSmiley.add(childrenEating);
+        childrenSmiley.add(childrenHaha);
+        childrenSmiley.add(childrenUpset);
+        childrenSmiley.add(childrenCrying);
+        menuExpandSmiley.setMenuChildren(childrenSmiley);
 
         menuCloseItem
                 .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {

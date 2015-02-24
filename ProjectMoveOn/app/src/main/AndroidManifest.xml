@@ -34,6 +34,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".provider.ProviderReceiver" />
         <service android:enabled="true" android:name=".provider.ProviderService" />
         <activity
             android:name=".LoginActivity"
