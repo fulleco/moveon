@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -21,7 +20,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,9 +40,7 @@ import com.application.moveon.map.FragmentMap;
 import com.application.moveon.menu.FragmentSettings;
 import com.application.moveon.profil.FragmentEditProfil;
 import com.application.moveon.profil.FragmentViewProfil;
-import com.application.moveon.rest.MoveOnService;
-import com.application.moveon.rest.RestClient;
-import com.application.moveon.rest.callback.UpdateFriends_Callback;
+import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.ImageHelper;
@@ -96,6 +92,16 @@ public class HomeActivity extends FragmentActivity {
     private Bitmap profilePicture;
 
     private SessionManager session;
+
+    private CerclePojo currentCercle;
+
+    public CerclePojo getCurrentCercle() {
+        return currentCercle;
+    }
+
+    public void setCurrentCercle(CerclePojo currentCercle) {
+        this.currentCercle = currentCercle;
+    }
 
     public Fragment getCurrentFragment() {
         return currentFragment;

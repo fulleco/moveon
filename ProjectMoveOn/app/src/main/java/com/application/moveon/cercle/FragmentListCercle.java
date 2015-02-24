@@ -2,6 +2,7 @@ package com.application.moveon.cercle;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import com.application.moveon.rest.callback.GetFriendsPicker_Callback;
 import com.application.moveon.session.SessionManager;
 
 /**
- * Created by suparjam on 19/02/2015.
+ * Created by Quentin Bitschene on 19/02/2015.
  */
 public class FragmentListCercle extends Fragment {
 
@@ -37,7 +38,7 @@ public class FragmentListCercle extends Fragment {
 
         RestClient r = new RestClient(true);
         MoveOnService mos = r.getApiService();
-        mos.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL),new GetCercles_Callback(getActivity(),list_cercles));
+        mos.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL),new GetCercles_Callback(getActivity(),list_cercles,(FragmentInfoCercle)getTargetFragment()));
 
         return view;
     }
@@ -50,7 +51,5 @@ public class FragmentListCercle extends Fragment {
         setRetainInstance(true);
 
         mInflater = LayoutInflater.from(getActivity());
-
-
     }
 }
