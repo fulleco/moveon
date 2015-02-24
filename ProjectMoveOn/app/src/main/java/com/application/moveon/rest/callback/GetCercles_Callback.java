@@ -42,7 +42,7 @@ public class GetCercles_Callback implements Callback<CerclePojo[]> {
     @Override
     public void success(CerclePojo[] cerclePojos, Response response) {
 
-        Log.d("QUENTIN", "BIEN JOUE BOBY");
+        Log.i("QUENTIN", "BIEN JOUE BOBY");
 
         if(cerclePojos == null) return;
         ArrayList<CerclePojo> datas = new ArrayList<CerclePojo>(Arrays.asList(cerclePojos));
@@ -77,7 +77,7 @@ public class GetCercles_Callback implements Callback<CerclePojo[]> {
     @Override
     public void failure(RetrofitError error) {
 
-        Log.d("QUENTIN", "CEST MOVAY  BOBY");
+        Log.i("QUENTIN", "CEST MOVAY  BOBY");
 
     }
 }

@@ -126,7 +126,7 @@ public class MoveOnDB {
         cp.setDate_debut(c.getString(COL_DATEDEBUT_NUMBER));
         cp.setDate_fin(c.getString(COL_DATEFIN_NUMBER));
         cp.setId_cercle(c.getInt(COL_ID_CERLCE_NUMBER));
-        cp.setId_creator(c.getInt(COL_ID_CREATOR_NUMBER));
+        cp.setId_creator(c.getString(COL_ID_CREATOR_NUMBER));
         cp.setRayon(c.getInt(COL_RAY_NUMBER));
         cp.setLatitude(c.getFloat(COL_LAT_NUMBER));
         cp.setLongitude(c.getFloat(COL_LONG_NUMBER));
