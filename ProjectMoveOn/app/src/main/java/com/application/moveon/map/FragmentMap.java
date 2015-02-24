@@ -32,7 +32,6 @@ import android.widget.Toast;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
-import com.application.moveon.model.Cercle;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.AddFriend_Callback;
@@ -153,7 +152,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         mSlidingPanel.setAnchorPoint(0.45f);
 
         // Cercle test
-        initMap(null);
+        initMap();
 
         return view;
     }
@@ -381,7 +380,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         //pieMenu.show(containerMenu);
     }
 
-    private void initMap(Cercle cercle){
+    private void initMap(){
 
         /*
 
