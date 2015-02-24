@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.util.Log;
 
 public class SQLiteDB extends SQLiteOpenHelper {
 
@@ -37,11 +38,11 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_FRIEND = "CREATE TABLE " + TABLE_FRIEND + " (" + COL_ID + " INTEGER PRIMARY KEY, "
                                 + COL_FIRSTNAME + " TEXT NOT NULL, " + COL_LASTNAME + " TEXT NOT NULL, " + COL_EMAIL + " TEXT NOT NULL, "
-                                + COL_IMAGE + " TEXT NOT NULL);";
+                                + COL_IMAGE + " TEXT NOT NULL); ";
 
     private static final String CREATE_TABLE_CERCLE = "CREATE TABLE " + TABLE_CERCLES + " (" + COL_ID_CERCLE + " INTEGER PRIMARY KEY, "
                                 + COL_ID_CREATOR + " INTEGER NOT NULL, " + COL_DATEDEBUT + " TEXT NOT NULL, " + COL_DATEFIN + "TEXT NOT NULL, " + COL_LAT
-                                + " REAL NOT NULL, " + COL_LONG + " REAL NOT NULL, " + COL_RAY + " INTEGER DEFAULT='1000');";
+                                + " REAL NOT NULL, " + COL_LONG + " REAL NOT NULL, " + COL_RAY + " INTEGER DEFAULT 1000); ";
 
     private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + TABLE_MESSAGES + " (" + COL_ID_MESSAGE + " INTEGER PRIMARY KEY, "
                                 +COL_ID_CERCLEM +" INTEGER NOT NULL, "+ COL_ID_SENDER + " INTEGER NOT NULL, " + COL_NAMESENDER + " TEXT NOT NULL, " + COL_CONTENT + " TEXT NOT NULL, "
@@ -58,13 +59,17 @@ public class SQLiteDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //on créé la table à partir de la requête écrite dans la variable CREATE_BDD
-        db.execSQL(CREATE_BDD);
+        Log.i("MOVEON DATABASE", "CREATION DE LA BASE DE DONNEES");
+        db.execSQL(CREATE_TABLE_FRIEND);
+        db.execSQL(CREATE_TABLE_CERCLE);
+        db.execSQL(CREATE_TABLE_MESSAGES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //On peut fait ce qu'on veut ici moi j'ai décidé de supprimer la table et de la recréer
         //comme ça lorsque je change la version les id repartent de 0
+        Log.i("MOVEON DATABASE", "MISE A JOUR DE LA BASE DE DONNEES");
         db.execSQL("DROP TABLE " + TABLE_FRIEND + "; DROP TABLE " + TABLE_MESSAGES + "; DROP TABLE " + TABLE_CERCLES + ";");
         onCreate(db);
     }

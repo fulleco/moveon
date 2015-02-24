@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -41,7 +42,11 @@ import com.application.moveon.map.FragmentMap;
 import com.application.moveon.menu.FragmentSettings;
 import com.application.moveon.profil.FragmentEditProfil;
 import com.application.moveon.profil.FragmentViewProfil;
+import com.application.moveon.rest.MoveOnService;
+import com.application.moveon.rest.RestClient;
+import com.application.moveon.rest.callback.UpdateFriends_Callback;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
 
@@ -58,6 +63,8 @@ public class HomeActivity extends FragmentActivity {
     private CharSequence mTitle;
     private String[] mDrawerArray;
     private Calendar c = Calendar.getInstance();
+    private MoveOnDB db;
+
 
 
     private FragmentMap fragmentMap = new FragmentMap();
@@ -141,9 +148,12 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        session = new SessionManager(this);
+
+
         tools = new com.application.moveon.tools.ToolBox(this);
 
-        session = new SessionManager(this);
+
 
         HashMap<String, String> userInfos = session.getUserDetails();
         String idUser = userInfos.get(SessionManager.KEY_ID);
