@@ -26,16 +26,26 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:text="Titre du cercle : "
+            android:text="Createur : "
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="30dp"/>
         <TextView
-            android:id="@+id/text_view"
+            android:id="@+id/text_view_createur"
             android:text="Je suis les infos cercle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="30dp"/>
     </LinearLayout>
+
+    <TextView
+        android:text="Participants : "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"/>
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

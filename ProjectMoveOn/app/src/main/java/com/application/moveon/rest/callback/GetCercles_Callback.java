@@ -21,11 +21,8 @@ import retrofit.client.Response;
  */
 public class GetCercles_Callback implements Callback<CerclePojo[]> {
 
-    private String id;
     private Activity activity;
-    //private UserAdapter adapter;
     private ListView list;
-    private ProgressDialog progressDialog;
     private ArrayList<CerclePojo> formatedata;
     private FragmentInfoCercle fragmentInfoCercle;
 
