@@ -5,11 +5,11 @@ import com.application.moveon.rest.callback.AnswerDemand_Callback;
 import com.application.moveon.rest.callback.CreateCircle_Callback;
 import com.application.moveon.rest.callback.EditUser_Callback;
 import com.application.moveon.rest.callback.GetCercles_Callback;
-import com.application.moveon.rest.callback.GetDemands_Callback;
 import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.rest.callback.GetParticipants_Callback;
 import com.application.moveon.rest.callback.Register_Callback;
 import com.application.moveon.rest.callback.UpdatePosition_Callback;
+import com.application.moveon.rest.modele.DemandsPojo;
 import com.application.moveon.rest.modele.UserPojo;
 
 
@@ -45,6 +45,9 @@ public interface MoveOnService {
     void selectuser(@Query("login") String login,
                     @Query("password") String password, Callback<UserPojo> cb);
 
+    @GET("/get_user")
+    void addfriendtodb(@Query("login") String login, Callback<UserPojo> cb);
+
     @FormUrlEncoded
     @POST("/update_user")
     void updateuser(@Field("firstname") String firstname,
@@ -73,7 +76,7 @@ public interface MoveOnService {
 
     @GET("/get_demands")
     void getdemands(@Query("login") String mail,
-                    GetDemands_Callback cb);
+                    Callback<DemandsPojo[]> cb);
     @FormUrlEncoded
     @POST("/answer_demand")
     void answerdemand(@Field("sender")String sender,

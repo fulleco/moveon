@@ -36,6 +36,14 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static final String COL_DATESEND="date";
     private static final String COL_SEEN = "seen";
 
+    private static final String TABLE_FRIENDDEMANDS = "Friendship";
+    private static final String COL_ID_DEMAND = "id_demand";
+    private static final String COL_IDSENDER = "id_sender";
+    private static final String COL_MAILSENDER = "mail_sender";
+    private static final String COL_NAMESENDERD = "name_sender";
+    private static final String COL_STATUS = "demand_status";
+    private static final String COL_IMAGESENDER = "image_sender";
+
     private static final String CREATE_TABLE_FRIEND = "CREATE TABLE " + TABLE_FRIEND + " (" + COL_ID + " INTEGER PRIMARY KEY, "
                                 + COL_FIRSTNAME + " TEXT NOT NULL, " + COL_LASTNAME + " TEXT NOT NULL, " + COL_EMAIL + " TEXT NOT NULL, "
                                 + COL_IMAGE + " TEXT NOT NULL); ";
@@ -48,9 +56,10 @@ public class SQLiteDB extends SQLiteOpenHelper {
                                 +COL_ID_CERCLEM +" INTEGER NOT NULL, "+ COL_ID_SENDER + " INTEGER NOT NULL, " + COL_NAMESENDER + " TEXT NOT NULL, " + COL_CONTENT + " TEXT NOT NULL, "
                                 + COL_DATESEND + " TEXT NOT NULL, " + COL_SEEN + "INTEGER NOT NULL );";
 
+    private static final String CREATE_TABLE_FRIENDDEMAND = "CREATE TABLE " + TABLE_FRIENDDEMANDS + " (" + COL_ID_DEMAND + " INTEGER PRIMARY KEY, "
+                                + COL_IDSENDER + " INTEGER NOT NULL, " + COL_MAILSENDER + " TEXT NOT NULL, " + COL_NAMESENDERD
+                                + " TEXT NOT NULL, " + COL_STATUS + " INTEGER NOT NULL, "+ COL_IMAGESENDER + " TEXT NOT NULL ); ";
 
-
-    private static final String CREATE_BDD = CREATE_TABLE_CERCLE + CREATE_TABLE_FRIEND + CREATE_TABLE_MESSAGES;
 
     public SQLiteDB(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -63,6 +72,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_FRIEND);
         db.execSQL(CREATE_TABLE_CERCLE);
         db.execSQL(CREATE_TABLE_MESSAGES);
+        db.execSQL(CREATE_TABLE_FRIENDDEMAND);
     }
 
     @Override
@@ -70,7 +80,10 @@ public class SQLiteDB extends SQLiteOpenHelper {
         //On peut fait ce qu'on veut ici moi j'ai décidé de supprimer la table et de la recréer
         //comme ça lorsque je change la version les id repartent de 0
         Log.i("MOVEON DATABASE", "MISE A JOUR DE LA BASE DE DONNEES");
-        db.execSQL("DROP TABLE " + TABLE_FRIEND + "; DROP TABLE " + TABLE_MESSAGES + "; DROP TABLE " + TABLE_CERCLES + ";");
+        db.execSQL("DROP TABLE " + TABLE_FRIEND + ";");
+        db.execSQL("DROP TABLE " + TABLE_MESSAGES + ";");
+        db.execSQL("DROP TABLE " + TABLE_CERCLES + ";");
+        db.execSQL("DROP TABLE " + TABLE_FRIENDDEMANDS + ";");
         onCreate(db);
     }
 

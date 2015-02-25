@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.application.moveon.model.MessagePojo;
 import com.application.moveon.rest.modele.CerclePojo;
+import com.application.moveon.rest.modele.DemandsPojo;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public class MoveOnDB {
 
-    private static final int VERSION_BDD = 4;
+    private static final int VERSION_BDD = 6;
     private static final String NOM_BDD = "moveon_";
     private static final String TAG = "MOVEON DATABASE";
 
@@ -68,6 +69,20 @@ public class MoveOnDB {
     private static final int COL_DATESEND_NUMBER = 5;
     private static final String COL_SEEN = "seen";
     private static final int COL_SEEN_NUMBER = 6;
+
+    private static final String TABLE_FRIENDDEMANDS = "Friendship";
+    private static final String COL_ID_DEMAND = "id_demand";
+    private static final int COL_ID_DEMAND_NUMBER = 0;
+    private static final String COL_IDSENDER = "id_sender";
+    private static final int COL_IDSENDER_NUMBER = 1;
+    private static final String COL_MAILSENDER = "mail_sender";
+    private static final int COL_MAILSENDER_NUMBER = 2;
+    private static final String COL_NAMESENDERD = "name_sender";
+    private static final int COL_NAMESENDERD_NUMBER =3;
+    private static final String COL_STATUS = "demand_status";
+    private static final int COL_STATUS_NUMBER = 4;
+    private static final String COL_IMAGESENDER = "image_sender";
+    private static final int COL_IMAGESENDER_NUMBER = 5;
 
     private SQLiteDatabase bdd;
     private SQLiteDB maBaseSQLite;
@@ -150,6 +165,39 @@ public class MoveOnDB {
         return mp;
     }
 
+    public DemandsPojo cursorToDemands(Cursor c){
+
+        DemandsPojo dp = new DemandsPojo();
+
+        dp.setId_demand(c.getInt(COL_ID_DEMAND_NUMBER));
+        dp.setId(c.getInt(COL_IDSENDER_NUMBER));
+        dp.setImagesender(c.getString(COL_IMAGESENDER_NUMBER));
+        dp.setMail(c.getString(COL_MAILSENDER_NUMBER));
+        dp.setStatus(c.getInt(COL_STATUS_NUMBER));
+        dp.setSender(c.getString(COL_NAMESENDERD_NUMBER));
+
+        return dp;
+
+    }
+
+    public  ArrayList<DemandsPojo> getDemands(){
+
+        ArrayList<DemandsPojo> ret = new ArrayList<DemandsPojo>();
+        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_FRIENDDEMANDS, null);
+        Log.i(TAG, "Loaded " + cursor.getCount() + " demands.");
+
+        if(verifyCursor(cursor)) {
+            while (!cursor.isAfterLast()) {
+                DemandsPojo dp = cursorToDemands(cursor);
+                ret.add(dp);
+                cursor.moveToNext();
+            }
+            Log.i(TAG, "Demands loaded successfully.");
+        }
+
+        return ret;
+    }
+
     public  ArrayList<UserPojo> getFriends(){
 
         ArrayList<UserPojo> ret = new ArrayList<UserPojo>();
@@ -167,6 +215,8 @@ public class MoveOnDB {
 
         return ret;
     }
+
+
     private boolean verifyCursor(Cursor c){
         if(c.getCount() == 0){
             return false;
@@ -191,6 +241,26 @@ public class MoveOnDB {
         return bdd.insert(TABLE_FRIEND, null, values);
     }
 
+    public long insertDemand(DemandsPojo dp){
+        //Création d'un ContentValues (fonctionne comme une HashMap)
+        ContentValues values = new ContentValues();
+
+        //on lui ajoute une valeur associé à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
+        values.put(COL_ID_DEMAND, dp.getId_demand());
+        values.put(COL_IDSENDER, dp.getId());
+        values.put(COL_MAILSENDER, dp.getMail());
+
+        if(dp.getImagesender() == null){
+            dp.setImagesender(" ");
+        }
+        values.put(COL_IMAGESENDER, dp.getImagesender());
+        values.put(COL_NAMESENDERD, dp.getSender());
+        values.put(COL_STATUS, dp.getStatus());
+
+        //on insère l'objet dans la BDD via le ContentValues
+        return bdd.insert(TABLE_FRIENDDEMANDS, null, values);
+    }
+
     public void updateFriends(ArrayList<UserPojo> upfromdb){
         ArrayList<UserPojo> cache = this.getFriends();
         for(UserPojo up : upfromdb){
@@ -206,9 +276,29 @@ public class MoveOnDB {
         }
     }
 
+    public void updateDemands(ArrayList<DemandsPojo> upfromdb){
+        ArrayList<DemandsPojo> cache = this.getDemands();
+        for(DemandsPojo dp : upfromdb){
+            if(!cache.contains(dp)){
+                cache.add(dp);
+                this.insertDemand(dp);
+            }
+        }
+        for(DemandsPojo dp : cache){
+            if(!upfromdb.contains(dp)){
+                this.deleteDemand(dp.getId_demand());
+            }
+        }
+    }
+
+    public boolean deleteDemand(int id)
+    {
+        return bdd.delete(TABLE_FRIENDDEMANDS, COL_ID_DEMAND + "=" + id, null) > 0;
+    }
+
     public boolean deleteFriend(String login)
     {
-        return bdd.delete(TABLE_FRIEND, COL_EMAIL + "=" + login, null) > 0;
+        return bdd.delete(TABLE_FRIEND, COL_EMAIL + "='" + login +"'", null) > 0;
     }
 
 

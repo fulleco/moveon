@@ -99,7 +99,7 @@ public class FragmentFriends extends Fragment {
                     progressDialog.hide();
                 }
                 else{
-                    mainmos.addfriend( session.getUserDetails().get(SessionManager.KEY_EMAIL), val, new AddFriend_Callback(activity, progressDialog));
+                    mainmos.addfriend( mail, val, new AddFriend_Callback(activity, progressDialog, val));
                 }
             }
         });
