@@ -124,16 +124,10 @@ public class RadialMenuHelper {
 	 */
 	protected void onCloseAnimation(View view, int xPosition, int yPosition,
 			int xSource, int ySource, final PopupWindow mWindow) {
-		//rotate = new RotateAnimation(360, 0, xPosition, yPosition);
 		scale = new ScaleAnimation(1, 0, 1, 0, xPosition, yPosition);
 		scale.setInterpolator(new AccelerateInterpolator());
-		//move = new TranslateAnimation(0, xSource - xPosition, 0, ySource
-		//		- yPosition);
-		// Setup the animation sequence
 		AnimationSet spriteAnimation = new AnimationSet(true);
-		spriteAnimation.addAnimation(rotate);
 		spriteAnimation.addAnimation(scale);
-		//spriteAnimation.addAnimation(move);
 		spriteAnimation.setDuration(animationSpeed);
         spriteAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override

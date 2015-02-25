@@ -21,6 +21,8 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
     private static View view;
     private TabHost mTabHost;
     private int mCurrentTab;
+    private FragmentInfoCercle fragmentInfoCercle;
+    private FragmentListCercle fragmentListCercle;
 
     public static final String TAB_INFO_CERCLE = "Infos cercle";
     public static final String TAB_LIST_CERCLE = "Liste cercle";
@@ -38,6 +40,12 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
         view = inflater.inflate(R.layout.fragment_sliding_menu, container, false);
 
         mTabHost = (TabHost) view.findViewById(android.R.id.tabhost);
+
+        fragmentInfoCercle = new FragmentInfoCercle();
+        fragmentListCercle = new FragmentListCercle();
+
+        fragmentListCercle.setTargetFragment(fragmentInfoCercle,0);
+
         setupTabs();
 
         return view;
@@ -59,11 +67,11 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
         if (fm.findFragmentByTag(tabId) == null) {
             if(tabId==TAB_INFO_CERCLE)
                 fm.beginTransaction()
-                        .replace(placeholder, new FragmentInfoCercle(), tabId)
+                        .replace(placeholder, fragmentInfoCercle, tabId)
                         .commit();
             if(tabId==TAB_LIST_CERCLE)
                 fm.beginTransaction()
-                        .replace(placeholder, new FragmentListCercle(), tabId)
+                        .replace(placeholder, fragmentListCercle, tabId)
                         .commit();
         }
     }

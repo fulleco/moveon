@@ -1288,11 +1288,9 @@ public class RadialMenuWidget extends View {
 	 * Dismisses the radial menu widget.
 	 */
 	public void dismiss() {
-        Log.i("ANTHO", "DISMISS");
 		if(mWindow != null) {
-            //helper.onCloseAnimation(this, xPosition, yPosition, xSource,
-             //       ySource, 500L);
-            //mWindow.dismiss();
+            helper.onCloseAnimation(this, xPosition, yPosition, xSource,
+                    ySource, 500L, mWindow);
         }
 	}
 }

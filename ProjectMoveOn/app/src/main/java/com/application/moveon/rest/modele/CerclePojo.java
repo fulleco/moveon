@@ -36,7 +36,13 @@ public class CerclePojo {
     @SerializedName("rayon")
     private int rayon;
 
-    public CerclePojo(int id_cercle, String id_creator, String titre, String date_debut, String date_fin, float latitude, float longitude, int rayon) {
+    @SerializedName("creator")
+    private UserPojo creator;
+
+    @SerializedName("participants")
+    private UserPojo[] participants;
+
+    public CerclePojo(int id_cercle, String id_creator, String titre, String date_debut, String date_fin, float latitude, float longitude, int rayon, UserPojo creator, UserPojo[] participants) {
         this.id_cercle = id_cercle;
         this.id_creator = id_creator;
         this.titre = titre;
@@ -45,6 +51,8 @@ public class CerclePojo {
         this.latitude = latitude;
         this.longitude = longitude;
         this.rayon = rayon;
+        this.creator = creator;
+        this.participants = participants;
     }
 
     public CerclePojo(){
@@ -113,5 +121,21 @@ public class CerclePojo {
 
     public void setId_cercle(int id_cercle) {
         this.id_cercle = id_cercle;
+    }
+
+    public UserPojo getCreator() {
+        return creator;
+    }
+
+    public void setCreator(UserPojo creator) {
+        this.creator = creator;
+    }
+
+    public UserPojo[] getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(UserPojo[] participants) {
+        this.participants = participants;
     }
 }

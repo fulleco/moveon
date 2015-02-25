@@ -1,13 +1,16 @@
 package com.application.moveon.cercle;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.UserPojo;
@@ -16,17 +19,19 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
- * Created by Hugo on 13/01/2015.
+ * Created by Quentin Bitschene on 13/01/2015.
  */
-public class CercleAdapter extends BaseAdapter {
+public class ListCercleAdapter extends BaseAdapter {
 
     private ArrayList<CerclePojo> list = new ArrayList<CerclePojo>();
     private Context context;
+    private FragmentInfoCercle fragmentInfoCercle;
 
 
-    public CercleAdapter(ArrayList<CerclePojo> list, Context context) {
+    public ListCercleAdapter(ArrayList<CerclePojo> list, Context context, FragmentInfoCercle fragmentInfoCercle) {
         this.list = list;
         this.context = context;
+        this.fragmentInfoCercle = fragmentInfoCercle;
     }
 
     @Override
@@ -50,12 +55,24 @@ public class CercleAdapter extends BaseAdapter {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.layout_userlist, null);
+            view = inflater.inflate(R.layout.layout_cerclelist, null);
         }
-        CerclePojo us = list.get(position);
+
+        final CerclePojo cerclePojo = list.get(position);
         //Handle TextView and display string from your list
         TextView listItemText = (TextView) view.findViewById(R.id.label);
-        listItemText.setText(us.getTitre());
+        listItemText.setText(cerclePojo.getTitre());
+
+
+        LinearLayout linear_cercle_list = (LinearLayout) view.findViewById(R.id.linear_cercle_list);
+        linear_cercle_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ((HomeActivity) fragmentInfoCercle.getActivity()).setCurrentCercle(cerclePojo);
+                fragmentInfoCercle.updateContent();
+            }
+        });
 
         return view;
     }
