@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.application.moveon.rest.MoveOnService;
+import com.application.moveon.rest.RestClient;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -16,25 +19,43 @@ public class AnswerDemand_Callback implements Callback<Boolean> {
 
     private Context c;
     private ProgressDialog p;
+    private String iduser;
+    private boolean adding;
 
-    public AnswerDemand_Callback(Context c, ProgressDialog p){
+    public AnswerDemand_Callback(Context c, ProgressDialog p, String iduser, boolean adding){
 
         this.c = c;
         this.p = p;
+        this.iduser = iduser;
+        this. adding = adding;
     }
     @Override
     public void success(Boolean aBoolean, Response response) {
         if(aBoolean){
-            Toast.makeText(c, "Réponse envoyée", Toast.LENGTH_SHORT);
-            p.hide();
+            makeAToast( "Réponse envoyée");
+            if(adding){
+                MoveOnService mos = new RestClient(true).getApiService();
+                mos.getfriends(iduser, new UpdateFriends_Callback());
+            }
+
+
         }else{
-            Toast.makeText(c, "Problème lors de l'envoie de la réponse", Toast.LENGTH_SHORT);
-            p.hide();
+            makeAToast("Problème lors de l'envoie de la réponse");
         }
     }
 
     @Override
     public void failure(RetrofitError error) {
-        Toast.makeText(c, "Impossible de se connecter au serveur", Toast.LENGTH_SHORT);
+        makeAToast("Impossible de se connecter au serveur");
+    }
+
+    private void makeAToast(final String message){
+        ((Activity)c).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(c, message, Toast.LENGTH_SHORT).show();
+                p.hide();
+            }
+        });
     }
 }
