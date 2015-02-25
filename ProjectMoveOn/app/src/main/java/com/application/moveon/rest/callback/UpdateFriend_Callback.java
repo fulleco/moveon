@@ -1,6 +1,7 @@
 package com.application.moveon.rest.callback;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 
 import com.application.moveon.rest.modele.UserPojo;
@@ -15,9 +16,9 @@ import retrofit.client.Response;
  */
 public class UpdateFriend_Callback implements Callback<UserPojo> {
 
-    private Activity a;
+    private Context a;
 
-    public UpdateFriend_Callback(Activity a) {
+    public UpdateFriend_Callback(Context a) {
         this.a = a;
     }
 
@@ -33,7 +34,7 @@ public class UpdateFriend_Callback implements Callback<UserPojo> {
     }
 
     private void makeAToast(final String message){
-        a.runOnUiThread(new Runnable() {
+        ((Activity)a).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(a, message, Toast.LENGTH_SHORT ).show();

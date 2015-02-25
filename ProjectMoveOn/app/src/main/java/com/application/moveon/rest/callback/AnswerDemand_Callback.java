@@ -35,7 +35,7 @@ public class AnswerDemand_Callback implements Callback<Boolean> {
             makeAToast( "Réponse envoyée");
             if(adding){
                 MoveOnService mos = new RestClient(true).getApiService();
-                mos.getfriends(iduser, new UpdateFriends_Callback());
+                mos.addfriendtodb(iduser, new UpdateFriend_Callback(c));
             }
 
 
