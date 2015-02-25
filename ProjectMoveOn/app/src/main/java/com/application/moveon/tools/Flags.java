@@ -13,6 +13,7 @@ import com.application.moveon.HomeActivity;
 public class Flags {
 
     private static boolean friendflag = false;
+    private static boolean demandflag = false;
     private static boolean circleflag = false;
     private static boolean messageflag = false;
 
@@ -27,18 +28,18 @@ public class Flags {
         Flags.friendflag = friendflag;
     }
 
+    public static void setDemandflag(boolean demandflag){Flags.demandflag = demandflag;}
 
     public static void setCircleflag(boolean circleflag) {
         Flags.circleflag = circleflag;
     }
-
 
     public static void setMessageflag(boolean messageflag) {
         Flags.messageflag = messageflag;
     }
 
     public static void checkupdate(){
-        if(friendflag){
+        if(friendflag && demandflag){
 
             Intent i = new Intent(_context, HomeActivity.class);
 
@@ -49,6 +50,9 @@ public class Flags {
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             _context.startActivity(i);
+
+            ((Activity) _context).finish();
+
 
         }
     }

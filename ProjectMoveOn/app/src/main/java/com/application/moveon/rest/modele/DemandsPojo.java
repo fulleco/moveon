@@ -10,11 +10,14 @@ import org.parceler.Parcel;
 @Parcel
 public class DemandsPojo implements Comparable<DemandsPojo>{
 
+    @SerializedName("id_demand")
+    private int id_demand;
+
     @SerializedName("sender")
     private String sender;
 
     @SerializedName("id")
-    private String id;
+    private int id;
 
     @SerializedName("mail")
     private String mail;
@@ -34,11 +37,11 @@ public class DemandsPojo implements Comparable<DemandsPojo>{
         this.sender = sender;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -61,5 +64,21 @@ public class DemandsPojo implements Comparable<DemandsPojo>{
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public int getId_demand() {
+        return id_demand;
+    }
+
+    public void setId_demand(int id_demand) {
+        this.id_demand = id_demand;
+    }
+
+    public String getImagesender() {
+        return imagesender;
+    }
+
+    public void setImagesender(String imagesender) {
+        this.imagesender = imagesender;
     }
 }

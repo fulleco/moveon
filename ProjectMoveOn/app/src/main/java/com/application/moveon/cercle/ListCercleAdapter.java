@@ -12,8 +12,13 @@ import android.widget.TextView;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
+import com.application.moveon.rest.MoveOnService;
+import com.application.moveon.rest.RestClient;
+import com.application.moveon.rest.callback.GetCercles_Callback;
+import com.application.moveon.rest.callback.GetParticipants_Callback;
 import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.UserPojo;
+import com.application.moveon.session.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,6 +31,7 @@ public class ListCercleAdapter extends BaseAdapter {
     private ArrayList<CerclePojo> list = new ArrayList<CerclePojo>();
     private Context context;
     private FragmentInfoCercle fragmentInfoCercle;
+    private SessionManager session;
 
 
     public ListCercleAdapter(ArrayList<CerclePojo> list, Context context, FragmentInfoCercle fragmentInfoCercle) {
@@ -69,8 +75,18 @@ public class ListCercleAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
 
+                //TODO get la liste des participants
+                session = new SessionManager(fragmentInfoCercle.getActivity());
+
+                RestClient r = new RestClient(true);
+                MoveOnService mos = r.getApiService();
                 ((HomeActivity) fragmentInfoCercle.getActivity()).setCurrentCercle(cerclePojo);
-                fragmentInfoCercle.updateContent();
+                mos.getParticipants(String.valueOf(cerclePojo.getId_cercle()),new GetParticipants_Callback(fragmentInfoCercle.getActivity(),fragmentInfoCercle.getListViewParticipants(),fragmentInfoCercle));
+
+
+
+
+                //fragmentInfoCercle.updateContent();
             }
         });
 

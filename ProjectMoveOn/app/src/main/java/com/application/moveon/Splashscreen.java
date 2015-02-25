@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
+import com.application.moveon.rest.callback.UpdateDemands_Callback;
 import com.application.moveon.rest.callback.UpdateFriends_Callback;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
@@ -29,8 +30,9 @@ public class Splashscreen extends Activity {
         db.initialize(this.getBaseContext(),session.getUserDetails().get(SessionManager.KEY_EMAIL));
         db.open();
 
-        Flags.initialize(this.getBaseContext());
+        Flags.initialize(this);
         MoveOnService mos = new RestClient(true).getApiService();
         mos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL),new UpdateFriends_Callback());
+        mos.getdemands(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateDemands_Callback());
     }
 }
