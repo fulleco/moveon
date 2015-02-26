@@ -33,6 +33,12 @@ public class UserPojo implements Comparable<UserPojo>{
     @SerializedName("imageprofile")
     private String imageprofile;
 
+    @SerializedName("latitude")
+    private String latitude;
+
+    @SerializedName("longitude")
+    private String longitude;
+
     public int compareTo(UserPojo o) {
         return this.getFirstname().compareTo(o.getFirstname());
     }
@@ -41,6 +47,7 @@ public class UserPojo implements Comparable<UserPojo>{
     public boolean equals(Object o){
         return o.getClass().equals(UserPojo.class) && ((UserPojo) o).getLogin().equals(this.getLogin());
     }
+
     public String getFirstname() {
         return firstname;
     }
@@ -89,5 +96,19 @@ public class UserPojo implements Comparable<UserPojo>{
         this.id_client = id_client;
     }
 
+    public String getLatitude() {
+        return latitude;
+    }
 
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
 }

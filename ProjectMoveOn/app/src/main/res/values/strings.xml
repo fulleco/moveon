@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">MoveOn</string>
+    <string name="action_point">Ajouter point</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_login">Connexion à MoveOn</string>

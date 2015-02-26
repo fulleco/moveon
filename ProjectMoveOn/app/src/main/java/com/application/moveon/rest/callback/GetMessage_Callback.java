@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -56,12 +57,13 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
         intent.putExtra("CIRCLE", m.getId_circle());
 
         Intent intentOk = new Intent(context, ProviderReceiver.class);
-        intent.putExtra("SENDER", m.getId_sender());
-        intent.putExtra("RECEIVER", m.getId_receiver());
-        intent.putExtra("CIRCLE", m.getId_circle());
-        intent.setAction(OK_ACTION);
+        intentOk.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        intentOk.putExtra("SENDER", m.getId_sender());
+        intentOk.putExtra("RECEIVER", m.getId_receiver());
+        intentOk.putExtra("CIRCLE", m.getId_circle());
+        intentOk.setAction(OK_ACTION);
 
-        PendingIntent pIntentOk = PendingIntent.getBroadcast(context, 0,
+        PendingIntent pIntentOk = PendingIntent.getBroadcast(context, 1,
                 intentOk, 0);
 
         // intent.putExtra("mail", email);
@@ -82,7 +84,8 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
         noti = new Notification.Builder(context).setContentTitle(title)
                 .setContentText(text.toString())
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setTicker("MoveOn !")
+                .setTicker("MoveOn")
+                .setWhen((new Date()).getTime())
                 .setContentIntent(pIntent)
                 .addAction(R.drawable.holo_map, "Voir la carte", pIntent)
                 .addAction(R.drawable.holo_check, "Ok", pIntentOk);
@@ -97,9 +100,9 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
         notification.flags = Notification.DEFAULT_LIGHTS
                 | Notification.FLAG_AUTO_CANCEL;
 
-        if (!text.toString().equals("") && !text.toString().equals(null)) {
-            notifManager.notify(0, notification);
-        }
+        //if (!text.toString().equals("") && !text.toString().equals(null)) {
+            notifManager.notify(Integer.valueOf(m.getId_sender()), notification);
+        //}
     }
 
     @Override

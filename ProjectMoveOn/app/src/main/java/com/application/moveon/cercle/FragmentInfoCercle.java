@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -22,15 +23,21 @@ import org.w3c.dom.Text;
 public class FragmentInfoCercle extends Fragment {
 
     private static View view;
-    private TextView textView;
+
     private LayoutInflater mInflater;
+
+    private TextView textViewTitre;
+    private TextView textViewCreateur;
+    private ListView listViewParticipants;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_infos_cercle, container, false);
-        textView = (TextView) view.findViewById(R.id.text_view_titre);
+        textViewTitre = (TextView) view.findViewById(R.id.text_view_titre);
+        textViewCreateur = (TextView) view.findViewById(R.id.text_view_createur);
+        listViewParticipants = (ListView) view.findViewById(R.id.list_view);
 
         return view;
     }
@@ -52,7 +59,17 @@ public class FragmentInfoCercle extends Fragment {
         if(currentCercle==null)
             return;
 
-        textView.setText(currentCercle.getTitre());
+        textViewTitre.setText(currentCercle.getTitre());
+        textViewCreateur.setText(currentCercle.getCreator().getFirstname()+ " " + currentCercle.getCreator().getLastname());
 
+
+    }
+
+    public ListView getListViewParticipants() {
+        return listViewParticipants;
+    }
+
+    public void setListViewParticipants(ListView listViewParticipants) {
+        this.listViewParticipants = listViewParticipants;
     }
 }

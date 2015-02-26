@@ -43,7 +43,6 @@ public class ProviderService extends Service implements LocationListener {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.i("ANTHO", "bind");
         return null;
     }
 
