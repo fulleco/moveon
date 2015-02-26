@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
+import com.application.moveon.rest.callback.UpdateCirlces_Callback;
 import com.application.moveon.rest.callback.UpdateDemands_Callback;
 import com.application.moveon.rest.callback.UpdateFriends_Callback;
 import com.application.moveon.session.SessionManager;
@@ -34,5 +35,6 @@ public class Splashscreen extends Activity {
         MoveOnService mos = new RestClient(true).getApiService();
         mos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL),new UpdateFriends_Callback());
         mos.getdemands(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateDemands_Callback());
+        mos.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateCirlces_Callback());
     }
 }

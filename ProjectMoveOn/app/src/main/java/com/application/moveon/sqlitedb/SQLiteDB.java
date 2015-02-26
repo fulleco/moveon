@@ -18,6 +18,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static final String COL_EMAIL = "email";
     private static final String COL_IMAGE = "imageprofile";
 
+
     public static final String TABLE_CERCLES = "Cercle";
     private static final String COL_ID_CERCLE = "id_cercle";
     private static final String COL_ID_CREATOR = "id_creator";
@@ -84,6 +85,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE " + TABLE_MESSAGES + ";");
         db.execSQL("DROP TABLE " + TABLE_CERCLES + ";");
         db.execSQL("DROP TABLE " + TABLE_FRIENDDEMANDS + ";");
+
         onCreate(db);
     }
 

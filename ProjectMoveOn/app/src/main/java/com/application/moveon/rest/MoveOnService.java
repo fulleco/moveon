@@ -9,6 +9,7 @@ import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.rest.callback.GetParticipants_Callback;
 import com.application.moveon.rest.callback.Register_Callback;
 import com.application.moveon.rest.callback.UpdatePosition_Callback;
+import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.DemandsPojo;
 import com.application.moveon.rest.modele.UserPojo;
 
@@ -26,7 +27,7 @@ import retrofit.http.Query;
 public interface MoveOnService {
 
     @GET("/get_cercles")
-    void getCercles(@Query("login") String id, GetCercles_Callback cb);
+    void getCercles(@Query("login") String id, Callback<CerclePojo[]> cb);
 
     @GET("/get_participants")
     void getParticipants(@Query("id_cercle") String id, GetParticipants_Callback cb);
