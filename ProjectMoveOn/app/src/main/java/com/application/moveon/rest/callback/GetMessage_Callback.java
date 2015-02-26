@@ -100,9 +100,9 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
         notification.flags = Notification.DEFAULT_LIGHTS
                 | Notification.FLAG_AUTO_CANCEL;
 
-        //if (!text.toString().equals("") && !text.toString().equals(null)) {
+        if (!text.toString().equals("") && !text.toString().equals(null)) {
             notifManager.notify(Integer.valueOf(m.getId_sender()), notification);
-        //}
+        }
     }
 
     @Override

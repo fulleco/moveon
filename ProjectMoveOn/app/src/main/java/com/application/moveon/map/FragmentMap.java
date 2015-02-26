@@ -16,6 +16,7 @@ import android.location.LocationManager;
 import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.InflateException;
@@ -41,6 +42,8 @@ import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.AddFriend_Callback;
 import com.application.moveon.rest.callback.AddMessage_Callback;
+import com.application.moveon.rest.modele.CerclePojo;
+import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ImageHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -54,10 +57,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.application.moveon.menu.v1.RadialMenuItem;
 import com.application.moveon.menu.v1.RadialMenuWidget;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by damota on 10/12/2014.
@@ -67,6 +77,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     private GoogleMap map;
     private MarkerOptions markerOptions;
     private LatLng locationMap;
+    private HashMap<Marker, UserPojo> markers;
 
     private Double finalLatitude = 0.0;
     private Double finalLongitude = 0.0;
@@ -115,6 +126,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     private SessionManager session;
 
+    private HomeActivity homeActivity;
+
     private boolean placePoint = false;
 
     private Marker selectedMarker = null;
@@ -135,6 +148,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         /* map is already there, just return view as it is */
         }
 
+        homeActivity = (HomeActivity) getActivity();
+
         containerMenu = (FrameLayout) view.findViewById(R.id.containerMenu);
 
         session = new SessionManager(getActivity());
@@ -152,21 +167,22 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         activity = (FragmentActivity)getActivity();
 
+        markers = new HashMap<Marker, UserPojo>();
+
         // Recuperer le fragment de la map
         supportMapFragment = (SupportMapFragment) activity.getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
         // Recuperer la map
         map = supportMapFragment.getMap();
-        fMap = (View)view.findViewById(R.id.map);
-        //new LoadMapTask().execute();
+        fMap = view.findViewById(R.id.map);
 
         mSlidingPanel = (SlidingUpPanelLayout) view
                 .findViewById(R.id.sliding_layout);
         mSlidingPanel.setAnchorPoint(0.45f);
 
-        // Cercle test
         initMap();
+        initCercle();
 
         return view;
     }
@@ -261,7 +277,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.;
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "T'es où ?", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "T'es où ?", "date");
                     }
                 });
 
@@ -273,7 +289,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Ça va ?", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "Ça va ?", "date");
                     }
                 });
 
@@ -291,7 +307,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage("1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "J'arrive !", "J'arrive !");
+                        sendMessage("1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "J'arrive !", "J'arrive !");
                     }
                 });
 
@@ -304,7 +320,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Je suis en retard !", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "Je suis en retard !", "date");
                     }
                 });
 
@@ -317,7 +333,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Je suis perdu...", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "Je suis perdu...", "date");
                     }
                 });
 
@@ -330,7 +346,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Je suis perdu...", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "Je suis perdu...", "date");
                     }
                 });
 
@@ -350,7 +366,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Je pars !", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "Je pars !", "date");
                     }
                 });
 
@@ -363,7 +379,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Rejoins-moi", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "Rejoins-moi", "date");
                     }
                 });
 
@@ -376,7 +392,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "J'ai besoin d'aide !", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "J'ai besoin d'aide !", "date");
                     }
                 });
 
@@ -389,7 +405,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Pause clope ?", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "Pause clope ?", "date");
                     }
                 });
 
@@ -409,7 +425,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID), "Pause clope ?", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(), "Pause clope ?", "date");
                     }
                 });
 
@@ -422,7 +438,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID),
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(),
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous a envoyé un smiley", "date");
                     }
                 });
@@ -436,7 +452,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID),
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(),
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous a envoyé un smiley", "date");
                     }
                 });
@@ -450,7 +466,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID),
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(),
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous a envoyé un smiley", "date");
                     }
                 });
@@ -464,7 +480,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID),
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(),
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous a envoyé un smiley", "date");
                     }
                 });
@@ -478,7 +494,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_ID),
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), markers.get(selectedMarker).getLogin(),
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous a envoyé un smiley", "date");
                     }
                 });
@@ -496,24 +512,15 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                 .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
                     @Override
                     public void execute() {
-                        // menuLayout.removeAllsViews();
                         dismissMenu(pieMenu);
                     }
                 });
 
-        // pieMenu.setDismissOnOutsideClick(true, menuLayout);
-        //pieMenu.setAnimationSpeed(1000L);
-        //pieMenu.setTextColor(Color.WHITE, 1000);
-        //pieMenu.setSourceLocation(30, 60);
         pieMenu.setIconSize(15, 30);
         pieMenu.setTextSize(15);
-        //pieMenu.setOutlineColor(Color.WHITE, 225);
-        //pieMenu.setInnerRingColor(Color.RED, 220);
         pieMenu.setInnerRingShader(shaderBmp, 190);
         pieMenu.setOuterRingShader(shaderOuterBmp, 240);
         pieMenu.setTextColor(Color.WHITE, 255);
-        //pieMenu.setOuterRingShader(shaderBmp, 160);
-        //pieMenu.setOuterRingColor(Color.WHITE, 220);
         pieMenu.setHeader("Anthony Da Mota", 20);
         pieMenu.setCenterCircle(menuCloseItem);
         pieMenu.addMenuEntry(new ArrayList<RadialMenuItem>() {
@@ -550,22 +557,17 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         locationManager.requestLocationUpdates(provider, 20000, 0, this);*/
 
-        // Location myLocation = map.getMyLocation();
         Location myLocation = getLocation();
         LatLng myLocationLatlng = new LatLng(myLocation.getLatitude(),
                 myLocation.getLongitude());
 
         markerOptions = new MarkerOptions();
         markerOptions.position(myLocationLatlng);
-        //BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
-        //        .defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-        //markerOptions.icon(bitmapDescriptor);
 
-        HomeActivity h = (HomeActivity)getActivity();
-        Bitmap b = h.getProfilePicture();
+        Bitmap b = homeActivity.getProfilePicture();
 
-        if(b==null){
-            b= BitmapFactory.decodeResource(getResources(),
+        if (b == null) {
+            b = BitmapFactory.decodeResource(getResources(),
                     R.drawable.profile_test);
         }
 
@@ -577,37 +579,9 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         profilePicture.setImageBitmap(b_resized);
 
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
-
-        //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(b_resized));
-        // Specifies the anchor to be at a particular point in the marker image.
-        //markerOptions.anchor(0.5f, 1);
-
-        markerOptions.title("Anthony Da Mota");
+        markerOptions.title("Moi");
         map.addMarker(markerOptions);
         map.animateCamera(CameraUpdateFactory.newLatLng(myLocationLatlng), 200, null);
-
-        // TEST
-        LatLng myLocationLatlng2 = new LatLng(myLocation.getLatitude()+1,
-                myLocation.getLongitude()+5);
-
-        markerOptions.position(myLocationLatlng2);
-        markerOptions.title("Anthony Da Mota");
-
-        map.addMarker(markerOptions);
-
-        circle = new CircleOptions();
-
-        // 55 represents percentage of transparency. For 100% transparency,
-        // specify 00.
-        // For 0% transparency ( ie, opaque ) , specify ff
-        // The remaining 6 characters(00ff00) specify the fill color
-        circle.fillColor(0x5500ff00);
-        circle.strokeWidth(2);
-        circle.center(myLocationLatlng);
-        circle.radius(radius*1000);
-
-        map.addCircle(circle);
-        map.setOnMarkerClickListener(this);
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -623,6 +597,59 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
             }
         });
 
+    }
+
+    public void initCercle() {
+
+        CerclePojo cercle = homeActivity.getCurrentCercle();
+        if(cercle != null){
+
+            markers.clear();
+
+            for(UserPojo u : cercle.getParticipants()) {
+
+                if (u.getLogin() != session.getUserDetails().get(SessionManager.KEY_EMAIL)) {
+
+                    LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
+                            Double.parseDouble(u.getLongitude()));
+
+                    String image = u.getImageprofile();
+
+                    URL url = null;
+                    Bitmap b = null;
+                    Bitmap b_rounded;
+                    Bitmap b_resized;
+                    try {
+                        url = new URL(image);
+                        b = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (b == null) {
+                        b = BitmapFactory.decodeResource(getResources(),
+                                R.drawable.profile_test);
+                    }
+
+                    b_rounded = ImageHelper.getRoundedCornerBitmap(b, 1000, 0);
+                    b_resized = Bitmap.createScaledBitmap(b_rounded, 60, 60, false);
+
+                    View marker_layout = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
+                    ImageView profilePicture = (ImageView) marker_layout.findViewById(R.id.profile_picture);
+
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
+
+                    markerOptions.position(lastLngUser);
+                    markerOptions.title(u.getFirstname() + " " + u.getLastname());
+
+                    Marker m = map.addMarker(markerOptions);
+                    markers.put(m, u);
+                    map.setOnMarkerClickListener(this);
+                }
+            }
+        }
     }
 
     @Override
@@ -642,10 +669,13 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
             public void onFinish()
             {
                 map.getUiSettings().setScrollGesturesEnabled(true);
+                selectedMarker = marker;
                 if(marker.getTitle().equals("Point de rencontre")) {
-                    selectedMarker = marker;
                     showMenu(pointMenu);
                 }else{
+                    UserPojo userSelected = markers.get(marker);
+                    if(userSelected!=null)
+                        pieMenu.setHeader(userSelected.getFirstname()+ " " + userSelected.getLastname(), 20);
                     showMenu(pieMenu);
                 }
             }

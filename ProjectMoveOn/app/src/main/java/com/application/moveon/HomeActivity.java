@@ -212,15 +212,15 @@ public class HomeActivity extends FragmentActivity {
 
 
 
-        fragmentMap = new FragmentMap();
+        setFragmentMap(new FragmentMap());
         fragmentLocationChooser = new FragmentLocationChooser();
         fragmentLocationChooser.setTargetFragment(fragmentCreateCercle,1);
         fragmentManager = getFragmentManager();
 
         fragmentManager.beginTransaction()
-                .add(R.id.content_frame, fragmentMap)
+                .add(R.id.content_frame, getFragmentMap())
                 .commit();
-        currentFragment = fragmentMap;
+        currentFragment = getFragmentMap();
 
 
     }
@@ -291,6 +291,13 @@ public class HomeActivity extends FragmentActivity {
         this.fragmentFriendDemands = fragmentFriendDemands;
     }
 
+    public FragmentMap getFragmentMap() {
+        return fragmentMap;
+    }
+
+    public void setFragmentMap(FragmentMap fragmentMap) {
+        this.fragmentMap = fragmentMap;
+    }
 
 
     /* The click listner for ListView in the navigation drawer */
@@ -339,7 +346,7 @@ public class HomeActivity extends FragmentActivity {
         switch (position){
             case MAP_INDEX :
                 itemPlacePoint.setVisible(true);
-                switchFragment(fragmentMap);
+                switchFragment(getFragmentMap());
                 break;
 
             case VIEW_PROFIL_INDEX :
@@ -374,7 +381,7 @@ public class HomeActivity extends FragmentActivity {
                 itemPlacePoint.setVisible(false);
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .hide(fragmentMap)
+                        .hide(getFragmentMap())
                         .commit();
                 break;
 
@@ -414,7 +421,7 @@ public class HomeActivity extends FragmentActivity {
         if(currentFragment.getClass() == newFragment.getClass())
             return;
 
-        if(currentFragment.getClass() == fragmentMap.getClass()) {
+        if(currentFragment.getClass() == getFragmentMap().getClass()) {
             fragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                     .hide(currentFragment)
@@ -422,12 +429,12 @@ public class HomeActivity extends FragmentActivity {
                     .commit();
         }
         else {
-            if(newFragment.getClass() == fragmentMap.getClass())
+            if(newFragment.getClass() == getFragmentMap().getClass())
             {
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                         .remove(currentFragment)
-                        .show(fragmentMap)
+                        .show(getFragmentMap())
                         .commit();
             }
             else {
