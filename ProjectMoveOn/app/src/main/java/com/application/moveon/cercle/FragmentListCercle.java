@@ -26,7 +26,6 @@ public class FragmentListCercle extends Fragment {
 
     SessionManager session;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
