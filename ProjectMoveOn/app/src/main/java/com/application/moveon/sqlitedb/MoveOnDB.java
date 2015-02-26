@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MoveOnDB {
 
-    private static final int VERSION_BDD = 6;
+    private static final int VERSION_BDD = 8;
     private static final String NOM_BDD = "moveon_";
     private static final String TAG = "MOVEON DATABASE";
 
@@ -143,10 +143,25 @@ public class MoveOnDB {
         cp.setId_cercle(c.getInt(COL_ID_CERLCE_NUMBER));
         cp.setId_creator(c.getString(COL_ID_CREATOR_NUMBER));
         cp.setRayon(c.getInt(COL_RAY_NUMBER));
-        cp.setLatitude(c.getFloat(COL_LAT_NUMBER));
-        cp.setLongitude(c.getFloat(COL_LONG_NUMBER));
+        cp.setLatitude(c.getDouble(COL_LAT_NUMBER));
+        cp.setLongitude(c.getDouble(COL_LONG_NUMBER));
 
         return cp;
+    }
+
+    public long insertCercle(CerclePojo cp){
+        //Création d'un ContentValues (fonctionne comme une HashMap)
+        ContentValues values = new ContentValues();
+
+        values.put(COL_DATEDEBUT, cp.getDate_debut());
+        values.put(COL_DATEFIN, cp.getDate_fin());
+        values.put(COL_ID_CERCLE, cp.getId_cercle());
+        values.put(COL_ID_CREATOR, cp.getId_creator());
+        values.put(COL_LAT, cp.getLatitude());
+        values.put(COL_LONG, cp.getLongitude());
+        values.put(COL_RAY, cp.getRayon());
+
+        return bdd.insert(TABLE_CERCLES, null, values);
     }
 
     public  MessagePojo cursorToMessage(Cursor c){
@@ -198,6 +213,40 @@ public class MoveOnDB {
         return ret;
     }
 
+    public ArrayList<CerclePojo> getCircles(){
+        ArrayList<CerclePojo> ret = new ArrayList<CerclePojo>();
+        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_CERCLES, null);
+        Log.i(TAG, "Loaded " + cursor.getCount() + " circles.");
+
+        if(verifyCursor(cursor)) {
+            while (!cursor.isAfterLast()) {
+                CerclePojo cp = cursorToCercle(cursor);
+                ret.add(cp);
+                cursor.moveToNext();
+            }
+            Log.i(TAG, "Circles loaded successfully.");
+        }
+
+        return ret;
+    }
+
+    public ArrayList<CerclePojo> getMyCircles(String iduser){
+        ArrayList<CerclePojo> ret = new ArrayList<CerclePojo>();
+        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_CERCLES + "WHERE " + COL_ID_CREATOR + "=" + iduser, null);
+        Log.i(TAG, "Loaded " + cursor.getCount() + " of my circles.");
+
+        if(verifyCursor(cursor)) {
+            while (!cursor.isAfterLast()) {
+                CerclePojo cp = cursorToCercle(cursor);
+                ret.add(cp);
+                cursor.moveToNext();
+            }
+            Log.i(TAG, "My circles loaded successfully.");
+        }
+
+        return ret;
+    }
+
     public  ArrayList<UserPojo> getFriends(){
 
         ArrayList<UserPojo> ret = new ArrayList<UserPojo>();
@@ -241,6 +290,7 @@ public class MoveOnDB {
         return bdd.insert(TABLE_FRIEND, null, values);
     }
 
+
     public long insertDemand(DemandsPojo dp){
         //Création d'un ContentValues (fonctionne comme une HashMap)
         ContentValues values = new ContentValues();
@@ -276,6 +326,23 @@ public class MoveOnDB {
         }
     }
 
+    public void updateCircles(ArrayList<CerclePojo> upfromdb){
+        ArrayList<CerclePojo> cache = this.getCircles();
+        for(CerclePojo cp : upfromdb){
+            if(!cache.contains(cp)){
+                cache.add(cp);
+                this.insertCercle(cp);
+            }
+        }
+        for(CerclePojo cp : cache){
+            if(!upfromdb.contains(cp)){
+                this.deleteCircle(cp.getId_cercle());
+            }
+        }
+    }
+
+
+
     public void updateDemands(ArrayList<DemandsPojo> upfromdb){
         ArrayList<DemandsPojo> cache = this.getDemands();
         for(DemandsPojo dp : upfromdb){
@@ -298,8 +365,14 @@ public class MoveOnDB {
 
     public boolean deleteFriend(String login)
     {
-        return bdd.delete(TABLE_FRIEND, COL_EMAIL + "='" + login +"'", null) > 0;
+        return bdd.delete(TABLE_FRIEND, COL_EMAIL + "=" + login, null) > 0;
     }
+
+    public boolean deleteCircle(int id_cercle)
+    {
+        return bdd.delete(TABLE_CERCLES, COL_ID_CERCLE + "=" + id_cercle, null) > 0;
+    }
+
 
 
 }

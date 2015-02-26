@@ -39,7 +39,7 @@ public class Flags {
     }
 
     public static void checkupdate(){
-        if(friendflag && demandflag){
+        if(friendflag && demandflag && circleflag){
 
             Intent i = new Intent(_context, HomeActivity.class);
 
