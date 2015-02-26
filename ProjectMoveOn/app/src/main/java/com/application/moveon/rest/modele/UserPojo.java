@@ -39,13 +39,26 @@ public class UserPojo implements Comparable<UserPojo>{
     @SerializedName("longitude")
     private String longitude;
 
+    @SerializedName("id_cercle")
+    private Integer id_cercle;
+
     public int compareTo(UserPojo o) {
+
         return this.getFirstname().compareTo(o.getFirstname());
     }
 
     @Override
     public boolean equals(Object o){
-        return o.getClass().equals(UserPojo.class) && ((UserPojo) o).getLogin().equals(this.getLogin());
+        if(id_cercle == null){
+            return o.getClass().equals(UserPojo.class) && ((UserPojo) o).getLogin().equals(this.getLogin());
+        }else{
+           if(o.getClass().equals(UserPojo.class)){
+               UserPojo up = (UserPojo)o;
+               return up.getLogin().equals(this.getLogin()) && up.getId_cercle().equals(this.getId_cercle());
+           }else return false;
+
+        }
+
     }
 
     public String getFirstname() {
@@ -110,5 +123,13 @@ public class UserPojo implements Comparable<UserPojo>{
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public Integer getId_cercle() {
+        return id_cercle;
+    }
+
+    public void setId_cercle(Integer id_cercle) {
+        this.id_cercle = id_cercle;
     }
 }

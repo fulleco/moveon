@@ -17,6 +17,8 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static final String COL_LASTNAME = "lastname";
     private static final String COL_EMAIL = "email";
     private static final String COL_IMAGE = "imageprofile";
+    private static final String TABLE_CIRCLEPARTICIPANTS = "CirclesParticipants";
+    private static final String COL_IDCERCLESP = "id_cercle";
 
 
     public static final String TABLE_CERCLES = "Cercle";
@@ -49,8 +51,12 @@ public class SQLiteDB extends SQLiteOpenHelper {
                                 + COL_FIRSTNAME + " TEXT NOT NULL, " + COL_LASTNAME + " TEXT NOT NULL, " + COL_EMAIL + " TEXT NOT NULL, "
                                 + COL_IMAGE + " TEXT NOT NULL); ";
 
+    private static final String CREATE_TABLE_CIRCLEPARTICIPANTS = "CREATE TABLE " + TABLE_CIRCLEPARTICIPANTS + " (" + COL_ID + " INTEGER NOT NULL, "
+            + COL_FIRSTNAME + " TEXT NOT NULL, " + COL_LASTNAME + " TEXT NOT NULL, " + COL_EMAIL + " TEXT NOT NULL, "
+            + COL_IMAGE + " TEXT NOT NULL, "+ COL_IDCERCLESP+ " INTEGER NOT NULL, PRIMARY KEY("+COL_ID + "," + COL_IDCERCLESP+")); ";
+
     private static final String CREATE_TABLE_CERCLE = "CREATE TABLE " + TABLE_CERCLES + " (" + COL_ID_CERCLE + " INTEGER PRIMARY KEY, "
-                                + COL_ID_CREATOR + " INTEGER NOT NULL, " + COL_DATEDEBUT + " TEXT NOT NULL, " + COL_DATEFIN + "TEXT NOT NULL, " + COL_LAT
+                                + COL_ID_CREATOR + " INTEGER NOT NULL, " + COL_DATEDEBUT + " TEXT NOT NULL, " + COL_DATEFIN + " TEXT NOT NULL, " + COL_LAT
                                 + " REAL NOT NULL, " + COL_LONG + " REAL NOT NULL, " + COL_RAY + " INTEGER DEFAULT 1000); ";
 
     private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + TABLE_MESSAGES + " (" + COL_ID_MESSAGE + " INTEGER PRIMARY KEY, "
@@ -74,6 +80,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_CERCLE);
         db.execSQL(CREATE_TABLE_MESSAGES);
         db.execSQL(CREATE_TABLE_FRIENDDEMAND);
+        db.execSQL(CREATE_TABLE_CIRCLEPARTICIPANTS);
     }
 
     @Override
@@ -85,7 +92,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE " + TABLE_MESSAGES + ";");
         db.execSQL("DROP TABLE " + TABLE_CERCLES + ";");
         db.execSQL("DROP TABLE " + TABLE_FRIENDDEMANDS + ";");
-
+        db.execSQL("DROP TABLE " + TABLE_CIRCLEPARTICIPANTS + ";");
         onCreate(db);
     }
 

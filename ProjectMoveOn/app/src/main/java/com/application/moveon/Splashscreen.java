@@ -19,6 +19,8 @@ public class Splashscreen extends Activity {
 
     private MoveOnDB db;
     private SessionManager session;
+    MoveOnService mos;
+    MoveOnService mosonchild;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +34,18 @@ public class Splashscreen extends Activity {
         db.open();
 
         Flags.initialize(this);
-        MoveOnService mos = new RestClient(true).getApiService();
+        mos = new RestClient(true).getApiService();
+        mosonchild = new RestClient(false).getApiService();
+
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        session.checkLogin(false);
+
         mos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL),new UpdateFriends_Callback());
         mos.getdemands(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateDemands_Callback());
-        mos.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateCirlces_Callback());
+        mosonchild.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateCirlces_Callback());
     }
 }

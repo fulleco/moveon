@@ -7,9 +7,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.application.moveon.HomeActivity;
 import com.application.moveon.LoginActivity;
 import com.application.moveon.RegisterActivity;
+import com.application.moveon.Splashscreen;
 
 import java.util.HashMap;
 
@@ -68,7 +68,7 @@ public class SessionManager {
         editor.commit();
 
         Intent i = new Intent(_context,
-                HomeActivity.class);
+                Splashscreen.class);
 
         _context.startActivity(i);
 
@@ -104,7 +104,7 @@ public class SessionManager {
 
             ((Activity) _context).finish();
         }else if(redirect){
-            Intent i = new Intent(_context, HomeActivity.class);
+            Intent i = new Intent(_context, Splashscreen.class);
             i.putExtra("caller", _context.getClass().getName());
             _context.startActivity(i);
         }
@@ -139,7 +139,7 @@ public class SessionManager {
         editor.commit();
 
         // After logout redirect user to Login Activity
-        Intent i = new Intent(_context, HomeActivity.class);
+        Intent i = new Intent(_context, Splashscreen.class);
 
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -29,6 +29,9 @@ public interface MoveOnService {
     @GET("/get_cercles")
     void getCercles(@Query("login") String id, Callback<CerclePojo[]> cb);
 
+    @GET("/get_allparticipants")
+    void getAllParticipants(@Query("circles") String circles, Callback<UserPojo[]> cb);
+
     @GET("/get_participants")
     void getParticipants(@Query("id_cercle") String id, GetParticipants_Callback cb);
 

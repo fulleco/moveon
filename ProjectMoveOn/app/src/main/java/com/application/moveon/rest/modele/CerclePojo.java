@@ -59,6 +59,11 @@ public class CerclePojo {
 
     }
 
+    @Override
+    public boolean equals(Object o){
+        return o.getClass().equals(CerclePojo.class) && (((CerclePojo)o).getId_cercle() == this.getId_cercle());
+    }
+
     public String getId_creator() {
         return id_creator;
     }

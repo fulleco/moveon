@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MoveOnDB {
 
-    private static final int VERSION_BDD = 8;
+    private static final int VERSION_BDD = 10;
     private static final String NOM_BDD = "moveon_";
     private static final String TAG = "MOVEON DATABASE";
 
@@ -37,6 +37,9 @@ public class MoveOnDB {
     private static final int COL_EMAIL_NUMBER = 3;
     private static final String COL_IMAGE = "imageprofile";
     private static final int COL_IMAGE_NUMBER = 4;
+    private static final String TABLE_CIRCLEPARTICIPANTS = "CirclesParticipants";
+    private static final String COL_IDCERCLESP = "id_cercle";
+    private static final int COL_IDCERCLEP_NUMBER = 5;
 
     public static final String TABLE_CERCLES = "Cercle";
     private static final String COL_ID_CERCLE = "id_cercle";
@@ -129,6 +132,21 @@ public class MoveOnDB {
         up.setId_client(c.getInt(COL_ID_NUMBER));
         up.setImageprofile(c.getString(COL_IMAGE_NUMBER));
         up.setLogin(c.getString(COL_EMAIL_NUMBER));
+        up.setPassword("nopassword");
+
+        return up;
+    }
+
+    public UserPojo cursorToParticipant(Cursor c){
+
+        UserPojo up = new UserPojo();
+
+        up.setFirstname(c.getString(COL_FIRSTNAME_NUMBER));
+        up.setLastname(c.getString(COL_LASTNAME_NUMBER));
+        up.setId_client(c.getInt(COL_ID_NUMBER));
+        up.setImageprofile(c.getString(COL_IMAGE_NUMBER));
+        up.setLogin(c.getString(COL_EMAIL_NUMBER));
+        up.setId_cercle(c.getInt(COL_IDCERCLEP_NUMBER));
         up.setPassword("nopassword");
 
         return up;
@@ -265,6 +283,30 @@ public class MoveOnDB {
         return ret;
     }
 
+    public  ArrayList<UserPojo> getParticipants(Integer id_cercle){
+
+        ArrayList<UserPojo> ret = new ArrayList<UserPojo>();
+        Cursor cursor;
+        if(id_cercle == null){
+            cursor = bdd.rawQuery("SELECT * FROM " +TABLE_CIRCLEPARTICIPANTS+ ";", null);
+        }else{
+            cursor = bdd.rawQuery("SELECT * FROM " +TABLE_CIRCLEPARTICIPANTS+ " WHERE " + COL_IDCERCLESP + "=" + id_cercle + ";", null);
+        }
+
+        Log.i(TAG, "Loaded " + cursor.getCount() + " participants.");
+
+        if(verifyCursor(cursor)) {
+            while (!cursor.isAfterLast()) {
+                UserPojo up = cursorToParticipant(cursor);
+                ret.add(up);
+                cursor.moveToNext();
+            }
+            Log.i(TAG, "Participants loaded successfully.");
+        }
+
+        return ret;
+    }
+
 
     private boolean verifyCursor(Cursor c){
         if(c.getCount() == 0){
@@ -288,6 +330,24 @@ public class MoveOnDB {
 
         //on insère l'objet dans la BDD via le ContentValues
         return bdd.insert(TABLE_FRIEND, null, values);
+    }
+
+    public long insertParticipant(UserPojo up, int id_cercle){
+
+        //Création d'un ContentValues (fonctionne comme une HashMap)
+        ContentValues values = new ContentValues();
+
+        //on lui ajoute une valeur associé à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
+        values.put(COL_ID, up.getId_client());
+        values.put(COL_FIRSTNAME, up.getFirstname());
+        values.put(COL_LASTNAME, up.getLastname());
+        values.put(COL_EMAIL, up.getLogin());
+        values.put(COL_IMAGE, up.getImageprofile());
+        values.put(COL_IDCERCLESP, id_cercle);
+
+        //on insère l'objet dans la BDD via le ContentValues
+        return bdd.insert(TABLE_CIRCLEPARTICIPANTS, null, values);
+
     }
 
 
@@ -326,6 +386,21 @@ public class MoveOnDB {
         }
     }
 
+    public void updateParticipants(ArrayList<UserPojo> upfromdb){
+        ArrayList<UserPojo> cache = this.getParticipants(null);
+        for(UserPojo up : upfromdb){
+            if(!cache.contains(up)){
+                cache.add(up);
+                this.insertParticipant(up, up.getId_cercle());
+            }
+        }
+        for(UserPojo up : cache){
+            if(!upfromdb.contains(up)){
+                this.deleteParticipants(up.getLogin(), up.getId_cercle());
+            }
+        }
+    }
+
     public void updateCircles(ArrayList<CerclePojo> upfromdb){
         ArrayList<CerclePojo> cache = this.getCircles();
         for(CerclePojo cp : upfromdb){
@@ -358,6 +433,8 @@ public class MoveOnDB {
         }
     }
 
+
+
     public boolean deleteDemand(int id)
     {
         return bdd.delete(TABLE_FRIENDDEMANDS, COL_ID_DEMAND + "=" + id, null) > 0;
@@ -366,6 +443,10 @@ public class MoveOnDB {
     public boolean deleteFriend(String login)
     {
         return bdd.delete(TABLE_FRIEND, COL_EMAIL + "=" + login, null) > 0;
+    }
+
+    public boolean deleteParticipants(String login, int idcercle){
+        return bdd.delete(TABLE_CIRCLEPARTICIPANTS, COL_EMAIL + "=" + login + " AND " + COL_IDCERCLESP + "=" + idcercle , null) > 0;
     }
 
     public boolean deleteCircle(int id_cercle)

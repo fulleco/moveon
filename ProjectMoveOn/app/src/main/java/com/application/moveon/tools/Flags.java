@@ -15,6 +15,7 @@ public class Flags {
     private static boolean friendflag = false;
     private static boolean demandflag = false;
     private static boolean circleflag = false;
+    private static boolean participantsflag = false;
     private static boolean messageflag = false;
 
     private static Context _context;
@@ -39,7 +40,7 @@ public class Flags {
     }
 
     public static void checkupdate(){
-        if(friendflag && demandflag && circleflag){
+        if(friendflag && demandflag && circleflag && participantsflag){
 
             Intent i = new Intent(_context, HomeActivity.class);
 
@@ -55,5 +56,9 @@ public class Flags {
 
 
         }
+    }
+
+    public static void setParticipantsflag(boolean participantsflag) {
+        Flags.participantsflag = participantsflag;
     }
 }
