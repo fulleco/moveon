@@ -30,6 +30,8 @@ public class FragmentInfoCercle extends Fragment {
     private TextView textViewCreateur;
     private ListView listViewParticipants;
 
+    private HomeActivity homeActivity;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class FragmentInfoCercle extends Fragment {
         textViewTitre = (TextView) view.findViewById(R.id.text_view_titre);
         textViewCreateur = (TextView) view.findViewById(R.id.text_view_createur);
         listViewParticipants = (ListView) view.findViewById(R.id.list_view);
+        homeActivity = (HomeActivity) getActivity();
 
         return view;
     }
@@ -61,7 +64,7 @@ public class FragmentInfoCercle extends Fragment {
 
         textViewTitre.setText(currentCercle.getTitre());
         textViewCreateur.setText(currentCercle.getCreator().getFirstname()+ " " + currentCercle.getCreator().getLastname());
-
+        homeActivity.getFragmentMap().initCercle();
 
     }
 
