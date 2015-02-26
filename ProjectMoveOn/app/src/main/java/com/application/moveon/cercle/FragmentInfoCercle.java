@@ -42,6 +42,8 @@ public class FragmentInfoCercle extends Fragment {
         listViewParticipants = (ListView) view.findViewById(R.id.list_view);
         homeActivity = (HomeActivity) getActivity();
 
+        updateContent();
+
         return view;
     }
 

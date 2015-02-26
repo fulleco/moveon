@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -142,5 +143,13 @@ public class CerclePojo {
 
     public void setParticipants(UserPojo[] participants) {
         this.participants = participants;
+    }
+
+    public void addParticipant(UserPojo creator) {
+
+        final int N = participants.length;
+        participants = Arrays.copyOf(participants, N + 1);
+        participants[N] = creator;
+
     }
 }

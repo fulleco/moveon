@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MoveOnDB {
 
-    private static final int VERSION_BDD = 11;
+    private static final int VERSION_BDD = 12;
     private static final String NOM_BDD = "moveon_";
     private static final String TAG = "MOVEON DATABASE";
 
@@ -37,9 +37,13 @@ public class MoveOnDB {
     private static final int COL_EMAIL_NUMBER = 3;
     private static final String COL_IMAGE = "imageprofile";
     private static final int COL_IMAGE_NUMBER = 4;
+    private static final String COL_LATU = "latitude";
+    private static final int COL_LATU_NUMBER = 5;
+    private static final String COL_LONGU ="longitude";
+    private static final int COL_LONGU_NUMBER = 6;
     private static final String TABLE_CIRCLEPARTICIPANTS = "CirclesParticipants";
     private static final String COL_IDCERCLESP = "id_cercle";
-    private static final int COL_IDCERCLEP_NUMBER = 5;
+    private static final int COL_IDCERCLEP_NUMBER = 7;
 
     public static final String TABLE_CERCLES = "Cercle";
     private static final String COL_ID_CERCLE = "id_cercle";
@@ -135,6 +139,8 @@ public class MoveOnDB {
         up.setImageprofile(c.getString(COL_IMAGE_NUMBER));
         up.setLogin(c.getString(COL_EMAIL_NUMBER));
         up.setPassword("nopassword");
+        up.setLatitude(c.getString(COL_LATU_NUMBER));
+        up.setLongitude(c.getString(COL_LONGU_NUMBER));
 
         return up;
     }
@@ -150,6 +156,8 @@ public class MoveOnDB {
         up.setLogin(c.getString(COL_EMAIL_NUMBER));
         up.setId_cercle(c.getInt(COL_IDCERCLEP_NUMBER));
         up.setPassword("nopassword");
+        up.setLongitude(c.getString(COL_LONGU_NUMBER));
+        up.setLatitude(c.getString(COL_LATU_NUMBER));
 
         return up;
     }
@@ -288,7 +296,7 @@ public class MoveOnDB {
     }
 
     public UserPojo getCreator(String mail){
-        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_FRIEND+ " WHERE " + COL_EMAIL + "=" + mail + ";", null);
+        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_FRIEND+ " WHERE " + COL_EMAIL + "='" + mail + "';", null);
         if(verifyCursor(cursor)){
             return cursorToUser(cursor);
         }
@@ -340,6 +348,8 @@ public class MoveOnDB {
         values.put(COL_LASTNAME, up.getLastname());
         values.put(COL_EMAIL, up.getLogin());
         values.put(COL_IMAGE, up.getImageprofile());
+        values.put(COL_LATU, up.getLatitude());
+        values.put(COL_LONG, up.getLongitude());
 
         //on insère l'objet dans la BDD via le ContentValues
         return bdd.insert(TABLE_FRIEND, null, values);
@@ -357,6 +367,8 @@ public class MoveOnDB {
         values.put(COL_EMAIL, up.getLogin());
         values.put(COL_IMAGE, up.getImageprofile());
         values.put(COL_IDCERCLESP, id_cercle);
+        values.put(COL_LATU, up.getLatitude());
+        values.put(COL_LONGU, up.getLongitude());
 
         //on insère l'objet dans la BDD via le ContentValues
         return bdd.insert(TABLE_CIRCLEPARTICIPANTS, null, values);
