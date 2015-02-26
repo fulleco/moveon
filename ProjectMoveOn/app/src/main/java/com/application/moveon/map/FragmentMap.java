@@ -148,6 +148,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     // device sensor manager
     private SensorManager mSensorManager;
 
+    private ArrayList<Target> targetList;
+    private Bitmap shaderBmp = null;
+    private Bitmap shaderOuterBmp = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -166,12 +170,15 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         }
 
         homeActivity = (HomeActivity) getActivity();
+        activity = (FragmentActivity) getActivity();
+
+        targetList = new ArrayList<Target>();
 
         containerMenu = (FrameLayout) view.findViewById(R.id.containerMenu);
 
-        session = new SessionManager(getActivity());
+        session = new SessionManager(homeActivity);
 
-        progressDialog = new ProgressDialog(getActivity());
+        progressDialog = new ProgressDialog(homeActivity);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(true);
 
@@ -181,8 +188,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         radius = 10;
 
         setHasOptionsMenu(true);
-
-        activity = (FragmentActivity)getActivity();
 
         markers = new HashMap<Marker, UserPojo>();
 
@@ -199,7 +204,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         mSlidingPanel.setAnchorPoint(0.45f);
 
         initMap();
-        //initCercle();
 
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) homeActivity.getSystemService(homeActivity.SENSOR_SERVICE);
@@ -266,8 +270,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         pointMenu.setIconSize(15, 30);
         pointMenu.setTextSize(15);
 
-        Bitmap shaderBmp = BitmapFactory.decodeResource(getResources(), R.drawable.pattern);
-        Bitmap shaderOuterBmp = BitmapFactory.decodeResource(getResources(), R.drawable.pattern_outer);
+        shaderBmp = BitmapFactory.decodeResource(getResources(), R.drawable.pattern);
+        shaderOuterBmp = BitmapFactory.decodeResource(getResources(), R.drawable.pattern_outer);
         pointMenu.setInnerRingShader(shaderBmp, 190);
         pointMenu.setOuterRingShader(shaderOuterBmp, 240);
         pointMenu.setTextColor(Color.WHITE, 255);
@@ -585,7 +589,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         markerOptions.position(myLocationLatlng);
 
         Bitmap b = homeActivity.getProfilePicture();
-
         if (b == null) {
             b = BitmapFactory.decodeResource(getResources(),
                     R.drawable.profile_test);
@@ -593,8 +596,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         Bitmap b_rounded = ImageHelper.getRoundedCornerBitmap(b, 1000, 0);
         Bitmap b_resized = Bitmap.createScaledBitmap(b_rounded, 60, 60, false);
+        b_rounded.recycle();
+        b_rounded = null;
 
-        View marker_layout = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
+        View marker_layout = ((LayoutInflater) homeActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
         ImageView profilePicture = (ImageView) marker_layout.findViewById(R.id.profile_picture);
         profilePicture.setImageBitmap(b_resized);
 
@@ -618,6 +623,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         });
         //map.setOnMyLocationChangeListener();
         map.setOnMarkerClickListener(this);
+
+        initCercle();
     }
 
     public void initCercle() {
@@ -627,41 +634,47 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
             markers.clear();
 
-            for(final UserPojo u : cercle.getParticipants()) {
+            for(UserPojo u : cercle.getParticipants()) {
 
                 Log.i("ANTHO", "login " + u.getLogin() + " | session " + session.getUserDetails().get(SessionManager.KEY_EMAIL));
 
-                if (u.getLogin() != session.getUserDetails().get(SessionManager.KEY_EMAIL)) {
+                if (!(u.getLogin()).equals(session.getUserDetails().get(SessionManager.KEY_EMAIL))) {
 
-                    Target target = new Target() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            addMarker(u, bitmap);
-                        }
-
-                        @Override
-                        public void onBitmapFailed(Drawable drawable) {
-                            addMarker(u, null);
-                        }
-
-                        @Override
-                        public void onPrepareLoad(Drawable drawable) {
-
-                        }
-                    };
-
-                    String image = "http://martinezhugo.com/pfe/images/"+ u.getId_client()+"/profile.jpg";
-                    Picasso.with(homeActivity).load(image).into(target);
-
+                    Log.i("ANTHO", "ADD MARKER 2" + u.getLogin());
+                    loadBitmap(u);
                 }
-                map.setOnMarkerClickListener(this);
             }
+            //map.setOnMarkerClickListener(this);
         }
     }
 
-    public void addMarker(UserPojo u, Bitmap b){
+    public void loadBitmap(final UserPojo u){
 
-        Log.i("ANTHO", "ADD MARKER" + u.getLogin());
+        Log.i("ANTHO", "chargement image " + u.getLogin());
+
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                addMarker(this, u, bitmap);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable drawable) {
+                addMarker(this, u, null);
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable drawable) {
+            }
+        };
+
+        targetList.add(target);
+
+        String image = "http://martinezhugo.com/pfe/images/"+ u.getId_client()+"/profile.jpg";
+        Picasso.with(homeActivity).load(image).into(target);
+    }
+
+    public void addMarker(Target target, UserPojo u, Bitmap b){
 
         LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
                 Double.parseDouble(u.getLongitude()));
@@ -677,7 +690,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         b_rounded = ImageHelper.getRoundedCornerBitmap(b, 1000, 0);
         b_resized = Bitmap.createScaledBitmap(b_rounded, 60, 60, false);
 
-        View marker_layout = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
+        View marker_layout = ((LayoutInflater) homeActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
         ImageView profilePicture = (ImageView) marker_layout.findViewById(R.id.profile_picture);
         profilePicture.setImageBitmap(b_resized);
 
@@ -688,6 +701,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         Marker m = map.addMarker(markerOptions);
         markers.put(m, u);
+        targetList.remove(target);
     }
 
     @Override
@@ -885,7 +899,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     public Location getLocation() {
 
         Location location = null;
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) homeActivity.getSystemService(Context.LOCATION_SERVICE);
 
         try {
 
@@ -941,6 +955,16 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         // for the system's orientation sensor registered listeners
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        shaderBmp.recycle();
+        shaderBmp = null;
+        shaderOuterBmp.recycle();
+        shaderOuterBmp = null;
     }
 
     @Override

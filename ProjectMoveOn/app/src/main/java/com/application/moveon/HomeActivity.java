@@ -20,6 +20,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -171,6 +172,8 @@ public class HomeActivity extends FragmentActivity {
         new FtpDownloadTask("www/pfe/images/"+idUser+"/profile.jpg",
                 cacheDir.getAbsolutePath() + "/profile.jpg", profilePicture).execute();
 
+        initCurrentCercle();
+
         //// Drawer declaration
         mTitle = mDrawerTitle = getTitle();
         mDrawerArray = getResources().getStringArray(R.array.drawer_array);
@@ -222,11 +225,6 @@ public class HomeActivity extends FragmentActivity {
                 .add(R.id.content_frame, getFragmentMap())
                 .commit();
         currentFragment = getFragmentMap();
-
-
-
-        initCurrentCercle();
-
     }
 
     private void initCurrentCercle() {
@@ -249,6 +247,8 @@ public class HomeActivity extends FragmentActivity {
         UserPojo[] participantsArray = participants.toArray(userspojo);
         currentCercle.setParticipants(participantsArray);
         currentCercle.addParticipant(currentCercle.getCreator());
+
+        Log.i("ANTHO", "FIN CURRENT");
 
     }
 

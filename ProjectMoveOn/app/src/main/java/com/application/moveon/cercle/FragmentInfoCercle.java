@@ -66,7 +66,6 @@ public class FragmentInfoCercle extends Fragment {
 
         textViewTitre.setText(currentCercle.getTitre());
         textViewCreateur.setText(currentCercle.getCreator().getFirstname()+ " " + currentCercle.getCreator().getLastname());
-        homeActivity.getFragmentMap().initCercle();
 
         final InfoCercleAdapter a = new InfoCercleAdapter(currentCercle.getParticipants(), getActivity().getBaseContext(), this);
         listViewParticipants.setAdapter(a);
