@@ -248,6 +248,7 @@ public class HomeActivity extends FragmentActivity {
         UserPojo[] userspojo = new UserPojo[0];
         UserPojo[] participantsArray = participants.toArray(userspojo);
         currentCercle.setParticipants(participantsArray);
+        currentCercle.addParticipant(currentCercle.getCreator());
 
     }
 
