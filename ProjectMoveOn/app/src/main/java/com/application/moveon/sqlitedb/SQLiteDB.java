@@ -17,6 +17,8 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static final String COL_LASTNAME = "lastname";
     private static final String COL_EMAIL = "email";
     private static final String COL_IMAGE = "imageprofile";
+    private static final String COL_LATU = "latitude";
+    private static final String COL_LONGU ="longitude";
     private static final String TABLE_CIRCLEPARTICIPANTS = "CirclesParticipants";
     private static final String COL_IDCERCLESP = "id_cercle";
 
@@ -50,11 +52,11 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_FRIEND = "CREATE TABLE " + TABLE_FRIEND + " (" + COL_ID + " INTEGER PRIMARY KEY, "
                                 + COL_FIRSTNAME + " TEXT NOT NULL, " + COL_LASTNAME + " TEXT NOT NULL, " + COL_EMAIL + " TEXT NOT NULL, "
-                                + COL_IMAGE + " TEXT NOT NULL); ";
+                                + COL_IMAGE + " TEXT NOT NULL, "+COL_LATU + " STRING NOT NULL, "+ COL_LONGU+ " STRING NOT NULL); ";
 
     private static final String CREATE_TABLE_CIRCLEPARTICIPANTS = "CREATE TABLE " + TABLE_CIRCLEPARTICIPANTS + " (" + COL_ID + " INTEGER NOT NULL, "
             + COL_FIRSTNAME + " TEXT NOT NULL, " + COL_LASTNAME + " TEXT NOT NULL, " + COL_EMAIL + " TEXT NOT NULL, "
-            + COL_IMAGE + " TEXT NOT NULL, "+ COL_IDCERCLESP+ " INTEGER NOT NULL, PRIMARY KEY("+COL_ID + "," + COL_IDCERCLESP+")); ";
+            + COL_IMAGE + " TEXT NOT NULL, "+COL_LATU+" STRING NOT NULL, "+COL_LONGU + " STRING NOT NULL, "+ COL_IDCERCLESP + " INTEGER NOT NULL, PRIMARY KEY("+COL_ID + "," + COL_IDCERCLESP+")); ";
 
     private static final String CREATE_TABLE_CERCLE = "CREATE TABLE " + TABLE_CERCLES + " (" + COL_ID_CERCLE + " INTEGER PRIMARY KEY, "
                                 + COL_ID_CREATOR + " INTEGER NOT NULL, " + COL_DATEDEBUT + " TEXT NOT NULL, " + COL_DATEFIN + " TEXT NOT NULL, " + COL_LAT
