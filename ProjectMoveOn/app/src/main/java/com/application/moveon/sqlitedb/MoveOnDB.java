@@ -288,7 +288,7 @@ public class MoveOnDB {
     }
 
     public UserPojo getCreator(String mail){
-        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_FRIEND+ " WHERE " + COL_EMAIL + "=" + mail + ";", null);
+        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_FRIEND+ " WHERE " + COL_EMAIL + "='" + mail + "';", null);
         if(verifyCursor(cursor)){
             return cursorToUser(cursor);
         }
