@@ -88,8 +88,8 @@ public interface MoveOnService {
                       @Field("users") String hosts,
                       @Field("date_debut") String date,
                       @Field("date_fin") String date_fin,
-                      @Field("latitude") float latitude,
-                      @Field("longitude") float longitude,
+                      @Field("latitude") double latitude,
+                      @Field("longitude") double longitude,
                       @Field("rayon") int rayon, CreateCircle_Callback cb);
 
     @FormUrlEncoded

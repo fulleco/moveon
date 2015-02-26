@@ -154,6 +154,7 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         session = new SessionManager(this);
 
 
@@ -213,6 +214,7 @@ public class HomeActivity extends FragmentActivity {
 
         fragmentMap = new FragmentMap();
         fragmentLocationChooser = new FragmentLocationChooser();
+        fragmentLocationChooser.setTargetFragment(fragmentCreateCercle,1);
         fragmentManager = getFragmentManager();
 
         fragmentManager.beginTransaction()

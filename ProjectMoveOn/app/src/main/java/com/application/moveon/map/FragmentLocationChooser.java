@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.moveon.R;
+import com.application.moveon.cercle.FragmentCreateCercle;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -194,6 +195,9 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
             public void onClick(View v) {
                 getFragmentManager().popBackStackImmediate();
                 Log.i("ANTHO", "clic valider");
+                FragmentCreateCercle fcc = (FragmentCreateCercle)getTargetFragment();
+                fcc.setLatitude(selectedMarker.getPosition().latitude);
+                fcc.setLatitude(selectedMarker.getPosition().longitude);
             }
         };
 

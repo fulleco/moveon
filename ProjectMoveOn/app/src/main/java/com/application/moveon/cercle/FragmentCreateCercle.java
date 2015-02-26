@@ -37,6 +37,9 @@ public class FragmentCreateCercle extends Fragment{
     private ToolBox tools;
     private ArrayList<String> users;
 
+    private double longitude;
+    private double latitude;
+
     private EditText nomCercle;
     private EditText editTimeDebut;
     private EditText editDateDebut;
@@ -106,14 +109,16 @@ public class FragmentCreateCercle extends Fragment{
                    susers = susers.substring(0, susers.length() -1);
                }
                 Log.i("HUGO", editTimeDebut.getText().toString());
+                Log.i("HUGO", String.valueOf(latitude));
+                Log.i("HUGO", String.valueOf(longitude));
                 progressDialog.setMessage("Création en cours");
                 progressDialog.show();
                 mos.createcircle(nomCercle.getText().toString(), session.getUserDetails().get(SessionManager.KEY_EMAIL)
                         ,susers
                         ,editDateDebut.toString() +" " + editTimeDebut.toString()
                         , editDateFin.toString() + " " + editTimeFin
-                        ,0
-                        ,0
+                        ,latitude
+                        ,longitude
                         ,0
                         , new CreateCircle_Callback(getActivity(),progressDialog));
             }
@@ -131,5 +136,13 @@ public class FragmentCreateCercle extends Fragment{
 
     public void setUsers(ArrayList<String> users) {
         this.users = users;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
