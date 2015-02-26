@@ -64,24 +64,22 @@ public class ProviderService extends Service implements LocationListener {
 
         session = new SessionManager(ProviderService.this);
         //session.checkLogin(false);
-        idUser = session.getUserDetails().get(SessionManager.KEY_ID);
+        idUser = session.getUserDetails().get(SessionManager.KEY_EMAIL);
         //new NotifTask().execute();
 
         if((idUser!=null)||(idUser!="")) {
             mainmos.getmessages(idUser, new GetMessage_Callback(this));
-            mainmos.updateuser(idUser, currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
+            //mainmos.updateuser(idUser, currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
         }
     }
 
     @Override
     public void onStart(Intent intent, int startId) {
-        Log.i("ANTHO", "start");
         handleIntent(intent);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("ANTHO", "startcommand");
         RestClient r = new RestClient(false);
         mainmos = (new RestClient(true)).getApiService();
         handleIntent(intent);
@@ -90,7 +88,6 @@ public class ProviderService extends Service implements LocationListener {
 
     @Override
     public void onDestroy() {
-        Log.i("ANTHO", "destroy");
         super.onDestroy();
         mWakeLock.release();
     }
@@ -150,7 +147,6 @@ public class ProviderService extends Service implements LocationListener {
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    Log.i("ANTHO", "Network Enabled");
                     if (locationManager != null) {
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -163,7 +159,6 @@ public class ProviderService extends Service implements LocationListener {
                                 LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("ANTHO", "GPS Enabled");
                         if (locationManager != null) {
                             location = locationManager
                                     .getLastKnownLocation(LocationManager.GPS_PROVIDER);

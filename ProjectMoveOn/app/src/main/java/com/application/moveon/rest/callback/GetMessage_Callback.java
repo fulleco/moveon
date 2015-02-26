@@ -101,7 +101,7 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
                 | Notification.FLAG_AUTO_CANCEL;
 
         if (!text.toString().equals("") && !text.toString().equals(null)) {
-            notifManager.notify(Integer.valueOf(m.getId_sender()), notification);
+            notifManager.notify(m.getId_sender().hashCode(), notification);
         }
     }
 
