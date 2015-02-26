@@ -673,7 +673,9 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                 if(marker.getTitle().equals("Point de rencontre")) {
                     showMenu(pointMenu);
                 }else{
-                    pieMenu.setHeader(markers.get(marker).getFirstname()+ " " + markers.get(marker).getLastname(), 20);
+                    UserPojo userSelected = markers.get(marker);
+                    if(userSelected!=null)
+                        pieMenu.setHeader(userSelected.getFirstname()+ " " + userSelected.getLastname(), 20);
                     showMenu(pieMenu);
                 }
             }

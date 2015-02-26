@@ -31,7 +31,7 @@ public class ListCercleAdapter extends BaseAdapter {
     private ArrayList<CerclePojo> list = new ArrayList<CerclePojo>();
     private Context context;
     private FragmentInfoCercle fragmentInfoCercle;
-    private SessionManager session;
+    private SessionManager session;;
 
 
     public ListCercleAdapter(ArrayList<CerclePojo> list, Context context, FragmentInfoCercle fragmentInfoCercle) {
@@ -64,6 +64,7 @@ public class ListCercleAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.layout_cerclelist, null);
         }
 
+        final HomeActivity homeActivity = ((HomeActivity) fragmentInfoCercle.getActivity());
         final CerclePojo cerclePojo = list.get(position);
         //Handle TextView and display string from your list
         TextView listItemText = (TextView) view.findViewById(R.id.label);
@@ -75,21 +76,25 @@ public class ListCercleAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
 
-                //TODO get la liste des participants
-                session = new SessionManager(fragmentInfoCercle.getActivity());
-
-                RestClient r = new RestClient(true);
-                MoveOnService mos = r.getApiService();
-                ((HomeActivity) fragmentInfoCercle.getActivity()).setCurrentCercle(cerclePojo);
-                mos.getParticipants(String.valueOf(cerclePojo.getId_cercle()),new GetParticipants_Callback(fragmentInfoCercle.getActivity(),fragmentInfoCercle.getListViewParticipants(),fragmentInfoCercle));
-
-
-
-
-                //fragmentInfoCercle.updateContent();
+                getCercles(homeActivity, cerclePojo);
             }
         });
 
+        if(homeActivity.getCurrentCercle() == null)
+            getCercles(homeActivity, cerclePojo);
+
+
         return view;
+    }
+
+    private void getCercles(HomeActivity homeActivity, CerclePojo cerclePojo)
+    {
+        session = new SessionManager(fragmentInfoCercle.getActivity());
+
+        RestClient r = new RestClient(true);
+        MoveOnService mos = r.getApiService();
+
+        homeActivity.setCurrentCercle(cerclePojo);
+        mos.getParticipants(String.valueOf(cerclePojo.getId_cercle()),new GetParticipants_Callback(fragmentInfoCercle.getActivity(),fragmentInfoCercle.getListViewParticipants(),fragmentInfoCercle));
     }
 }
