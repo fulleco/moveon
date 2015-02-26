@@ -41,12 +41,15 @@ import com.application.moveon.menu.FragmentSettings;
 import com.application.moveon.profil.FragmentEditProfil;
 import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.rest.modele.CerclePojo;
+import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -156,9 +159,7 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
         session = new SessionManager(this);
-
 
         tools = new com.application.moveon.tools.ToolBox(this);
 
@@ -222,6 +223,31 @@ public class HomeActivity extends FragmentActivity {
                 .commit();
         currentFragment = getFragmentMap();
 
+
+
+        initCurrentCercle();
+
+    }
+
+    private void initCurrentCercle() {
+        if(currentCercle!=null)
+            return;
+
+        MoveOnDB moveOnDB = MoveOnDB.getInstance();
+        ArrayList<CerclePojo> cercles = moveOnDB.getCircles();
+
+        if(cercles.size()==0)
+            return;
+
+        currentCercle = cercles.get(0);
+        if(session.getUserDetails().get(SessionManager.KEY_EMAIL).equals(currentCercle.getId_creator()))
+            currentCercle.setCreator(session.getUserPojo());
+        else
+            currentCercle.setCreator(moveOnDB.getCreator(currentCercle.getId_creator()));
+        ArrayList<UserPojo> participants = moveOnDB.getParticipants(currentCercle.getId_cercle());
+        UserPojo[] userspojo = new UserPojo[0];
+        UserPojo[] participantsArray = participants.toArray(userspojo);
+        currentCercle.setParticipants(participantsArray);
 
     }
 

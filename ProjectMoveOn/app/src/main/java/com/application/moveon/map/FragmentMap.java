@@ -146,6 +146,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
             view = inflater.inflate(R.layout.fragment_map, container, false);
         } catch (InflateException e) {
         /* map is already there, just return view as it is */
+            Log.d("INFLATE EXCEPTION : ",e.toString());
         }
 
         homeActivity = (HomeActivity) getActivity();
@@ -182,7 +183,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         mSlidingPanel.setAnchorPoint(0.45f);
 
         initMap();
-        initCercle();
+        //initCercle();
 
         return view;
     }
