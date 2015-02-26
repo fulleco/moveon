@@ -10,6 +10,7 @@ import android.util.Log;
 import com.application.moveon.LoginActivity;
 import com.application.moveon.RegisterActivity;
 import com.application.moveon.Splashscreen;
+import com.application.moveon.rest.modele.UserPojo;
 
 import java.util.HashMap;
 
@@ -128,6 +129,17 @@ public class SessionManager {
 
         // return user
         return user;
+    }
+
+    public UserPojo getUserPojo(){
+        UserPojo up = new UserPojo();
+
+        up.setLogin(pref.getString(KEY_EMAIL, null));
+        up.setFirstname(pref.getString(KEY_FIRSTNAME, null));
+        up.setLastname(pref.getString(KEY_LASTNAME, null));
+        up.setId_client(Integer.valueOf(pref.getString(KEY_ID, null)));
+
+        return up;
     }
 
     /**
