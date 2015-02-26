@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MoveOnDB {
 
-    private static final int VERSION_BDD = 10;
+    private static final int VERSION_BDD = 11;
     private static final String NOM_BDD = "moveon_";
     private static final String TAG = "MOVEON DATABASE";
 
@@ -56,6 +56,8 @@ public class MoveOnDB {
     private static final int COL_LONG_NUMBER = 5;
     private static final String COL_RAY = "rayon";
     private static final int COL_RAY_NUMBER = 6;
+    private static final String COL_TITRE = "titre";
+    private static final int COL_TITRE_NUMBER = 7;
 
     public static final String TABLE_MESSAGES = "Message";
     private static final String COL_ID_MESSAGE = "id_message";
@@ -163,6 +165,7 @@ public class MoveOnDB {
         cp.setRayon(c.getInt(COL_RAY_NUMBER));
         cp.setLatitude(c.getDouble(COL_LAT_NUMBER));
         cp.setLongitude(c.getDouble(COL_LONG_NUMBER));
+        cp.setTitre(c.getString(COL_TITRE_NUMBER));
 
         return cp;
     }
@@ -178,6 +181,7 @@ public class MoveOnDB {
         values.put(COL_LAT, cp.getLatitude());
         values.put(COL_LONG, cp.getLongitude());
         values.put(COL_RAY, cp.getRayon());
+        values.put(COL_TITRE, cp.getTitre());
 
         return bdd.insert(TABLE_CERCLES, null, values);
     }
@@ -281,6 +285,15 @@ public class MoveOnDB {
         }
 
         return ret;
+    }
+
+    public UserPojo getCreator(String mail){
+        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_FRIEND+ " WHERE " + COL_EMAIL + "=" + mail + ";", null);
+        if(verifyCursor(cursor)){
+            return cursorToUser(cursor);
+        }
+
+        return null;
     }
 
     public  ArrayList<UserPojo> getParticipants(Integer id_cercle){

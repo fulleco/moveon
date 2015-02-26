@@ -29,6 +29,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static final String COL_LAT = "latitude";
     private static final String COL_LONG="longitude";
     private static final String COL_RAY = "rayon";
+    private static final String COL_TITRE = "titre";
 
     public static final String TABLE_MESSAGES = "Message";
     private static final String COL_ID_MESSAGE = "id_message";
@@ -57,7 +58,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_CERCLE = "CREATE TABLE " + TABLE_CERCLES + " (" + COL_ID_CERCLE + " INTEGER PRIMARY KEY, "
                                 + COL_ID_CREATOR + " INTEGER NOT NULL, " + COL_DATEDEBUT + " TEXT NOT NULL, " + COL_DATEFIN + " TEXT NOT NULL, " + COL_LAT
-                                + " REAL NOT NULL, " + COL_LONG + " REAL NOT NULL, " + COL_RAY + " INTEGER DEFAULT 1000); ";
+                                + " REAL NOT NULL, " + COL_LONG + " REAL NOT NULL, " + COL_RAY + " INTEGER DEFAULT 1000, "+ COL_TITRE +" TEXT NOT NULL);";
 
     private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + TABLE_MESSAGES + " (" + COL_ID_MESSAGE + " INTEGER PRIMARY KEY, "
                                 +COL_ID_CERCLEM +" INTEGER NOT NULL, "+ COL_ID_SENDER + " INTEGER NOT NULL, " + COL_NAMESENDER + " TEXT NOT NULL, " + COL_CONTENT + " TEXT NOT NULL, "
