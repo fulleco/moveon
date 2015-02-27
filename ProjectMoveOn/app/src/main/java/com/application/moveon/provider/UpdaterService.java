@@ -26,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class UpdaterService extends Service {
     private PowerManager.WakeLock mWakeLock;
-    private Context context = this;
     private SessionManager session;
     private String idUser;
 
