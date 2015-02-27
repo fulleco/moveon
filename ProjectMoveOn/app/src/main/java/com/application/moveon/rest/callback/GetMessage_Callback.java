@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
@@ -79,6 +82,7 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
         longText.append(m.getContent());
 
         Notification.Builder noti = null;
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         Notification notification;
         noti = new Notification.Builder(context).setContentTitle(title)
@@ -88,7 +92,10 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
                 .setWhen((new Date()).getTime())
                 .setContentIntent(pIntent)
                 .addAction(R.drawable.holo_map, "Voir la carte", pIntent)
-                .addAction(R.drawable.holo_check, "Ok", pIntentOk);
+                .addAction(R.drawable.holo_check, "Ok", pIntentOk)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                .setLights(Color.RED, 3000, 3000)
+                .setSound(alarmSound);
 
         if (!text.toString().equals(longText.toString())) {
             noti.setStyle(

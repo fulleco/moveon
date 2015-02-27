@@ -147,6 +147,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     // device sensor manager
     private SensorManager mSensorManager;
+    private boolean mapLoaded = false;
 
     private ArrayList<Target> targetList;
     private Bitmap shaderBmp = null;
@@ -202,18 +203,15 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         mSlidingPanel = (SlidingUpPanelLayout) view
                 .findViewById(R.id.sliding_layout);
         mSlidingPanel.setAnchorPoint(0.45f);
-
-        initMap();
-
-        // initialize your android device sensor capabilities
-        mSensorManager = (SensorManager) homeActivity.getSystemService(homeActivity.SENSOR_SERVICE);
-
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // initialize your android device sensor capabilities
+        mSensorManager = (SensorManager) homeActivity.getSystemService(homeActivity.SENSOR_SERVICE);
 
         fMap.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
         {
@@ -227,6 +225,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                 initMenu(x, y);
             }
         });
+
+        initMap();
     }
 
     private void sendMessage(String idCircle, String idSender, String idReceiver, String content, String date){
@@ -585,10 +585,15 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         LatLng myLocationLatlng = new LatLng(myLocation.getLatitude(),
                 myLocation.getLongitude());
 
+        UserPojo user = session.getUserPojo();
+        user.setLatitude(String.valueOf(myLocation.getLatitude()));
+        user.setLongitude(String.valueOf(myLocation.getLongitude()));
+        loadBitmap(user, true);
+
         markerOptions = new MarkerOptions();
         markerOptions.position(myLocationLatlng);
 
-        Bitmap b = homeActivity.getProfilePicture();
+        /*Bitmap b = homeActivity.getProfilePicture();
         if (b == null) {
             b = BitmapFactory.decodeResource(getResources(),
                     R.drawable.profile_test);
@@ -605,8 +610,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
         markerOptions.title("Moi");
-        myMarker = map.addMarker(markerOptions);
-        map.animateCamera(CameraUpdateFactory.newLatLng(myLocationLatlng), 200, null);
+        myMarker = map.addMarker(markerOptions);*/
+        //map.animateCamera(CameraUpdateFactory.newLatLng(myLocationLatlng), 200, null);
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -623,8 +628,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         });
         //map.setOnMyLocationChangeListener();
         map.setOnMarkerClickListener(this);
-
-        initCercle();
     }
 
     public void initCercle() {
@@ -641,26 +644,24 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                 if (!(u.getLogin()).equals(session.getUserDetails().get(SessionManager.KEY_EMAIL))) {
 
                     Log.i("ANTHO", "ADD MARKER 2" + u.getLogin());
-                    loadBitmap(u);
+                    loadBitmap(u, false);
                 }
             }
             //map.setOnMarkerClickListener(this);
         }
     }
 
-    public void loadBitmap(final UserPojo u){
-
-        Log.i("ANTHO", "chargement image " + u.getLogin());
+    public void loadBitmap(final UserPojo u, final boolean isCurrentSession){
 
         Target target = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                addMarker(this, u, bitmap);
+                addMarker(this, u, bitmap, isCurrentSession);
             }
 
             @Override
             public void onBitmapFailed(Drawable drawable) {
-                addMarker(this, u, null);
+                addMarker(this, u, null, isCurrentSession);
             }
 
             @Override
@@ -674,7 +675,13 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         Picasso.with(homeActivity).load(image).into(target);
     }
 
-    public void addMarker(Target target, UserPojo u, Bitmap b){
+    public void addMarker(Target target, UserPojo u, Bitmap b, boolean isCurrentSession){
+
+        if(!isAdded()) {
+            return;
+        }
+
+        Log.i("ANTHO", "add marker : " + isCurrentSession);
 
         LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
                 Double.parseDouble(u.getLongitude()));
@@ -694,13 +701,28 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         ImageView profilePicture = (ImageView) marker_layout.findViewById(R.id.profile_picture);
         profilePicture.setImageBitmap(b_resized);
 
+        b_rounded.recycle();
+        b_rounded = null;
+
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
 
         markerOptions.position(lastLngUser);
-        markerOptions.title(u.getFirstname() + " " + u.getLastname());
+        if(isCurrentSession)
+            markerOptions.title("Moi");
+        else
+            markerOptions.title(u.getFirstname() + " " + u.getLastname());
 
         Marker m = map.addMarker(markerOptions);
-        markers.put(m, u);
+        if(isCurrentSession){
+            myMarker = m;
+            map.animateCamera(CameraUpdateFactory.newLatLng(lastLngUser), 200, null);
+            mapLoaded = true;
+            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+                    SensorManager.SENSOR_DELAY_GAME);
+            initCercle();
+        }else{
+            markers.put(m, u);
+        }
         targetList.remove(target);
     }
 
@@ -920,7 +942,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    Log.i("ANTHO", "Network Enabled");
                     if (locationManager != null) {
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -933,7 +954,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                                 LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("ANTHO", "GPS Enabled");
                         if (locationManager != null) {
                             location = locationManager
                                     .getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -952,6 +972,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     @Override
     public void onResume(){
         super.onResume();
+        if(mapLoaded)
         // for the system's orientation sensor registered listeners
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_GAME);
