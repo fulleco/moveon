@@ -524,11 +524,11 @@ public class MoveOnDB {
 
     public boolean deleteFriend(String login)
     {
-        return bdd.delete(TABLE_FRIEND, COL_EMAIL + "=" + login, null) > 0;
+        return bdd.delete(TABLE_FRIEND, COL_EMAIL + "='" + login +"'", null) > 0;
     }
 
     public boolean deleteParticipants(String login, int idcercle){
-        return bdd.delete(TABLE_CIRCLEPARTICIPANTS, COL_EMAIL + "=" + login + " AND " + COL_IDCERCLESP + "=" + idcercle , null) > 0;
+        return bdd.delete(TABLE_CIRCLEPARTICIPANTS, COL_EMAIL + "='" + login + "' AND " + COL_IDCERCLESP + "=" + idcercle , null) > 0;
     }
 
     public boolean deleteCircle(int id_cercle)
