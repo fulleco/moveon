@@ -8,6 +8,7 @@ import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.UpdateCirlces_Callback;
 import com.application.moveon.rest.callback.UpdateDemands_Callback;
 import com.application.moveon.rest.callback.UpdateFriends_Callback;
+import com.application.moveon.rest.callback.UpdateMessages_Callback;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.Flags;
@@ -29,10 +30,6 @@ public class Splashscreen extends Activity {
 
         session = new SessionManager(this);
 
-        db = MoveOnDB.getInstance();
-        db.initialize(this.getBaseContext(),session.getUserDetails().get(SessionManager.KEY_EMAIL));
-        db.open();
-
         Flags.initialize(this);
         mos = new RestClient(true).getApiService();
         mosonchild = new RestClient(false).getApiService();
@@ -44,8 +41,13 @@ public class Splashscreen extends Activity {
         super.onStart();
         session.checkLogin(false);
 
+        db = MoveOnDB.getInstance();
+        db.initialize(this.getBaseContext(),session.getUserDetails().get(SessionManager.KEY_EMAIL));
+        db.open();
+
         mos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL),new UpdateFriends_Callback());
         mos.getdemands(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateDemands_Callback());
+        mos.getAllMessages(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateMessages_Callback());
         mosonchild.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateCirlces_Callback());
     }
 }

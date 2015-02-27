@@ -52,8 +52,14 @@ public class UpdateCirlces_Callback implements Callback<CerclePojo[]>{
 
         MoveOnService mos = new RestClient(true).getApiService();
 
+        if(datas.size() > 0){
+            mos.getAllParticipants(circles, new UpdateParticipants_Callback());
+        }else{
+            Flags.setParticipantsflag(true);
+            Flags.checkupdate();
+        }
 
-        mos.getAllParticipants(circles, new UpdateParticipants_Callback());
+
 
 
     }

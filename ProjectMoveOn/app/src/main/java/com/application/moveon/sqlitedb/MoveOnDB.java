@@ -210,6 +210,24 @@ public class MoveOnDB {
         return mp;
     }
 
+    public long insertMessage(MessagePojo mp){
+
+        ContentValues values = new ContentValues();
+
+        //on lui ajoute une valeur associé à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
+        values.put(COL_CONTENT,mp.getContent());
+        values.put(COL_DATESEND,mp.getDate());
+        values.put(COL_NAMESENDER, mp.getId_sender());
+        values.put(COL_NAMESENDER, mp.getFirstname_sender() + " " + mp.getLastname_sender());
+        values.put(COL_ID_CERCLEM, mp.getId_circle());
+        values.put(COL_ID_MESSAGE, mp.getId());
+        values.put(COL_SEEN, mp.getSeen());
+        values.put(COL_ID_SENDER, mp.getId_sender());
+
+        //on insère l'objet dans la BDD via le ContentValues
+        return bdd.insert(TABLE_MESSAGES, null, values);
+    }
+
     public DemandsPojo cursorToDemands(Cursor c){
 
         DemandsPojo dp = new DemandsPojo();
@@ -238,6 +256,30 @@ public class MoveOnDB {
                 cursor.moveToNext();
             }
             Log.i(TAG, "Demands loaded successfully.");
+        }
+
+        return ret;
+    }
+
+    public  ArrayList<MessagePojo> getMessages(Integer id_cercle){
+
+        ArrayList<MessagePojo> ret = new ArrayList<MessagePojo>();
+        Cursor cursor;
+        if(id_cercle == null){
+            cursor = bdd.rawQuery("SELECT * FROM " +TABLE_MESSAGES, null);
+        }else{
+            cursor = bdd.rawQuery("SELECT * FROM " +TABLE_MESSAGES + " WHERE " + COL_ID_CERCLEM + "="+id_cercle+";", null);
+        }
+
+        Log.i(TAG, "Loaded " + cursor.getCount() + " messages.");
+
+        if(verifyCursor(cursor)) {
+            while (!cursor.isAfterLast()) {
+                MessagePojo mp = cursorToMessage(cursor);
+                ret.add(mp);
+                cursor.moveToNext();
+            }
+            Log.i(TAG, "Messages loaded successfully.");
         }
 
         return ret;
@@ -458,6 +500,21 @@ public class MoveOnDB {
         }
     }
 
+    public void updateMessages(ArrayList<MessagePojo> upfromdb){
+        ArrayList<MessagePojo> cache = this.getMessages(null);
+        for(MessagePojo mp : upfromdb){
+            if(!cache.contains(mp)){
+                cache.add(mp);
+                this.insertMessage(mp);
+            }
+        }
+        for(MessagePojo mp : cache){
+            if(!upfromdb.contains(mp)){
+                this.deleteMessage(Integer.valueOf(mp.getId()));
+            }
+        }
+    }
+
 
 
     public boolean deleteDemand(int id)
@@ -477,6 +534,10 @@ public class MoveOnDB {
     public boolean deleteCircle(int id_cercle)
     {
         return bdd.delete(TABLE_CERCLES, COL_ID_CERCLE + "=" + id_cercle, null) > 0;
+    }
+
+    public boolean deleteMessage(int id_message){
+        return bdd.delete(TABLE_MESSAGES, COL_ID_MESSAGE + "=" + id_message, null) > 0;
     }
 
 
