@@ -157,7 +157,7 @@ public class HomeActivity extends FragmentActivity {
         this.profilePicture = profilePicture;
     }
 
-    private int mInterval = 5000; // 5 seconds by default, can be changed later
+    private int mInterval = 10000; // 5 seconds by default, can be changed later
     private Handler mHandler;
     private PendingIntent piUI;
     private AlarmManager amUI;
@@ -291,13 +291,16 @@ public class HomeActivity extends FragmentActivity {
         amUI.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + secondUpdateUI * 1000,
                 secondUpdateUI * 1000, piUI);
-        //startRepeatingTask();
+        startRepeatingTask();
     }
 
     Runnable mStatusChecker = new Runnable() {
         @Override
         public void run() {
-            // TODO UPDATE
+            // TODO UPDATE*
+            Log.d("HANDLER","IZ OKAY");
+            updateCurrentCercle();
+            fragmentMap.initCercle();
             mHandler.postDelayed(mStatusChecker, mInterval);
         }
     };
@@ -319,7 +322,7 @@ public class HomeActivity extends FragmentActivity {
     @Override
     public void onPause(){
         super.onPause();
-        //stopRepeatingTask();
+        stopRepeatingTask();
         amUI.cancel(piUI);
     }
 

@@ -1,5 +1,8 @@
 package com.application.moveon.rest.modele;
 
+import android.util.Log;
+
+import com.application.moveon.model.User;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.google.gson.annotations.SerializedName;
@@ -170,5 +173,11 @@ public class CerclePojo {
 
         this.setParticipants(participantsToArray);
         this.addParticipant(this.getCreator());
+
+       for(int i = 0 ; i<this.getParticipants().length;i++)
+        {
+            Log.d("QUENTIN LATITUDE : ",this.getParticipants()[i].getLatitude());
+            Log.d("QUENTIN LONGITUDE : ",this.getParticipants()[i].getLongitude());
+        }
     }
 }
