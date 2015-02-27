@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.util.Log;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
@@ -92,10 +93,7 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
                 .setWhen((new Date()).getTime())
                 .setContentIntent(pIntent)
                 .addAction(R.drawable.holo_map, "Voir la carte", pIntent)
-                .addAction(R.drawable.holo_check, "Ok", pIntentOk)
-                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
-                .setLights(Color.RED, 3000, 3000)
-                .setSound(alarmSound);
+                .addAction(R.drawable.holo_check, "Ok", pIntentOk);
 
         if (!text.toString().equals(longText.toString())) {
             noti.setStyle(
@@ -104,8 +102,8 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
         }
         notification = noti.build();
 
-        notification.flags = Notification.DEFAULT_LIGHTS
-                | Notification.FLAG_AUTO_CANCEL;
+        notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS;
+        notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONLY_ALERT_ONCE;
 
         if (!text.toString().equals("") && !text.toString().equals(null)) {
             notifManager.notify(m.getId_sender().hashCode(), notification);

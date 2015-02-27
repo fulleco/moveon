@@ -31,7 +31,10 @@ public class ProviderReceiver extends BroadcastReceiver{
         String receiver = intent.getStringExtra("RECEIVER");
         String circle = intent.getStringExtra("CIRCLE");
 
+        Log.i("ANTHO", "Sender" + sender);
+
         if(GetMessage_Callback.OK_ACTION.equals(action)) {
+            Log.i("ANTHO", "OK ACTION receiver" + receiver +" "+ "sender" );
             mainmos.addMessage(circle, receiver, sender, "Ok", "DATE",
                     0, new AddMessage_Callback(null, null));
         }

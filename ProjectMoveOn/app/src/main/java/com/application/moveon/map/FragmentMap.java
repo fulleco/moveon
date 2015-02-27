@@ -639,11 +639,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
             for(UserPojo u : cercle.getParticipants()) {
 
-                Log.i("ANTHO", "login " + u.getLogin() + " | session " + session.getUserDetails().get(SessionManager.KEY_EMAIL));
-
                 if (!(u.getLogin()).equals(session.getUserDetails().get(SessionManager.KEY_EMAIL))) {
 
-                    Log.i("ANTHO", "ADD MARKER 2" + u.getLogin());
                     loadBitmap(u, false);
                 }
             }
@@ -680,8 +677,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         if(!isAdded()) {
             return;
         }
-
-        Log.i("ANTHO", "add marker : " + isCurrentSession);
 
         LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
                 Double.parseDouble(u.getLongitude()));
@@ -748,12 +743,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                     showMenu(pointMenu);
                 }else{
                     if(!selectedMarker.equals(myMarker)){
-                        Log.i("ANTHO", "pas moi");
                         UserPojo userSelected = markers.get(marker);
                         pieMenu.setHeader(userSelected.getFirstname()+ " " + userSelected.getLastname(), 20);
                         selectedLogin = userSelected.getLogin();
                     }else{
-                        Log.i("ANTHO", "moi");
                         pieMenu.setHeader("Moi", 20);
                         selectedLogin = session.getUserDetails().get(SessionManager.KEY_EMAIL);
                     }
