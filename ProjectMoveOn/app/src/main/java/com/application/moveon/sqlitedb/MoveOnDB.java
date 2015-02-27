@@ -302,9 +302,21 @@ public class MoveOnDB {
         return ret;
     }
 
+    public CerclePojo getCircle(String id_circle){
+        ArrayList<CerclePojo> ret = new ArrayList<CerclePojo>();
+        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_CERCLES + " WHERE " + COL_ID_CERCLE + "=\"" +id_circle+"\";", null);
+        Log.i(TAG, "Loaded " + cursor.getCount() + " circle.");
+
+        if(verifyCursor(cursor)){
+            return cursorToCercle(cursor);
+        }
+         return null;
+
+    }
+
     public ArrayList<CerclePojo> getMyCircles(String iduser){
         ArrayList<CerclePojo> ret = new ArrayList<CerclePojo>();
-        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_CERCLES + "WHERE " + COL_ID_CREATOR + "=" + iduser, null);
+        Cursor cursor = bdd.rawQuery("SELECT * FROM " +TABLE_CERCLES + " WHERE " + COL_ID_CREATOR + "=\"" + iduser+"\";", null);
         Log.i(TAG, "Loaded " + cursor.getCount() + " of my circles.");
 
         if(verifyCursor(cursor)) {

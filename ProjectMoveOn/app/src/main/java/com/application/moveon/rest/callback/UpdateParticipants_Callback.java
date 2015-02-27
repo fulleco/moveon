@@ -37,7 +37,7 @@ public class UpdateParticipants_Callback implements Callback<UserPojo[]> {
 
     @Override
     public void failure(RetrofitError error) {
-        Log.i("MOVEON UPDATEPARTICIPANTS", "NOT WORKING");
-        Log.i("MOVEON UPDATEPARTICIPANTS", error.toString());
+        //Log.i("MOVEON UPDATEPARTICIPANTS", "NOT WORKING");
+        //Log.i("MOVEON UPDATEPARTICIPANTS", error.toString());
     }
 }

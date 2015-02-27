@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -41,6 +42,7 @@ import com.application.moveon.map.FragmentMap;
 import com.application.moveon.menu.FragmentSettings;
 import com.application.moveon.profil.FragmentEditProfil;
 import com.application.moveon.profil.FragmentViewProfil;
+import com.application.moveon.provider.UpdaterService;
 import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
@@ -155,6 +157,11 @@ public class HomeActivity extends FragmentActivity {
         this.profilePicture = profilePicture;
     }
 
+    private int mInterval = 5000; // 5 seconds by default, can be changed later
+    private Handler mHandler;
+    private PendingIntent piUI;
+    private AlarmManager amUI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -238,18 +245,22 @@ public class HomeActivity extends FragmentActivity {
             return;
 
         currentCercle = cercles.get(0);
-        if(session.getUserDetails().get(SessionManager.KEY_EMAIL).equals(currentCercle.getId_creator()))
-            currentCercle.setCreator(session.getUserPojo());
-        else
-            currentCercle.setCreator(moveOnDB.getCreator(currentCercle.getId_creator()));
-        ArrayList<UserPojo> participants = moveOnDB.getParticipants(currentCercle.getId_cercle());
-        UserPojo[] userspojo = new UserPojo[0];
-        UserPojo[] participantsArray = participants.toArray(userspojo);
-        currentCercle.setParticipants(participantsArray);
-        currentCercle.addParticipant(currentCercle.getCreator());
+        currentCercle.setAllInfo(session);
 
-        Log.i("ANTHO", "FIN CURRENT");
+    }
 
+    public void updateCurrentCercle()
+    {
+        if(currentCercle!=null)
+            return;
+
+        MoveOnDB moveOnDB = MoveOnDB.getInstance();
+        currentCercle = moveOnDB.getCircle(String.valueOf(currentCercle.getId_cercle()));
+
+        if(currentCercle==null)
+            return;
+
+        currentCercle.setAllInfo(session);
     }
 
 
@@ -264,14 +275,52 @@ public class HomeActivity extends FragmentActivity {
     @Override
     public void onResume(){
         super.onResume();
-
         changeNotificationFrequency();
+    }
+
+    public void startUpdateUI(){
+        int secondUpdateUI = 7;
+        mHandler = new Handler();
+        Intent intentUpdate = new Intent(
+                this,
+                UpdaterService.class);
+
+        amUI = (AlarmManager) getSystemService(ALARM_SERVICE);
+        piUI = PendingIntent.getService(this, 0, intentUpdate, 0);
+        amUI.cancel(piUI);
+        amUI.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + secondUpdateUI * 1000,
+                secondUpdateUI * 1000, piUI);
+        //startRepeatingTask();
+    }
+
+    Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+            // TODO UPDATE
+            mHandler.postDelayed(mStatusChecker, mInterval);
+        }
+    };
+
+    void startRepeatingTask() {
+        mStatusChecker.run();
+    }
+
+    void stopRepeatingTask() {
+        mHandler.removeCallbacks(mStatusChecker);
     }
 
     @Override
     public void onStart(){
         super.onStart();
         session.checkLogin(false);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        //stopRepeatingTask();
+        amUI.cancel(piUI);
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -526,7 +575,6 @@ public class HomeActivity extends FragmentActivity {
         am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + second * 1000,
                 second * 1000, pi);
-
     }
 
     public void stopNotification()

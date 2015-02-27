@@ -69,7 +69,7 @@ public class ProviderService extends Service implements LocationListener {
 
         if((idUser!=null)||(idUser!="")) {
             mainmos.getmessages(idUser, new GetMessage_Callback(this));
-            //mainmos.updateuser(idUser, currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
+            mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
         }
     }
 

@@ -637,6 +637,12 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         map.setOnMarkerClickListener(this);
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        homeActivity.startUpdateUI();
+    }
+
     public void initCercle() {
 
         CerclePojo cercle = homeActivity.getCurrentCercle();
@@ -880,6 +886,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         // Creating a LatLng object for the current location
         LatLng latLng = new LatLng(latitude, longitude);
+        if(myMarker!=null)
+            myMarker.setPosition(latLng);
 
         // Showing the current location in Google Map
         // map.moveCamera(CameraUpdateFactory.newLatLng(latLng));

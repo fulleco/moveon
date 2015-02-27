@@ -1,6 +1,7 @@
 package com.application.moveon.rest.callback;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.application.moveon.model.User;
 import com.application.moveon.tools.ToolBox;
