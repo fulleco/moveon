@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MoveOnDB {
 
-    private static final int VERSION_BDD = 12;
+    private static final int VERSION_BDD = 13;
     private static final String NOM_BDD = "moveon_";
     private static final String TAG = "MOVEON DATABASE";
 
@@ -536,7 +536,7 @@ public class MoveOnDB {
 
     public boolean deleteFriend(String login)
     {
-        return bdd.delete(TABLE_FRIEND, COL_EMAIL + "='" + login +"'", null) > 0;
+        return bdd.delete(TABLE_FRIEND, COL_EMAIL + "=\"" + login +"\"", null) > 0;
     }
 
     public boolean deleteParticipants(String login, int idcercle){
