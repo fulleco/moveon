@@ -232,9 +232,16 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     private void sendMessage(String idCircle, String idSender, String idReceiver, String content, String date){
         progressDialog.setMessage("Envoi du message...");
         progressDialog.show();
-        mainmos.addMessage(idCircle, idSender,
-               idReceiver, content, date,
-                0, new AddMessage_Callback(activity, progressDialog));
+
+        if(idSender.equals(idReceiver)){
+                //mainmos.addMessage(idCircle, idSender,
+                //        u.getLogin(), content, date,
+                //        0, new AddMessage_Callback(activity, progressDialog));
+        }else {
+            mainmos.addMessage(idCircle, idSender,
+                    idReceiver, content, date,
+                    0, new AddMessage_Callback(activity, progressDialog));
+        }
     }
 
     private void initMenu(int x, int y){

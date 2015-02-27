@@ -67,11 +67,11 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
         intentOk.putExtra("CIRCLE", m.getId_circle());
         intentOk.setAction(OK_ACTION);
 
-        PendingIntent pIntentOk = PendingIntent.getBroadcast(context, 1,
+        PendingIntent pIntentOk = PendingIntent.getBroadcast(context, 2,
                 intentOk, 0);
 
         // intent.putExtra("mail", email);
-        PendingIntent pIntent = PendingIntent.getActivity(context, 0,
+        PendingIntent pIntent = PendingIntent.getActivity(context, 1,
                 intent, 0);
         notifManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         StringBuilder text = new StringBuilder();

@@ -34,12 +34,13 @@ public class Splashscreen extends Activity {
         mos = new RestClient(true).getApiService();
         mosonchild = new RestClient(false).getApiService();
 
+        session.checkLogin(false);
+
     }
 
     @Override
     public void onStart(){
         super.onStart();
-        session.checkLogin(false);
 
         db = MoveOnDB.getInstance();
         db.initialize(this.getBaseContext(),session.getUserDetails().get(SessionManager.KEY_EMAIL));
