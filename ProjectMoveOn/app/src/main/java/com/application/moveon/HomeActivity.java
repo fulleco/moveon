@@ -251,7 +251,8 @@ public class HomeActivity extends FragmentActivity {
 
     public void updateCurrentCercle()
     {
-        if(currentCercle!=null)
+
+        if(currentCercle==null)
             return;
 
         MoveOnDB moveOnDB = MoveOnDB.getInstance();
@@ -261,6 +262,7 @@ public class HomeActivity extends FragmentActivity {
             return;
 
         currentCercle.setAllInfo(session);
+
     }
 
 

@@ -176,7 +176,13 @@ public class CerclePojo {
 
        for(int i = 0 ; i<this.getParticipants().length;i++)
         {
-            Log.d("QUENTIN LATITUDE : ",this.getParticipants()[i].getFirstname());
+            if(!this.getParticipants()[i].getLogin().equals(this.getId_creator()))
+            {
+                Log.d("QUENTIN LATITUDE : ", this.getParticipants()[i].getLatitude());
+                Log.d("QUENTIN LONGITUDE : ", this.getParticipants()[i].getLongitude());
+            }
+            else
+                Log.d("QUENTIN CREATOR : ",  this.getParticipants()[i].getFirstname());
         }
     }
 }
