@@ -1,4 +1,4 @@
-package com.application.moveon.friends;
+package com.application.moveon.friends.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

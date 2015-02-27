@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.moveon.R;
+import com.application.moveon.friends.adapter.UserAdapter;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.AddFriend_Callback;

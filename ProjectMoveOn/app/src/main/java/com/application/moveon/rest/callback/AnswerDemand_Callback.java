@@ -3,6 +3,7 @@ package com.application.moveon.rest.callback;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.application.moveon.rest.MoveOnService;
@@ -34,6 +35,7 @@ public class AnswerDemand_Callback implements Callback<Boolean> {
         if(aBoolean){
             makeAToast( "Réponse envoyée");
             if(adding){
+                Log.i("MOVEON ANWERDEMAND", iduser);
                 MoveOnService mos = new RestClient(true).getApiService();
                 mos.addfriendtodb(iduser, new UpdateFriend_Callback(c));
             }
