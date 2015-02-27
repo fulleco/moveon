@@ -1,4 +1,4 @@
-package com.application.moveon.friends;
+package com.application.moveon.friends.adapter;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

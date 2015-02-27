@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.ListView;
 
 import com.application.moveon.R;
-import com.application.moveon.friends.UserAdapter;
+import com.application.moveon.friends.adapter.UserAdapter;
 import com.application.moveon.rest.modele.DemandsPojo;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.sqlitedb.MoveOnDB;

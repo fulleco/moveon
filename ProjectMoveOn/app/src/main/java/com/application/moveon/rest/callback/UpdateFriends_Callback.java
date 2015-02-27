@@ -1,19 +1,13 @@
 package com.application.moveon.rest.callback;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.util.Log;
-import android.widget.ListView;
 
-import com.application.moveon.R;
-import com.application.moveon.friends.UserAdapter;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.Flags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;

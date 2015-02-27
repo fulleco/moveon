@@ -2,6 +2,7 @@ package com.application.moveon.rest.callback;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.application.moveon.rest.modele.UserPojo;
@@ -24,6 +25,7 @@ public class UpdateFriend_Callback implements Callback<UserPojo> {
 
     @Override
     public void success(UserPojo userPojo, Response response) {
+        Log.i("MOVEON AJOUTBDFRIEND", userPojo.getLogin());
         MoveOnDB db = MoveOnDB.getInstance();
         db.insertUser(userPojo);
     }
