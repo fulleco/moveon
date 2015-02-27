@@ -27,8 +27,6 @@ public class GetCirclesService_Callback implements Callback<CerclePojo[]>{
     @Override
     public void success(CerclePojo[] cerclePojo, Response response) {
 
-        Log.i("ANTHO", "UPDATE CERCLE OK");
-
         MoveOnDB bdd = MoveOnDB.getInstance();
         ArrayList<CerclePojo> datas;
         String circles = new String();
@@ -40,7 +38,6 @@ public class GetCirclesService_Callback implements Callback<CerclePojo[]>{
                 circles += cp.getId_cercle() + " ";
             }
             circles = circles.substring(0, circles.length()-1);
-            Log.i("ANTHO", "UPDATE PARTICIPANTS SERVICE" + circles);
 
         }else{
             datas = new ArrayList<CerclePojo>();

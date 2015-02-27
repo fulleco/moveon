@@ -38,7 +38,6 @@ public class UpdateCirlces_Callback implements Callback<CerclePojo[]>{
                 circles += cp.getId_cercle() + " ";
             }
             circles = circles.substring(0, circles.length()-1);
-            Log.i("UPDATE PARTICIPANTS", circles);
 
         }else{
             datas = new ArrayList<CerclePojo>();
