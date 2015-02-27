@@ -595,10 +595,11 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         UserPojo user = session.getUserPojo();
         user.setLatitude(String.valueOf(myLocation.getLatitude()));
         user.setLongitude(String.valueOf(myLocation.getLongitude()));
-        loadBitmap(user, true);
 
         markerOptions = new MarkerOptions();
-        markerOptions.position(myLocationLatlng);
+        //markerOptions.position(myLocationLatlng);
+
+        loadBitmap(user, true);
 
         /*Bitmap b = homeActivity.getProfilePicture();
         if (b == null) {
@@ -643,12 +644,15 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         homeActivity.startUpdateUI();
     }
 
+    private HashMap<Marker, UserPojo> newMarkers;
+
     public void initCercle() {
 
         CerclePojo cercle = homeActivity.getCurrentCercle();
         if(cercle != null){
 
-            markers.clear();
+            newMarkers = new HashMap<Marker, UserPojo>();
+            //markers.clear();
 
             for(UserPojo u : cercle.getParticipants()) {
 
@@ -657,21 +661,36 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                     loadBitmap(u, false);
                 }
             }
+
+            markers = newMarkers;
             //map.setOnMarkerClickListener(this);
         }
     }
 
     public void loadBitmap(final UserPojo u, final boolean isCurrentSession){
 
+        LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
+                Double.parseDouble(u.getLongitude()));
+
+        markerOptions.position(lastLngUser);
+        if(isCurrentSession)
+            markerOptions.title("Moi");
+        else
+            markerOptions.title(u.getFirstname() + " " + u.getLastname());
+
+        Log.i("ANTHO", "MAJ MARQUEUR lat" + lastLngUser.latitude + " long" + lastLngUser.longitude);
+        Log.i("ANTHO", "MAJ MARQUEUR user" + u.getLogin());
+        final Marker m = map.addMarker(markerOptions);
+
         Target target = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                addMarker(this, u, bitmap, isCurrentSession);
+                addMarker(this, u, bitmap, m);
             }
 
             @Override
             public void onBitmapFailed(Drawable drawable) {
-                addMarker(this, u, null, isCurrentSession);
+                addMarker(this, u, null, m);
             }
 
             @Override
@@ -681,18 +700,29 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         targetList.add(target);
 
+        if(isCurrentSession){
+            myMarker = m;
+            map.animateCamera(CameraUpdateFactory.newLatLng(lastLngUser), 200, null);
+            mapLoaded = true;
+            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+                    SensorManager.SENSOR_DELAY_GAME);
+            initCercle();
+        }else{
+            newMarkers.put(m, u);
+        }
+
         String image = "http://martinezhugo.com/pfe/images/"+ u.getId_client()+"/profile.jpg";
         Picasso.with(homeActivity).load(image).into(target);
     }
 
-    public void addMarker(Target target, UserPojo u, Bitmap b, boolean isCurrentSession){
+    public void addMarker(Target target, UserPojo u, Bitmap b, Marker m){
 
         if(!isAdded()) {
             return;
         }
 
-        LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
-                Double.parseDouble(u.getLongitude()));
+        //LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
+        //        Double.parseDouble(u.getLongitude()));
 
         Bitmap b_rounded;
         Bitmap b_resized;
@@ -712,15 +742,16 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         b_rounded.recycle();
         b_rounded = null;
 
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
+        //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
+        m.setIcon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
 
-        markerOptions.position(lastLngUser);
-        if(isCurrentSession)
-            markerOptions.title("Moi");
-        else
-            markerOptions.title(u.getFirstname() + " " + u.getLastname());
+        //markerOptions.position(lastLngUser);
+        //if(isCurrentSession)
+        //    markerOptions.title("Moi");
+        //else
+        //    markerOptions.title(u.getFirstname() + " " + u.getLastname());
 
-        Marker m = map.addMarker(markerOptions);
+        /*Marker m = map.addMarker(markerOptions);
         if(isCurrentSession){
             myMarker = m;
             map.animateCamera(CameraUpdateFactory.newLatLng(lastLngUser), 200, null);
@@ -730,7 +761,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
             initCercle();
         }else{
             markers.put(m, u);
-        }
+        }*/
         targetList.remove(target);
     }
 
@@ -815,62 +846,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         //displayMenuAnimation(1, 0, View.GONE);
         m.dismiss();
         m.setSelected(false);
-    }
-
-    private class LocateTask extends AsyncTask<String, Void, List<Address>> {
-
-        @Override
-        protected List<Address> doInBackground(String... locationName) {
-
-            Geocoder geocoder = new Geocoder(activity.getBaseContext());
-            addresses = null;
-
-            try {
-                // Recuperer 5 adresses possibles
-                addresses = geocoder.getFromLocationName(locationName[0], 5);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return addresses;
-        }
-
-        @Override
-        protected void onPostExecute(List<Address> addresses) {
-
-            if (addresses == null || addresses.size() == 0) {
-                Toast.makeText(activity.getBaseContext(), "Pas d'adresse trouvée",
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            // Faire disparaitre les marqueurs de la map
-            map.clear();
-
-            // Ajouter un nouveau marqueur par adresse
-            for (int i = 0; i < addresses.size(); i++) {
-
-                currentAddress = (Address) addresses.get(i);
-
-                locationMap = new LatLng(currentAddress.getLatitude(),
-                        currentAddress.getLongitude());
-
-                finalAdressString = String
-                        .format("%s, %s",
-                                currentAddress.getMaxAddressLineIndex() > 0 ? currentAddress
-                                        .getAddressLine(0) : "", currentAddress
-                                        .getCountryName());
-
-                markerOptions = new MarkerOptions();
-                markerOptions.position(locationMap);
-                markerOptions.title(finalAdressString);
-
-                map.addMarker(markerOptions);
-
-                // Deplacer la map a la premiere adresse
-                if (i == 0)
-                    map.animateCamera(CameraUpdateFactory
-                            .newLatLng(locationMap));
-            }
-        }
     }
 
     @Override
