@@ -1,7 +1,9 @@
 package com.application.moveon.rest.callback;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 
+import com.application.moveon.ftp.FtpUploadTask;
 import com.application.moveon.model.User;
 import com.application.moveon.tools.ToolBox;
 
@@ -18,10 +20,11 @@ public class EditUser_Callback implements Callback<Boolean> {
     private User newUser;
     private ToolBox tools;
 
-    public  EditUser_Callback(User newUser,ToolBox tools){
+    public  EditUser_Callback(String picturePath, User newUser,ToolBox tools){
 
         this.newUser = newUser;
         this.tools = tools;
+        new FtpUploadTask(picturePath, "profile.jpg", String.valueOf(String.valueOf(newUser.getId()))).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override

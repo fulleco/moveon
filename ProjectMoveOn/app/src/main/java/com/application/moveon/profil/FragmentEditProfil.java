@@ -1,8 +1,14 @@
 package com.application.moveon.profil;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +23,7 @@ import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.EditUser_Callback;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
 
 import java.util.ArrayList;
@@ -82,8 +89,7 @@ public class FragmentEditProfil extends Fragment {
                       // mettre a jour la BDD avec la valeur dans les champs
                       User newUser = new User(session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_EMAIL),
                               session.getUserDetails().get(SessionManager.KEY_PASSWORD), editFirstName.getText().toString(), editLastName.getText().toString());
-                      mos.updateuser(newUser.getFirstName(),newUser.getLastName(),newUser.getPassword(), newUser.getLogin(), newUser.getId(), new EditUser_Callback(newUser,tools));
-
+                      mos.updateuser(newUser.getFirstName(),newUser.getLastName(),newUser.getPassword(), newUser.getLogin(), newUser.getId(), new EditUser_Callback(picturePath,newUser,tools));
                   } else {
                       for (String field : emptyFields)
                           message += "-" + field + "\n";
@@ -105,6 +111,39 @@ public class FragmentEditProfil extends Fragment {
         editEmail.setText(session.getUserDetails().get(SessionManager.KEY_EMAIL));
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK
+                && null != data) {
+            Uri selectedImage = data.getData();
+
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            picturePath = cursor.getString(columnIndex);
+            String extension = picturePath.substring(picturePath.lastIndexOf("."));
+            namePicture = tools.getFileName(selectedImage)+extension;
+            cursor.close();
+
+            BitmapFactory.Options options=new BitmapFactory.Options();
+            options.outHeight = 8;
+            //mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
+
+            Bitmap b_gallery = tools.decodeSampledBitmapFromResource(picturePath, 60, 60);
+            Bitmap b_rounded = ImageHelper.getRoundedCornerBitmap(b_gallery, 15, 0);
+
+            profilePicture.setBackground(null);
+            profilePicture.setImageBitmap(b_rounded);
+        }
+
     }
 
     public ArrayList<String> validFields() {

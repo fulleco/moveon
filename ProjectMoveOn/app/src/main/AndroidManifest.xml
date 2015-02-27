@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.mapv2.demo.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -37,6 +36,7 @@
         </receiver>
         <receiver android:name=".provider.ProviderReceiver" />
         <service android:enabled="true" android:name=".provider.ProviderService" />
+        <service android:enabled="true" android:name=".provider.UpdaterService" />
         <activity
             android:name=".LoginActivity"
             android:label="MoveOn"

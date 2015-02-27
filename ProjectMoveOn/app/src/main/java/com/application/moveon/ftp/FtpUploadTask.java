@@ -57,7 +57,7 @@ public class FtpUploadTask extends AsyncTask<String, Void, FTPClient> {
             Log.i("ANTHO", "path "+email+"/"+name);
             status = mFTPClient.storeFile(email+"/"+name,
                     srcFileStream);
-            Log.e("Status upload", String.valueOf(status));
+            Log.e("ANTHO", "Status upload" + String.valueOf(status));
             srcFileStream.close();  
        } catch (Exception e) {
             e.printStackTrace();  

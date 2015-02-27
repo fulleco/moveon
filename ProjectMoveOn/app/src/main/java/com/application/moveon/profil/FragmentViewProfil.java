@@ -1,5 +1,6 @@
 package com.application.moveon.profil;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.graphics.Bitmap;
@@ -18,7 +19,7 @@ import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ToolBox;
-
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -53,13 +54,6 @@ public class FragmentViewProfil extends Fragment {
         buttonEditer = (Button) view.findViewById(R.id.buttonModifier);
 
         HomeActivity h = (HomeActivity)getActivity();
-        Bitmap b = h.getProfilePicture();
-
-        if(b==null){
-            b= BitmapFactory.decodeResource(getResources(),
-                    R.drawable.profile_test);
-        }
-        profilePicture.setImageBitmap(b);
 
         // Remplir les champs par leur valeur actuelle
         name = (TextView) view.findViewById(R.id.textViewName);
@@ -76,6 +70,9 @@ public class FragmentViewProfil extends Fragment {
         };
 
         buttonEditer.setOnClickListener(btEditClickListener);
+
+        Picasso.with(getActivity()).load("http://martinezhugo.com/pfe/images/"+
+                session.getUserDetails().get(SessionManager.KEY_ID)+"/profile.jpg").into(profilePicture);
 
         return view;
     }
