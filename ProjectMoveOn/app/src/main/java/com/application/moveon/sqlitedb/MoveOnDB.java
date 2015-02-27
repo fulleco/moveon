@@ -466,18 +466,11 @@ public class MoveOnDB {
     }
 
     public void updateParticipants(ArrayList<UserPojo> upfromdb){
-        ArrayList<UserPojo> cache = this.getParticipants(null);
+        bdd.execSQL("delete from "+ TABLE_CIRCLEPARTICIPANTS);
         for(UserPojo up : upfromdb){
-            if(!cache.contains(up)){
-                cache.add(up);
-                this.insertParticipant(up, up.getId_cercle());
-            }
+           insertParticipant(up, up.getId_cercle());
         }
-        for(UserPojo up : cache){
-            if(!upfromdb.contains(up)){
-                this.deleteParticipants(up.getLogin(), up.getId_cercle());
-            }
-        }
+
     }
 
     public void updateCircles(ArrayList<CerclePojo> upfromdb){
