@@ -1,9 +1,12 @@
 package com.application.moveon.rest.modele;
 
+import com.application.moveon.session.SessionManager;
+import com.application.moveon.sqlitedb.MoveOnDB;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -151,5 +154,21 @@ public class CerclePojo {
         participants = Arrays.copyOf(participants, N + 1);
         participants[N] = creator;
 
+    }
+
+    public void setAllInfo(SessionManager session)
+    {
+        MoveOnDB moveOnDB = MoveOnDB.getInstance();
+
+        if(session.getUserDetails().get(SessionManager.KEY_EMAIL).equals(this.getId_creator()))
+            this.setCreator(session.getUserPojo());
+        else
+            this.setCreator(moveOnDB.getCreator(this.getId_creator()));
+
+        ArrayList<UserPojo> participants =  moveOnDB.getParticipants(this.getId_cercle());
+        UserPojo[] participantsToArray =  participants.toArray(new UserPojo[participants.size()]);
+
+        this.setParticipants(participantsToArray);
+        this.addParticipant(this.getCreator());
     }
 }

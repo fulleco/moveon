@@ -238,18 +238,22 @@ public class HomeActivity extends FragmentActivity {
             return;
 
         currentCercle = cercles.get(0);
-        if(session.getUserDetails().get(SessionManager.KEY_EMAIL).equals(currentCercle.getId_creator()))
-            currentCercle.setCreator(session.getUserPojo());
-        else
-            currentCercle.setCreator(moveOnDB.getCreator(currentCercle.getId_creator()));
-        ArrayList<UserPojo> participants = moveOnDB.getParticipants(currentCercle.getId_cercle());
-        UserPojo[] userspojo = new UserPojo[0];
-        UserPojo[] participantsArray = participants.toArray(userspojo);
-        currentCercle.setParticipants(participantsArray);
-        currentCercle.addParticipant(currentCercle.getCreator());
+        currentCercle.setAllInfo(session);
 
-        Log.i("ANTHO", "FIN CURRENT");
+    }
 
+    public void updateCurrentCercle()
+    {
+        if(currentCercle!=null)
+            return;
+
+        MoveOnDB moveOnDB = MoveOnDB.getInstance();
+        currentCercle = moveOnDB.getCircle(String.valueOf(currentCercle.getId_cercle()));
+
+        if(currentCercle==null)
+            return;
+
+        currentCercle.setAllInfo(session);
     }
 
 

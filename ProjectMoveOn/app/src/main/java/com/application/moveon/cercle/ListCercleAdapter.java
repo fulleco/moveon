@@ -19,6 +19,7 @@ import com.application.moveon.rest.callback.GetParticipants_Callback;
 import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.sqlitedb.MoveOnDB;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,13 +32,16 @@ public class ListCercleAdapter extends BaseAdapter {
     private ArrayList<CerclePojo> list = new ArrayList<CerclePojo>();
     private Context context;
     private FragmentInfoCercle fragmentInfoCercle;
-    private SessionManager session;;
+    private SessionManager session;
+    private MoveOnDB moveOnDB;
 
 
     public ListCercleAdapter(ArrayList<CerclePojo> list, Context context, FragmentInfoCercle fragmentInfoCercle) {
         this.list = list;
         this.context = context;
         this.fragmentInfoCercle = fragmentInfoCercle;
+        session = new SessionManager(fragmentInfoCercle.getActivity());
+        moveOnDB = MoveOnDB.getInstance();
     }
 
     @Override
@@ -70,31 +74,35 @@ public class ListCercleAdapter extends BaseAdapter {
         TextView listItemText = (TextView) view.findViewById(R.id.label);
         listItemText.setText(cerclePojo.getTitre());
 
-
         LinearLayout linear_cercle_list = (LinearLayout) view.findViewById(R.id.linear_cercle_list);
         linear_cercle_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                getCercles(homeActivity, cerclePojo);
+                //getInfoCercle(homeActivity, cerclePojo);
+                cerclePojo.setAllInfo(session);
+
+                homeActivity.setCurrentCercle(cerclePojo);
+                fragmentInfoCercle.updateContent();
+
             }
         });
-
-        if(homeActivity.getCurrentCercle() == null)
-            getCercles(homeActivity, cerclePojo);
-
 
         return view;
     }
 
-    private void getCercles(HomeActivity homeActivity, CerclePojo cerclePojo)
+    private void getInfoCercle(HomeActivity homeActivity, CerclePojo cerclePojo)
     {
-        session = new SessionManager(fragmentInfoCercle.getActivity());
 
+        /*
         RestClient r = new RestClient(true);
         MoveOnService mos = r.getApiService();
 
         homeActivity.setCurrentCercle(cerclePojo);
         mos.getParticipants(String.valueOf(cerclePojo.getId_cercle()),new GetParticipants_Callback(fragmentInfoCercle.getActivity(),fragmentInfoCercle.getListViewParticipants(),fragmentInfoCercle));
+        */
+
+
+
     }
 }

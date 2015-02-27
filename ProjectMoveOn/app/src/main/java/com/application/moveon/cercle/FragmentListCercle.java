@@ -13,7 +13,12 @@ import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.GetCercles_Callback;
 import com.application.moveon.rest.callback.GetFriendsPicker_Callback;
+import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.sqlitedb.MoveOnDB;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Quentin Bitschene on 19/02/2015.
@@ -23,6 +28,7 @@ public class FragmentListCercle extends Fragment {
     private static View view;
     private LayoutInflater mInflater;
     private ListView list_cercles;
+    MoveOnDB moveOnDB;
 
     SessionManager session;
 
@@ -35,9 +41,22 @@ public class FragmentListCercle extends Fragment {
 
         session = new SessionManager(getActivity());
 
+        /*
         RestClient r = new RestClient(true);
         MoveOnService mos = r.getApiService();
         mos.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL),new GetCercles_Callback(getActivity(),list_cercles,(FragmentInfoCercle)getTargetFragment()));
+        */
+
+        moveOnDB = MoveOnDB.getInstance();
+
+        ArrayList<CerclePojo> cerclePojos = moveOnDB.getCircles();
+
+        if(cerclePojos == null)
+            return view;
+
+        final ListCercleAdapter a = new ListCercleAdapter(cerclePojos, getActivity(), (FragmentInfoCercle)getTargetFragment());
+
+        list_cercles.setAdapter(a);
 
         return view;
     }
