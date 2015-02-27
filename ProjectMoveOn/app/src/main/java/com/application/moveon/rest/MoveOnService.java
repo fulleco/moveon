@@ -1,4 +1,5 @@
 package com.application.moveon.rest;
+import com.application.moveon.model.MessagePojo;
 import com.application.moveon.rest.callback.AddFriend_Callback;
 import com.application.moveon.rest.callback.AddMessage_Callback;
 import com.application.moveon.rest.callback.AnswerDemand_Callback;
@@ -31,6 +32,9 @@ public interface MoveOnService {
 
     @GET("/get_allparticipants")
     void getAllParticipants(@Query("circles") String circles, Callback<UserPojo[]> cb);
+
+    @GET("/get_allmessages")
+    void getAllMessages(@Query("id_receiver") String id_user, Callback<MessagePojo[]> cb);
 
     @GET("/get_participants")
     void getParticipants(@Query("id_cercle") String id, GetParticipants_Callback cb);

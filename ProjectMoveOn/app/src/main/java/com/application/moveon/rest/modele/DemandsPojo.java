@@ -58,6 +58,11 @@ public class DemandsPojo implements Comparable<DemandsPojo>{
         return (this.getSender().compareTo(demandsPojo.getSender()));
     }
 
+    @Override
+    public boolean equals(Object o){
+        return o.getClass().equals(DemandsPojo.class) && (((DemandsPojo)o).getId_demand() == this.getId());
+    }
+
     public String getMail() {
         return mail;
     }
