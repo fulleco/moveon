@@ -52,6 +52,6 @@ public class UpdateFriends_Callback implements Callback<UserPojo[]> {
 
     @Override
     public void failure(RetrofitError error) {
-        Log.i("MOVEON UPDATE", "NOT WORKING");
+        Log.i("MOVEON UPDATEFRIEND", "NOT WORKING");
     }
 }

@@ -58,6 +58,11 @@ public class MessagePojo implements Comparable<MessagePojo>{
         this.setFirstname_sender(firstname_sender);
     }
 
+    @Override
+    public boolean equals(Object o){
+        return o.getClass().equals(MessagePojo.class) && (((MessagePojo)o).getId() == this.getId());
+    }
+
     public int compareTo(MessagePojo m) {
         return this.id_sender.compareTo(m.getId_sender());
     }

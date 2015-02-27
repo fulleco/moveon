@@ -60,7 +60,7 @@ public class DemandsPojo implements Comparable<DemandsPojo>{
 
     @Override
     public boolean equals(Object o){
-        return o.getClass().equals(DemandsPojo.class) && (((DemandsPojo)o).getId_demand() == this.getId());
+        return o.getClass().equals(DemandsPojo.class) && (((DemandsPojo)o).getId_demand() == this.getId_demand());
     }
 
     public String getMail() {

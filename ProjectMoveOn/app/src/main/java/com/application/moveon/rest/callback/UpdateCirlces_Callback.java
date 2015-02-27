@@ -66,6 +66,6 @@ public class UpdateCirlces_Callback implements Callback<CerclePojo[]>{
 
     @Override
     public void failure(RetrofitError error) {
-        Log.i("MOVEON UPDATE", "NOT WORKING");
+        Log.i("MOVEON CIRCLES", "NOT WORKING");
     }
 }

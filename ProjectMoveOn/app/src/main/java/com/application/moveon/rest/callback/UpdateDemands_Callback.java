@@ -39,7 +39,6 @@ public class UpdateDemands_Callback implements Callback<DemandsPojo[]> {
         }else{
             datas = new ArrayList<DemandsPojo>();
         }
-
         bdd.updateDemands(datas);
 
         Flags.setDemandflag(true);
@@ -49,6 +48,6 @@ public class UpdateDemands_Callback implements Callback<DemandsPojo[]> {
 
     @Override
     public void failure(RetrofitError error) {
-        Log.i("MOVEON DB", "NOT WORKING");
+        Log.i("MOVEON UPDATEDEMANDS", "NOT WORKING");
     }
 }
