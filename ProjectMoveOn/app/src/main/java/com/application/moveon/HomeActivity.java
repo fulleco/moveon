@@ -20,6 +20,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,12 +42,15 @@ import com.application.moveon.menu.FragmentSettings;
 import com.application.moveon.profil.FragmentEditProfil;
 import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.rest.modele.CerclePojo;
+import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -156,9 +160,7 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
         session = new SessionManager(this);
-
 
         tools = new com.application.moveon.tools.ToolBox(this);
 
@@ -169,6 +171,8 @@ public class HomeActivity extends FragmentActivity {
 
         new FtpDownloadTask("www/pfe/images/"+idUser+"/profile.jpg",
                 cacheDir.getAbsolutePath() + "/profile.jpg", profilePicture).execute();
+
+        initCurrentCercle();
 
         //// Drawer declaration
         mTitle = mDrawerTitle = getTitle();
@@ -221,7 +225,30 @@ public class HomeActivity extends FragmentActivity {
                 .add(R.id.content_frame, getFragmentMap())
                 .commit();
         currentFragment = getFragmentMap();
+    }
 
+    private void initCurrentCercle() {
+        if(currentCercle!=null)
+            return;
+
+        MoveOnDB moveOnDB = MoveOnDB.getInstance();
+        ArrayList<CerclePojo> cercles = moveOnDB.getCircles();
+
+        if(cercles.size()==0)
+            return;
+
+        currentCercle = cercles.get(0);
+        if(session.getUserDetails().get(SessionManager.KEY_EMAIL).equals(currentCercle.getId_creator()))
+            currentCercle.setCreator(session.getUserPojo());
+        else
+            currentCercle.setCreator(moveOnDB.getCreator(currentCercle.getId_creator()));
+        ArrayList<UserPojo> participants = moveOnDB.getParticipants(currentCercle.getId_cercle());
+        UserPojo[] userspojo = new UserPojo[0];
+        UserPojo[] participantsArray = participants.toArray(userspojo);
+        currentCercle.setParticipants(participantsArray);
+        currentCercle.addParticipant(currentCercle.getCreator());
+
+        Log.i("ANTHO", "FIN CURRENT");
 
     }
 
