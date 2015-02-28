@@ -237,6 +237,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         String receivers = "";
         for(UserPojo u : homeActivity.getCurrentCercle().getParticipants()){
+            if(!u.getLogin().equals(idSender))
             receivers += u.getLogin() + " ";
         }
 
@@ -315,7 +316,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.;
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin, "T'es où ?", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "T'es où ?", "date");
                     }
                 });
 
@@ -327,7 +328,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin, "Ça va ?", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Ça va ?", "date");
                     }
                 });
 
@@ -345,7 +346,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage("1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin, "J'arrive !", "J'arrive !");
+                        sendMessage("1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "J'arrive !", "J'arrive !");
                     }
                 });
 
@@ -358,7 +359,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin, "Je suis en retard !", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je suis en retard !", "date");
                     }
                 });
 
@@ -371,7 +372,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin, "Je suis perdu...", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je suis perdu...", "date");
                     }
                 });
 
@@ -384,7 +385,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin, "Je suis perdu...", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je suis perdu...", "date");
                     }
                 });
 
@@ -404,7 +405,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin, "Je pars !", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je pars !", "date");
                     }
                 });
 
@@ -417,7 +418,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin, "Rejoins-moi", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Rejoins-moi", "date");
                     }
                 });
 
@@ -430,7 +431,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin, "J'ai besoin d'aide !", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "J'ai besoin d'aide !", "date");
                     }
                 });
 
@@ -443,7 +444,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin, "Pause clope ?", "date");
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Pause clope ?", "date");
                     }
                 });
 
@@ -463,7 +464,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin,
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date");
                     }
                 });
@@ -477,7 +478,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin,
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date");
                     }
                 });
@@ -491,7 +492,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin,
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date");
                     }
                 });
@@ -505,7 +506,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin,
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date");
                     }
                 });
@@ -519,7 +520,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin,
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date");
                     }
                 });
@@ -533,7 +534,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_EMAIL), selectedLogin,
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
                                 session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date");
                     }
                 });
@@ -771,10 +772,10 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                     if(!selectedMarker.equals(myMarker)){
                         UserPojo userSelected = markers.get(marker);
                         pieMenu.setHeader(userSelected.getFirstname()+ " " + userSelected.getLastname(), 20);
-                        selectedLogin = userSelected.getLogin();
+                        selectedLogin = String.valueOf(userSelected.getId_client());
                     }else{
                         pieMenu.setHeader("Moi", 20);
-                        selectedLogin = session.getUserDetails().get(SessionManager.KEY_EMAIL);
+                        selectedLogin = session.getUserDetails().get(SessionManager.KEY_ID);
                     }
                     showMenu(pieMenu);
                 }
