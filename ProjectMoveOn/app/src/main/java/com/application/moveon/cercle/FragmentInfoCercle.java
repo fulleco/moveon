@@ -53,7 +53,7 @@ public class FragmentInfoCercle extends Fragment {
         session = new SessionManager(homeActivity);
         moveOnDB = new MoveOnDB(getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
 
-        //updateContent();
+        updateContent();
 
         btQuitterCercle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +72,6 @@ public class FragmentInfoCercle extends Fragment {
 
                 //STEP 3 : Mettre a jour l'UI
                 //se deroule dans la callback
-
                 moveOnDB.close();
 
             }

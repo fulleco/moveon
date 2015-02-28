@@ -639,7 +639,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
             //markers.clear();
 
             for(UserPojo u : cercle.getParticipants()) {
-
                 if (!(u.getLogin()).equals(session.getUserDetails().get(SessionManager.KEY_EMAIL))) {
                     loadBitmap(u, false);
                 }

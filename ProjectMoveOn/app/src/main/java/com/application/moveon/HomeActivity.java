@@ -316,8 +316,6 @@ public class HomeActivity extends FragmentActivity {
     Runnable mStatusChecker = new Runnable() {
         @Override
         public void run() {
-            // TODO UPDATE*
-            Log.d("HANDLER","IZ OKAY");
             updateCurrentCercle();
             fragmentMap.initCercle();
             mHandler.postDelayed(mStatusChecker, mInterval);
