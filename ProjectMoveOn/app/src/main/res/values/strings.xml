@@ -19,7 +19,6 @@
     <string-array name="drawer_array">
         <item>Map</item>
         <item>Profil</item>
-        <item>Localisation</item>
         <item>Creation de Cercle</item>
         <item>Amis</item>
         <item>Demandes</item>

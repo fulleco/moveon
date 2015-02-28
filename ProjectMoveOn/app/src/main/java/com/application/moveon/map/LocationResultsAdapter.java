@@ -12,7 +12,8 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.application.moveon.R;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 
@@ -26,16 +27,16 @@ public class LocationResultsAdapter extends BaseAdapter {
 
     private int layoutId;
 
-    private ArrayList<MarkerOptions> mData = new ArrayList<MarkerOptions>();
+    private ArrayList<Marker> mData = new ArrayList<Marker>();
 
     private LayoutInflater mInflater;
 
     private static Activity activity;
 
-    public LocationResultsAdapter(Activity activity, Context context, int layoutId, ArrayList<MarkerOptions> data) {
+    public LocationResultsAdapter(Activity activity, Context context, int layoutId, ArrayList<Marker> data) {
 
         this.layoutId = layoutId;
-        this.mData = new ArrayList<MarkerOptions>(data);
+        this.mData = new ArrayList<Marker>(data);
         this.activity = activity;
 
         mInflater = LayoutInflater.from( context );
@@ -43,7 +44,7 @@ public class LocationResultsAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addItem(final MarkerOptions item) {
+    public void addItem(final Marker item) {
         mData.add(item);
         notifyDataSetChanged();
     }
@@ -59,7 +60,7 @@ public class LocationResultsAdapter extends BaseAdapter {
     }
 
     @Override
-    public MarkerOptions getItem(int position) {
+    public Marker getItem(int position) {
         return mData.get(position);
     }
 
@@ -73,7 +74,7 @@ public class LocationResultsAdapter extends BaseAdapter {
 
         ViewHolder holder = null;
         int rowType = getItemViewType(position);
-        final MarkerOptions data = mData.get(position);
+        final Marker data = mData.get(position);
         String address = data.getTitle();
 
         if ((view == null)||view.getTag()==null) {

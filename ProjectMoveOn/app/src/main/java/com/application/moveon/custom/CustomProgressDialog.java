@@ -3,6 +3,8 @@ package com.application.moveon.custom;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -30,7 +32,6 @@ public class CustomProgressDialog extends ProgressDialog {
 
     }
 
-
     @Override
     public void show() {
         super.show();
@@ -41,6 +42,14 @@ public class CustomProgressDialog extends ProgressDialog {
     public void dismiss() {
         super.dismiss();
         animation.stop();
+        for (int i = 0; i < animation.getNumberOfFrames(); ++i){
+            Drawable frame = animation.getFrame(i);
+            if (frame instanceof BitmapDrawable) {
+                ((BitmapDrawable)frame).getBitmap().recycle();
+            }
+            frame.setCallback(null);
+        }
+        animation.setCallback(null);
     }
 
 
