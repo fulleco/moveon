@@ -27,6 +27,7 @@ public class ProviderReceiver extends BroadcastReceiver{
         SessionManager session = new SessionManager(context);
         MoveOnService mainmos = (new RestClient(true)).getApiService();
         String action = intent.getAction();
+        String id = intent.getStringExtra("ID");
         String sender = intent.getStringExtra("SENDER");
         String receiver = intent.getStringExtra("RECEIVER");
         String circle = intent.getStringExtra("CIRCLE");
@@ -35,7 +36,7 @@ public class ProviderReceiver extends BroadcastReceiver{
             mainmos.addMessage(circle, receiver, sender, "Ok", "DATE",
                     0, new AddMessage_Callback(null, null));
         }
-        notifManager.cancel(sender.hashCode());
+        notifManager.cancel(Integer.valueOf(id));
 	}
 
 }

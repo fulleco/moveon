@@ -56,12 +56,8 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
     public void createNotification(MessagePojo m) {
 
         Intent intent = new Intent(context, HomeActivity.class);
-        intent.putExtra("SENDER", m.getId_sender());
-        intent.putExtra("RECEIVER", m.getId_receiver());
-        intent.putExtra("CIRCLE", m.getId_circle());
 
         Intent intentOk = new Intent(context, ProviderReceiver.class);
-        intentOk.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         intentOk.putExtra("SENDER", m.getId_sender());
         intentOk.putExtra("RECEIVER", m.getId_receiver());
         intentOk.putExtra("CIRCLE", m.getId_circle());
@@ -83,7 +79,6 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
         longText.append(m.getContent());
 
         Notification.Builder noti = null;
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         Notification notification;
         noti = new Notification.Builder(context).setContentTitle(title)
@@ -106,7 +101,7 @@ public class GetMessage_Callback implements Callback<MessagePojo[]> {
         notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONLY_ALERT_ONCE;
 
         if (!text.toString().equals("") && !text.toString().equals(null)) {
-            notifManager.notify(m.getId_sender().hashCode(), notification);
+            notifManager.notify(Integer.valueOf(m.getId_sender()), notification);
         }
     }
 
