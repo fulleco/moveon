@@ -41,7 +41,7 @@ public class ListCercleAdapter extends BaseAdapter {
         this.context = context;
         this.fragmentInfoCercle = fragmentInfoCercle;
         session = new SessionManager(fragmentInfoCercle.getActivity());
-        moveOnDB = MoveOnDB.getInstance();
+        moveOnDB = new MoveOnDB(context, session.getUserDetails().get(SessionManager.KEY_EMAIL));
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ListCercleAdapter extends BaseAdapter {
             public void onClick(View view) {
 
                 //getInfoCercle(homeActivity, cerclePojo);
-                cerclePojo.setAllInfo(session);
+                cerclePojo.setAllInfo(session, context);
 
                 homeActivity.setCurrentCercle(cerclePojo);
                 fragmentInfoCercle.updateContent();

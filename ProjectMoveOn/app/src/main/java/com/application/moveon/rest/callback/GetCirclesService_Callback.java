@@ -20,14 +20,16 @@ import retrofit.client.Response;
  */
 public class GetCirclesService_Callback implements Callback<CerclePojo[]>{
 
-    public GetCirclesService_Callback() {
+    private MoveOnDB db;
+
+    public GetCirclesService_Callback(MoveOnDB db) {
+        this.db = db;
     }
 
 
     @Override
     public void success(CerclePojo[] cerclePojo, Response response) {
 
-        MoveOnDB bdd = MoveOnDB.getInstance();
         ArrayList<CerclePojo> datas;
         String circles = new String();
 
@@ -43,13 +45,14 @@ public class GetCirclesService_Callback implements Callback<CerclePojo[]>{
             datas = new ArrayList<CerclePojo>();
 
         }
-
-        bdd.updateCircles(datas);
+        db.open();
+        db.updateCircles(datas);
+        db.close();
 
         MoveOnService mos = new RestClient(true).getApiService();
 
         if(datas.size() > 0){
-            mos.getAllParticipants(circles, new GetParticipantsService_Callback());
+            mos.getAllParticipants(circles, new GetParticipantsService_Callback(db));
         }
     }
 

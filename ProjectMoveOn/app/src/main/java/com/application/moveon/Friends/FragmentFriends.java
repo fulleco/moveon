@@ -73,11 +73,13 @@ public class FragmentFriends extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(true);
 
-        MoveOnDB bd = MoveOnDB.getInstance();
+        final MoveOnDB bd = new MoveOnDB(getActivity().getBaseContext(),session.getUserDetails().get(SessionManager.KEY_EMAIL));
         bd.open();
 
         lv = (ListView)view.findViewById(R.id.list_contacts);
         lv.setAdapter(new UserAdapter(bd.getFriends(),activity.getBaseContext()));
+
+        bd.close();
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +102,7 @@ public class FragmentFriends extends Fragment {
                     progressDialog.hide();
                 }
                 else{
-                    mainmos.addfriend( mail, val, new AddFriend_Callback(activity, progressDialog, val));
+                    mainmos.addfriend( mail, val, new AddFriend_Callback(activity, progressDialog, val,bd));
                 }
             }
         });

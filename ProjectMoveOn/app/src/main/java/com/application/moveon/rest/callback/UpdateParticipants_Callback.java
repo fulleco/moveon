@@ -17,19 +17,28 @@ import retrofit.client.Response;
  * Created by Hugo on 26/02/2015.
  */
 public class UpdateParticipants_Callback implements Callback<UserPojo[]> {
+
+    private MoveOnDB db;
+
+    public UpdateParticipants_Callback(MoveOnDB db){
+        this.db = db;
+    }
+
     @Override
     public void success(UserPojo[] userPojos, Response response) {
-        MoveOnDB bdd = MoveOnDB.getInstance();
         ArrayList<UserPojo> datas;
 
         if(userPojos == null) {
             datas =new ArrayList<UserPojo>();
         }else{
             datas = new ArrayList<UserPojo>(Arrays.asList(userPojos));
+            db.open();
+            db.updateParticipants(datas);
+            db.close();
         }
 
         //for( UserPojo u)
-        bdd.updateParticipants(datas);
+
 
         Flags.setParticipantsflag(true);
         Flags.checkupdate();

@@ -95,25 +95,10 @@ public class MoveOnDB {
 
     private SQLiteDatabase bdd;
     private SQLiteDB maBaseSQLite;
-    private static MoveOnDB mInstance;
 
-    private MoveOnDB(){
-
-    }
-
-    public void initialize(Context context, String login){
-
+    public MoveOnDB(Context context, String login){
         maBaseSQLite = new SQLiteDB(context, NOM_BDD + login + ".db" , null, VERSION_BDD);
     }
-
-    public static MoveOnDB getInstance(){
-        if(mInstance == null)
-        {
-            mInstance = new MoveOnDB();
-        }
-        return mInstance;
-    }
-
 
     public void open(){
         //on ouvre la BDD en écriture

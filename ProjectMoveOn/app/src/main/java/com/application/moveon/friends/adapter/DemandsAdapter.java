@@ -17,6 +17,7 @@ import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.AnswerDemand_Callback;
 import com.application.moveon.rest.modele.DemandsPojo;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.sqlitedb.MoveOnDB;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -57,6 +58,7 @@ public class DemandsAdapter extends BaseAdapter {
         final MoveOnService mos = r.getApiService();
         final ProgressDialog p = new ProgressDialog(activity);
         final Context context = this.activity.getBaseContext();
+        final MoveOnDB db = new MoveOnDB(context, session.getUserDetails().get(SessionManager.KEY_EMAIL));
 
         View view = convertview;
 
@@ -83,7 +85,7 @@ public class DemandsAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 p.show();
-                mos.answerdemand(dp.getMail(), mail, false, new AnswerDemand_Callback(activity,p, session.getUserDetails().get(SessionManager.KEY_EMAIL),false));
+                mos.answerdemand(dp.getMail(), mail, false, new AnswerDemand_Callback(activity,p, session.getUserDetails().get(SessionManager.KEY_EMAIL),false,db));
                 d.remove(position);
                 notifyDataSetChanged();
             }
@@ -94,7 +96,7 @@ public class DemandsAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 p.show();
-                mos.answerdemand(dp.getMail(), mail, true, new AnswerDemand_Callback(activity,p, session.getUserDetails().get(SessionManager.KEY_EMAIL),true));
+                mos.answerdemand(dp.getMail(), mail, true, new AnswerDemand_Callback(activity,p, session.getUserDetails().get(SessionManager.KEY_EMAIL),true,db));
                 d.remove(position);
                 notifyDataSetChanged();
             }

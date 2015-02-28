@@ -17,9 +17,16 @@ import retrofit.client.Response;
  * Created by Hugo on 26/02/2015.
  */
 public class GetParticipantsService_Callback implements Callback<UserPojo[]> {
+
+    private MoveOnDB db;
+
+    public GetParticipantsService_Callback(MoveOnDB db){
+        this.db = db;
+    }
+
     @Override
     public void success(UserPojo[] userPojos, Response response) {
-        MoveOnDB bdd = MoveOnDB.getInstance();
+
         ArrayList<UserPojo> datas;
 
         if(userPojos == null) {
@@ -27,8 +34,9 @@ public class GetParticipantsService_Callback implements Callback<UserPojo[]> {
         }else{
             datas = new ArrayList<UserPojo>(Arrays.asList(userPojos));
         }
-
-        bdd.updateParticipants(datas);
+        db.open();
+        db.updateParticipants(datas);
+        db.close();
     }
 
     @Override

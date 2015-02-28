@@ -61,8 +61,10 @@ public class FragmentFriendDemands extends Fragment {
 
         String mail = session.getUserDetails().get(SessionManager.KEY_EMAIL);
 
-        MoveOnDB db = MoveOnDB.getInstance();
+        MoveOnDB db = new MoveOnDB(getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
+        db.open();
         ArrayList<DemandsPojo> datas = db.getDemands();
+        db.close();
 
         if(datas.size() == 0){
             textv.setVisibility(View.VISIBLE);
@@ -70,7 +72,7 @@ public class FragmentFriendDemands extends Fragment {
 
 
         }else {
-            textv.setVisibility(View.INVISIBLE);
+            textv.setVisibility(View.GONE);
             Collections.sort(datas);
             DemandsAdapter a = new DemandsAdapter(activity,datas, mail);
             lv.setAdapter(a);

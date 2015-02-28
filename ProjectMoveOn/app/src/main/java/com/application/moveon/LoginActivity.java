@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 
 import com.application.moveon.custom.CustomProgressDialog;
 import com.application.moveon.rest.callback.Connect_Callback;
@@ -43,14 +45,12 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+
         final RestClient r = new RestClient(true);
         final MoveOnService mos = r.getApiService();
 
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/BebasNeue.otf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build()
-        );
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -63,8 +63,17 @@ public class LoginActivity extends Activity {
 
         editEmail = (EditText) findViewById(R.id.editEmail);
         editPassword = (EditText) findViewById(R.id.editPassword);
-
         final Button registerButton = (Button) findViewById(R.id.buttonRegister);
+
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),
+                "fonts/BebasNeue.otf");
+
+
+        editEmail.setTypeface(custom_font);
+        editPassword.setTypeface(custom_font);
+        registerButton.setTypeface(custom_font);
+
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +117,12 @@ public class LoginActivity extends Activity {
 
             }
         });
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/BebasNeue.otf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
     }
 
     public ArrayList<String> validFields() {

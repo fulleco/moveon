@@ -47,9 +47,11 @@ public class FragmentListCercle extends Fragment {
         mos.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL),new GetCercles_Callback(getActivity(),list_cercles,(FragmentInfoCercle)getTargetFragment()));
         */
 
-        moveOnDB = MoveOnDB.getInstance();
+        moveOnDB = new MoveOnDB(this.getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
+        moveOnDB.open();
 
         ArrayList<CerclePojo> cerclePojos = moveOnDB.getCircles();
+        moveOnDB.close();
 
         if(cerclePojos == null)
             return view;
