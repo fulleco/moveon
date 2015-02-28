@@ -27,6 +27,7 @@ public class UpdateParticipants_Callback implements Callback<UserPojo[]> {
         }else{
             datas = new ArrayList<UserPojo>(Arrays.asList(userPojos));
         }
+
         //for( UserPojo u)
         bdd.updateParticipants(datas);
 

@@ -25,6 +25,7 @@ android {
 }
 
 dependencies {
+    compile group: 'com.google.guava', name: 'guava', version: '18.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'uk.co.chrisjenx:calligraphy:2.0.1'
     compile 'com.android.support:support-v4:20.0.0'
