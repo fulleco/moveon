@@ -18,16 +18,16 @@ import retrofit.client.Response;
  */
 public class UpdateFriends_Callback implements Callback<UserPojo[]> {
 
-    private ArrayList<UserPojo> formatedata;
+    private MoveOnDB db;
 
-    public UpdateFriends_Callback() {
-        this.formatedata = new ArrayList<UserPojo>();
+    public UpdateFriends_Callback(MoveOnDB db) {
+        this.db = db;
     }
 
     @Override
     public void success(UserPojo[] userPojos, Response response) {
 
-        MoveOnDB bdd = MoveOnDB.getInstance();
+        db.open();
         ArrayList<UserPojo> datas;
 
         if(userPojos == null) {
@@ -35,8 +35,9 @@ public class UpdateFriends_Callback implements Callback<UserPojo[]> {
         }else{
             datas = new ArrayList<UserPojo>(Arrays.asList(userPojos));
         }
-
-        bdd.updateFriends(datas);
+        db.open();
+        db.updateFriends(datas);
+        db.close();
 
         Flags.setFriendflag(true);
         Flags.checkupdate();

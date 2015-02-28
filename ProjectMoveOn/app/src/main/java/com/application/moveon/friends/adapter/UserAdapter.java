@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.application.moveon.R;
 import com.application.moveon.rest.modele.UserPojo;
+import com.makeramen.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 
@@ -54,13 +56,16 @@ public class UserAdapter extends BaseAdapter {
         UserPojo us = list.get(position);
         //Handle TextView and display string from your list
         TextView listItemText = (TextView) view.findViewById(R.id.label);
-        listItemText.setText(us.getFirstname());
+        listItemText.setText(us.getFirstname() +" "+ us.getLastname());
 
-
+        Transformation transformation = new RoundedTransformationBuilder()
+                .cornerRadiusDp(15)
+                .oval(false)
+                .build();
 
         //Handle buttons and add onClickListeners
         ImageView imgv = (ImageView) view.findViewById(R.id.icon);
-        Picasso.with(context).load("http://martinezhugo.com/pfe/images/"+ us.getId_client()+"/profile.jpg").into(imgv);
+        Picasso.with(context).load("http://martinezhugo.com/pfe/images/"+ us.getId_client()+"/profile.jpg").transform(transformation).into(imgv);
 
 
 

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
+import com.application.moveon.sqlitedb.MoveOnDB;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -19,12 +20,14 @@ public class AddFriend_Callback implements Callback<Integer> {
 
     private Context c;
     private ProgressDialog p;
-    String iduser;
+    private String iduser;
+    private MoveOnDB db;
 
-    public AddFriend_Callback(Context m_activity, ProgressDialog m_p, String iduser){
+    public AddFriend_Callback(Context m_activity, ProgressDialog m_p, String iduser, MoveOnDB db){
         this.c = m_activity;
         this.p = m_p;
         this.iduser = iduser;
+        this.db = db;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class AddFriend_Callback implements Callback<Integer> {
         }else if(aint == 4){
             makeAToast(iduser + " a été ajouté à vos amis");
             MoveOnService mos = new RestClient(true).getApiService();
-            mos.addfriendtodb(iduser, new UpdateFriend_Callback(c));
+            mos.addfriendtodb(iduser, new UpdateFriend_Callback(c,db));
         }else{
            makeAToast("Problème lors de la demande en ami");
         }

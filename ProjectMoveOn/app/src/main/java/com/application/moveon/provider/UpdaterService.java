@@ -19,6 +19,7 @@ import com.application.moveon.rest.callback.GetCirclesService_Callback;
 import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.rest.callback.UpdateCirlces_Callback;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.sqlitedb.MoveOnDB;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -28,6 +29,7 @@ public class UpdaterService extends Service {
     private PowerManager.WakeLock mWakeLock;
     private SessionManager session;
     private String idUser;
+    private MoveOnDB db;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -49,10 +51,11 @@ public class UpdaterService extends Service {
 
         session = new SessionManager(UpdaterService.this);
         idUser = session.getUserDetails().get(SessionManager.KEY_EMAIL);
+        db = new MoveOnDB(UpdaterService.this, session.getUserDetails().get(SessionManager.KEY_EMAIL));
 
         MoveOnService mosonchild;
         mosonchild = new RestClient(false).getApiService();
-        mosonchild.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new GetCirclesService_Callback());
+        mosonchild.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new GetCirclesService_Callback(db));
     }
 
     @Override

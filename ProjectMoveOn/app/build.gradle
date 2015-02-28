@@ -24,11 +24,18 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
+
 dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '18.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'uk.co.chrisjenx:calligraphy:2.0.1'
+    compile 'com.makeramen:roundedimageview:1.5.0'
     compile 'com.android.support:support-v4:20.0.0'
+    compile "com.android.support:appcompat-v7:20.0.0"
     compile files('libs/httpmime-4.2.2.jar')
     compile files('libs/org.apache.commons.net_2.0.0.v200905272248.jar')
     compile files('libs/simpleftp.jar')

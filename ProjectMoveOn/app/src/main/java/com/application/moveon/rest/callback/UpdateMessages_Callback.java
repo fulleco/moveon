@@ -16,9 +16,16 @@ import retrofit.client.Response;
  * Created by Hugo on 26/02/2015.
  */
 public class UpdateMessages_Callback implements Callback<MessagePojo[]> {
+
+    private MoveOnDB db;
+
+    public UpdateMessages_Callback(MoveOnDB db){
+        this.db = db;
+    }
+
     @Override
     public void success(MessagePojo[] messagePojos, Response response) {
-        MoveOnDB bdd = MoveOnDB.getInstance();
+
         ArrayList<MessagePojo> datas;
 
         if(messagePojos == null) {
@@ -26,8 +33,9 @@ public class UpdateMessages_Callback implements Callback<MessagePojo[]> {
         }else{
             datas = new ArrayList<MessagePojo>(Arrays.asList(messagePojos));
         }
-
-        bdd.updateMessages(datas);
+        db.open();
+        db.updateMessages(datas);
+        db.close();
 
         Flags.setMessageflag(true);
         Flags.checkupdate();

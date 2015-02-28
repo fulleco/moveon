@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
+import com.application.moveon.sqlitedb.MoveOnDB;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -22,13 +23,15 @@ public class AnswerDemand_Callback implements Callback<Boolean> {
     private ProgressDialog p;
     private String iduser;
     private boolean adding;
+    private MoveOnDB db;
 
-    public AnswerDemand_Callback(Context c, ProgressDialog p, String iduser, boolean adding){
+    public AnswerDemand_Callback(Context c, ProgressDialog p, String iduser, boolean adding, MoveOnDB db){
 
         this.c = c;
         this.p = p;
         this.iduser = iduser;
         this. adding = adding;
+        this.db = db;
     }
     @Override
     public void success(Boolean aBoolean, Response response) {
@@ -37,7 +40,7 @@ public class AnswerDemand_Callback implements Callback<Boolean> {
             if(adding){
                 Log.i("MOVEON ANWERDEMAND", iduser);
                 MoveOnService mos = new RestClient(true).getApiService();
-                mos.addfriendtodb(iduser, new UpdateFriend_Callback(c));
+                mos.addfriendtodb(iduser, new UpdateFriend_Callback(c,db));
             }
 
 
