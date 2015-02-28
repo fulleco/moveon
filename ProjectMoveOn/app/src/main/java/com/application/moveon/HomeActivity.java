@@ -71,7 +71,7 @@ public class HomeActivity extends FragmentActivity {
 
 
 
-    private FragmentMap fragmentMap = new FragmentMap();
+    private FragmentMap fragmentMap;
     private FragmentViewProfil fragmentViewProfil = new FragmentViewProfil();
     private FragmentEditProfil fragmentEditProfil = new FragmentEditProfil();
     private FragmentLocationChooser fragmentLocationChooser = new FragmentLocationChooser();
@@ -205,6 +205,8 @@ public class HomeActivity extends FragmentActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+
+        fragmentMap = new FragmentMap();
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon

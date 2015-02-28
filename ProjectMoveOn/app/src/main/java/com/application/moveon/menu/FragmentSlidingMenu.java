@@ -24,6 +24,7 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
     private FragmentInfoCercle fragmentInfoCercle;
     private FragmentListCercle fragmentListCercle;
 
+
     public static final String TAB_INFO_CERCLE = "Infos cercle";
     public static final String TAB_LIST_CERCLE = "Liste cercle";
 
