@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.cercle.FragmentCreateCercle;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,6 +43,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by damota on 10/12/2014.
@@ -74,8 +76,8 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
 
     private FragmentActivity activity;
 
-    private ArrayList<MarkerOptions> markersList;
-    private MarkerOptions selectedMarker;
+    private ArrayList<Marker> markersList;
+    private Marker selectedMarker;
 
     private EditText etLocation;
 
@@ -120,7 +122,7 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
         //FragmentTransaction ft = fm.beginTransaction();
         //ft.hide(supportMapFragment).commit();
 
-        markersList = new ArrayList<MarkerOptions>();
+        markersList = new ArrayList<Marker>();
         resultsList = (ListView) view.findViewById(R.id.results_list);
         etLocation = (EditText) view.findViewById(R.id.edit_location);
 
@@ -150,7 +152,7 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
 
                         collapse(resultsList);
 
-                        final MarkerOptions m = (MarkerOptions) resultsList.getItemAtPosition(position);
+                        final Marker m = (Marker) resultsList.getItemAtPosition(position);
 
                         map.animateCamera(CameraUpdateFactory
                                 .newLatLng(m.getPosition()), 400, new GoogleMap.CancelableCallback() {
@@ -193,11 +195,12 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
         View.OnClickListener validateClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().popBackStackImmediate();
-                Log.i("ANTHO", "clic valider");
                 FragmentCreateCercle fcc = (FragmentCreateCercle)getTargetFragment();
-                fcc.setLatitude(selectedMarker.getPosition().latitude);
+                fcc.setLongitude(selectedMarker.getPosition().latitude);
                 fcc.setLatitude(selectedMarker.getPosition().longitude);
+                map.clear();
+                HomeActivity home = (HomeActivity)getActivity();
+                home.switchFragment(fcc);
             }
         };
 
@@ -257,6 +260,20 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
         // For 0% transparency ( ie, opaque ) , specify ff
         // The remaining 6 characters(00ff00) specify the fill color
         map.setOnMarkerClickListener(this);
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng point) {
+                //lstLatLngs.add(point);
+                layoutResults.setVisibility(View.GONE);
+                resultsList.setAdapter(null);
+                MarkerOptions options = new MarkerOptions();
+                map.clear();
+                options.position(point);
+                options.title("Point de rendez-vous");
+                selectedMarker = map.addMarker(options);
+            }
+        });
 
     }
 
@@ -271,10 +288,10 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
             public void onFinish()
             {
                 map.getUiSettings().setScrollGesturesEnabled(true);
-                MarkerOptions mOptions = new MarkerOptions();
-                mOptions.title(marker.getTitle());
-                mOptions.position(marker.getPosition());
-                selectedMarker = mOptions;
+                //MarkerOptions mOptions = new MarkerOptions();
+                //mOptions.title(marker.getTitle());
+                //mOptions.position(marker.getPosition());
+                selectedMarker = marker;
                 btn_validate.setEnabled(true);
                 marker.showInfoWindow();
                 //showMenu();
@@ -295,12 +312,12 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
         @Override
         protected List<Address> doInBackground(String... locationName) {
 
-            Geocoder geocoder = new Geocoder(activity.getBaseContext());
+            Geocoder geocoder = new Geocoder(activity.getBaseContext(), Locale.FRENCH);
             addresses = null;
 
             try {
                 // Recuperer 10 adresses possibles
-                addresses = geocoder.getFromLocationName(locationName[0], 10);
+                addresses = geocoder.getFromLocationName(locationName[0], 20);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -337,18 +354,20 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
                 locationMap = new LatLng(currentAddress.getLatitude(),
                         currentAddress.getLongitude());
 
-                finalAdressString = String
+                /*finalAdressString = String
                         .format("%s, %s",
                                 currentAddress.getMaxAddressLineIndex() > 0 ? currentAddress
                                         .getAddressLine(0) : "", currentAddress
-                                        .getCountryName());
+                                        .getCountryName());*/
+
+                finalAdressString = constructAddress(currentAddress);
 
                 markerOptions = new MarkerOptions();
                 markerOptions.position(locationMap);
                 markerOptions.title(finalAdressString);
 
-                map.addMarker(markerOptions);
-                markersList.add(markerOptions);
+                Marker m = map.addMarker(markerOptions);
+                markersList.add(m);
 
                 // Deplacer la map a la premiere adresse
                 if (i == 0)
@@ -361,6 +380,14 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
                     markersList);
             resultsList.setAdapter(adapter);
         }
+    }
+
+    private String constructAddress(Address a){
+        String result = "";
+        for(int i = 0; i < a.getMaxAddressLineIndex(); i++) {
+            result += a.getAddressLine(i) + " ";
+        }
+        return result.trim();
     }
 
     @Override

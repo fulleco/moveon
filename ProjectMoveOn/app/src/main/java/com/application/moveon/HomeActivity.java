@@ -44,7 +44,6 @@ import com.application.moveon.profil.FragmentEditProfil;
 import com.application.moveon.profil.FragmentViewProfil;
 import com.application.moveon.provider.UpdaterService;
 import com.application.moveon.rest.modele.CerclePojo;
-import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.ImageHelper;
@@ -52,7 +51,6 @@ import com.application.moveon.tools.ToolBox;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -87,11 +85,10 @@ public class HomeActivity extends FragmentActivity {
 
     private static final int MAP_INDEX = 0;
     private static final int VIEW_PROFIL_INDEX = 1;
-    private static final int LOCATION_CHOOSER = 2;
-    private static final int CREATE_CERCLE_INDEX = 3;
-    private static final int FRIENDS = 4;
-    private static final int DEMANDS = 5;
-    private static final int SETTINGS = 6;
+    private static final int CREATE_CERCLE_INDEX = 2;
+    private static final int FRIENDS = 3;
+    private static final int DEMANDS = 4;
+    private static final int SETTINGS = 5;
 
     private int RESULT_LOAD_IMAGE = 0;
 
@@ -225,7 +222,7 @@ public class HomeActivity extends FragmentActivity {
 
         setFragmentMap(new FragmentMap());
         fragmentLocationChooser = new FragmentLocationChooser();
-        fragmentLocationChooser.setTargetFragment(fragmentCreateCercle,1);
+        fragmentLocationChooser.setTargetFragment(getFragmentCreateCercle(),1);
         fragmentManager = getFragmentManager();
 
         fragmentManager.beginTransaction()
@@ -380,6 +377,14 @@ public class HomeActivity extends FragmentActivity {
         this.fragmentMap = fragmentMap;
     }
 
+    public FragmentCreateCercle getFragmentCreateCercle() {
+        return fragmentCreateCercle;
+    }
+
+    public void setFragmentCreateCercle(FragmentCreateCercle fragmentCreateCercle) {
+        this.fragmentCreateCercle = fragmentCreateCercle;
+    }
+
 
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -435,14 +440,9 @@ public class HomeActivity extends FragmentActivity {
                 switchFragment(fragmentViewProfil);
                 break;
 
-            case LOCATION_CHOOSER :
-                itemPlacePoint.setVisible(false);
-                switchFragment(fragmentLocationChooser);
-                break;
-
             case CREATE_CERCLE_INDEX :
                 itemPlacePoint.setVisible(false);
-                switchFragment(fragmentCreateCercle);
+                switchFragment(getFragmentCreateCercle());
                 break;
 
             case FRIENDS :

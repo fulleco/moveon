@@ -109,8 +109,8 @@ public class FragmentCreateCercle extends Fragment{
                    susers = susers.substring(0, susers.length() -1);
                }
                 Log.i("HUGO", editTimeDebut.getText().toString());
-                Log.i("HUGO", String.valueOf(latitude));
-                Log.i("HUGO", String.valueOf(longitude));
+                Log.i("ANTHO", "LATITUDE" + String.valueOf(latitude));
+                Log.i("ANTHO", "LONGITUDE" + String.valueOf(longitude));
                 progressDialog.setMessage("Création en cours");
                 progressDialog.show();
                 mos.createcircle(nomCercle.getText().toString(), session.getUserDetails().get(SessionManager.KEY_EMAIL)
