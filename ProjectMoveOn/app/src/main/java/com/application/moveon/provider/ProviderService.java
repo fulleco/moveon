@@ -64,7 +64,7 @@ public class ProviderService extends Service implements LocationListener {
 
         session = new SessionManager(ProviderService.this);
         //session.checkLogin(false);
-        idUser = session.getUserDetails().get(SessionManager.KEY_EMAIL);
+        idUser = session.getUserDetails().get(SessionManager.KEY_ID);
         //new NotifTask().execute();
 
         if((idUser!=null)||(idUser!="")) {
