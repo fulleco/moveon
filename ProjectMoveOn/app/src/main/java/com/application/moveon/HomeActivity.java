@@ -319,8 +319,15 @@ public class HomeActivity extends FragmentActivity {
     }
 
     @Override
+    public void onStop(){
+        super.onStop();
+        Log.i("ANTHO", "STOP");
+    }
+
+    @Override
     public void onPause(){
         super.onPause();
+        Log.i("ANTHO", "PAUSE");
         stopRepeatingTask();
         amUI.cancel(piUI);
     }
