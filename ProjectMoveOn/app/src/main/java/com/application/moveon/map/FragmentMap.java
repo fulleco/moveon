@@ -237,8 +237,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         String receivers = "";
         for(UserPojo u : homeActivity.getCurrentCercle().getParticipants()){
-            if(!u.getLogin().equals(idSender))
-            receivers += u.getLogin() + " ";
+            if(!String.valueOf(u.getId_client()).equals(idSender))
+            receivers += u.getId_client() + " ";
         }
 
         if(idSender.equals(idReceiver)){
