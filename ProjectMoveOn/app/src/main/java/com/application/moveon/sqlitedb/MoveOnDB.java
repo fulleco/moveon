@@ -451,17 +451,9 @@ public class MoveOnDB {
     }
 
     public void updateFriends(ArrayList<UserPojo> upfromdb){
-        ArrayList<UserPojo> cache = this.getFriends();
+        bdd.execSQL("delete from "+ TABLE_FRIEND);
         for(UserPojo up : upfromdb){
-            if(!cache.contains(up)){
-                cache.add(up);
-                this.insertUser(up);
-            }
-        }
-        for(UserPojo up : cache){
-            if(!upfromdb.contains(up)){
-                this.deleteFriend(up.getLogin());
-            }
+           this.insertUser(up);
         }
     }
 
@@ -474,49 +466,26 @@ public class MoveOnDB {
     }
 
     public void updateCircles(ArrayList<CerclePojo> upfromdb){
-        ArrayList<CerclePojo> cache = this.getCircles();
+        bdd.execSQL("delete from "+ TABLE_CERCLES);
         for(CerclePojo cp : upfromdb){
-            if(!cache.contains(cp)){
-                cache.add(cp);
-                this.insertCercle(cp);
-            }
-        }
-        for(CerclePojo cp : cache){
-            if(!upfromdb.contains(cp)){
-                this.deleteCircle(cp.getId_cercle());
-            }
+           insertCercle(cp);
         }
     }
 
 
 
     public void updateDemands(ArrayList<DemandsPojo> upfromdb){
-        ArrayList<DemandsPojo> cache = this.getDemands();
+        bdd.execSQL("delete from "+ TABLE_FRIENDDEMANDS);
         for(DemandsPojo dp : upfromdb){
-            if(!cache.contains(dp)){
-                cache.add(dp);
-                this.insertDemand(dp);
-            }
+            insertDemand(dp);
         }
-        for(DemandsPojo dp : cache){
-            if(!upfromdb.contains(dp)){
-                this.deleteDemand(dp.getId_demand());
-            }
-        }
+
     }
 
     public void updateMessages(ArrayList<MessagePojo> upfromdb){
-        ArrayList<MessagePojo> cache = this.getMessages(null);
+        bdd.execSQL("delete from "+ TABLE_MESSAGES);
         for(MessagePojo mp : upfromdb){
-            if(!cache.contains(mp)){
-                cache.add(mp);
-                this.insertMessage(mp);
-            }
-        }
-        for(MessagePojo mp : cache){
-            if(!upfromdb.contains(mp)){
-                this.deleteMessage(Integer.valueOf(mp.getId()));
-            }
+            insertMessage(mp);
         }
     }
 
