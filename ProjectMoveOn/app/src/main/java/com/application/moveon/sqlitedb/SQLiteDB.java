@@ -51,24 +51,24 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static final String COL_IMAGESENDER = "image_sender";
 
     private static final String CREATE_TABLE_FRIEND = "CREATE TABLE " + TABLE_FRIEND + " (" + COL_ID + " INTEGER PRIMARY KEY, "
-                                + COL_FIRSTNAME + " TEXT NOT NULL, " + COL_LASTNAME + " TEXT NOT NULL, " + COL_EMAIL + " TEXT NOT NULL, "
-                                + COL_IMAGE + " TEXT NOT NULL, "+COL_LATU + " STRING NOT NULL, "+ COL_LONGU+ " STRING NOT NULL); ";
+                                + COL_FIRSTNAME + " TEXT, " + COL_LASTNAME + " TEXT, " + COL_EMAIL + " TEXT, "
+                                + COL_IMAGE + " TEXT, "+COL_LATU + " STRING, "+ COL_LONGU+ " STRING); ";
 
     private static final String CREATE_TABLE_CIRCLEPARTICIPANTS = "CREATE TABLE " + TABLE_CIRCLEPARTICIPANTS + " (" + COL_ID + " INTEGER NOT NULL, "
-            + COL_FIRSTNAME + " TEXT NOT NULL, " + COL_LASTNAME + " TEXT NOT NULL, " + COL_EMAIL + " TEXT NOT NULL, "
-            + COL_IMAGE + " TEXT NOT NULL, "+COL_LATU+" STRING NOT NULL, "+COL_LONGU + " STRING NOT NULL, "+ COL_IDCERCLESP + " INTEGER NOT NULL, PRIMARY KEY("+COL_ID + "," + COL_IDCERCLESP+")); ";
+            + COL_FIRSTNAME + " TEXT, " + COL_LASTNAME + " TEXT, " + COL_EMAIL + " TEXT, "
+            + COL_IMAGE + " TEXT, "+COL_LATU+" STRING, "+COL_LONGU + " STRING, "+ COL_IDCERCLESP + " INTEGER NOT NULL, PRIMARY KEY("+COL_ID + "," + COL_IDCERCLESP+")); ";
 
     private static final String CREATE_TABLE_CERCLE = "CREATE TABLE " + TABLE_CERCLES + " (" + COL_ID_CERCLE + " INTEGER PRIMARY KEY, "
-                                + COL_ID_CREATOR + " INTEGER NOT NULL, " + COL_DATEDEBUT + " TEXT NOT NULL, " + COL_DATEFIN + " TEXT NOT NULL, " + COL_LAT
-                                + " REAL NOT NULL, " + COL_LONG + " REAL NOT NULL, " + COL_RAY + " INTEGER DEFAULT 1000, "+ COL_TITRE +" TEXT NOT NULL);";
+                                + COL_ID_CREATOR + " INTEGER, " + COL_DATEDEBUT + " TEXT , " + COL_DATEFIN + " TEXT , " + COL_LAT
+                                + " REAL , " + COL_LONG + " REAL , " + COL_RAY + " INTEGER DEFAULT 1000, "+ COL_TITRE +" TEXT );";
 
     private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + TABLE_MESSAGES + " (" + COL_ID_MESSAGE + " INTEGER PRIMARY KEY, "
-                                +COL_ID_CERCLEM +" INTEGER NOT NULL, "+ COL_ID_SENDER + " INTEGER NOT NULL, " + COL_NAMESENDER + " TEXT NOT NULL, " + COL_CONTENT + " TEXT NOT NULL, "
-                                + COL_DATESEND + " TEXT NOT NULL, " + COL_SEEN + " INTEGER NOT NULL );";
+                                +COL_ID_CERCLEM +" INTEGER , "+ COL_ID_SENDER + " INTEGER , " + COL_NAMESENDER + " TEXT , " + COL_CONTENT + " TEXT , "
+                                + COL_DATESEND + " TEXT , " + COL_SEEN + " INTEGER  );";
 
     private static final String CREATE_TABLE_FRIENDDEMAND = "CREATE TABLE " + TABLE_FRIENDDEMANDS + " (" + COL_ID_DEMAND + " INTEGER PRIMARY KEY, "
-                                + COL_IDSENDER + " INTEGER NOT NULL, " + COL_MAILSENDER + " TEXT NOT NULL, " + COL_NAMESENDERD
-                                + " TEXT NOT NULL, " + COL_STATUS + " INTEGER NOT NULL, "+ COL_IMAGESENDER + " TEXT NOT NULL ); ";
+                                + COL_IDSENDER + " INTEGER , " + COL_MAILSENDER + " TEXT , " + COL_NAMESENDERD
+                                + " TEXT , " + COL_STATUS + " INTEGER , "+ COL_IMAGESENDER + " TEXT  ); ";
 
 
     public SQLiteDB(Context context, String name, CursorFactory factory, int version) {
