@@ -264,7 +264,11 @@ public class HomeActivity extends FragmentActivity {
     {
 
         if(currentCercle==null)
+        {
+            initCurrentCercle();
             return;
+        }
+
 
         MoveOnDB moveOnDB = new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
         moveOnDB.open();
