@@ -5,6 +5,7 @@ import com.application.moveon.rest.callback.AddMessage_Callback;
 import com.application.moveon.rest.callback.AddMessages_Callback;
 import com.application.moveon.rest.callback.AnswerDemand_Callback;
 import com.application.moveon.rest.callback.CreateCircle_Callback;
+import com.application.moveon.rest.callback.DeleteParticipant_Callback;
 import com.application.moveon.rest.callback.EditUser_Callback;
 import com.application.moveon.rest.callback.GetCercles_Callback;
 import com.application.moveon.rest.callback.GetMessage_Callback;
@@ -17,6 +18,7 @@ import com.application.moveon.rest.modele.UserPojo;
 
 
 import retrofit.Callback;
+import retrofit.http.DELETE;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -129,5 +131,8 @@ public interface MoveOnService {
     void getmessages(@Query("id_receiver") String idReceiver,
                      GetMessage_Callback cb);
 
-
+    @DELETE("/delete_participant")
+    void deleteParticipant(@Field("login") String login,
+                           @Field("id_cercle") int id_cercle,
+                           DeleteParticipant_Callback cb);
 }

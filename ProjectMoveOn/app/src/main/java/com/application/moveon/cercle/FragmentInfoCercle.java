@@ -3,7 +3,6 @@ package com.application.moveon.cercle;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,10 @@ import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
+import com.application.moveon.rest.callback.DeleteParticipant_Callback;
 import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by suparjam on 19/02/2015.
@@ -54,21 +52,25 @@ public class FragmentInfoCercle extends Fragment {
         btQuitterCercle = (Button) view.findViewById(R.id.bt_quitter_cercle);
         session = new SessionManager(homeActivity);
 
-        updateContent();
+        //updateContent();
 
         btQuitterCercle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO
-                //STEP 1 : Quitter le cercle en BDD
-                /*
-                moveOnDB.deleteParticipants(session.getUserDetails().get(SessionManager.KEY_EMAIL), homeActivity.getCurrentCercle().getId_cercle());
+
+                //STEP 1 : Quitter le cercle en BDD distant
+                DeleteParticipant_Callback cb = new DeleteParticipant_Callback(homeActivity);
                 RestClient r = new RestClient(true);
                 MoveOnService mos = r.getApiService();
-                mos.
-                */
+                mos.deleteParticipant(session.getUserDetails().get(SessionManager.KEY_EMAIL), homeActivity.getCurrentCercle().getId_cercle(),cb);
 
-                //STEP 2 : Mettre a jour l'UI
+                //STEP 2 : Quitter le cercle en BDD Locale
+                moveOnDB.deleteParticipant(session.getUserDetails().get(SessionManager.KEY_EMAIL), homeActivity.getCurrentCercle().getId_cercle());
+
+                //STEP 3 : Mettre a jour l'UI
+                //se deroule dans la callback
+
             }
         });
 
@@ -88,7 +90,9 @@ public class FragmentInfoCercle extends Fragment {
 
 
     public void updateContent() {
+        homeActivity.updateCurrentCercle();
         CerclePojo currentCercle =((HomeActivity)getActivity()).getCurrentCercle();
+
         if(currentCercle==null)
             return;
 

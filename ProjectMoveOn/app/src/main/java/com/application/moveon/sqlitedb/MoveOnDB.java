@@ -501,7 +501,7 @@ public class MoveOnDB {
         return bdd.delete(TABLE_FRIEND, COL_EMAIL + "=\"" + login +"\"", null) > 0;
     }
 
-    public boolean deleteParticipants(String login, int idcercle){
+    public boolean deleteParticipant(String login, int idcercle){
         return bdd.delete(TABLE_CIRCLEPARTICIPANTS, COL_EMAIL + "='" + login + "' AND " + COL_IDCERCLESP + "=" + idcercle , null) > 0;
     }
 
@@ -513,7 +513,5 @@ public class MoveOnDB {
     public boolean deleteMessage(int id_message){
         return bdd.delete(TABLE_MESSAGES, COL_ID_MESSAGE + "=" + id_message, null) > 0;
     }
-
-
 
 }
