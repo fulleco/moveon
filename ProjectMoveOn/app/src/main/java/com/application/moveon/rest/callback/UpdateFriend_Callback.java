@@ -18,16 +18,19 @@ import retrofit.client.Response;
 public class UpdateFriend_Callback implements Callback<UserPojo> {
 
     private Context a;
+    private MoveOnDB db;
 
-    public UpdateFriend_Callback(Context a) {
+    public UpdateFriend_Callback(Context a, MoveOnDB db) {
         this.a = a;
+        this.db = db;
     }
 
     @Override
     public void success(UserPojo userPojo, Response response) {
         Log.i("MOVEON AJOUTBDFRIEND", userPojo.getLogin());
-        MoveOnDB db = MoveOnDB.getInstance();
+        db.open();
         db.insertUser(userPojo);
+        db.close();
     }
 
     @Override

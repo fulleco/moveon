@@ -239,7 +239,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         for(UserPojo u : homeActivity.getCurrentCercle().getParticipants()){
             receivers += u.getLogin() + " ";
         }
-        Log.i("ANTHO", "receivers" + receivers);
+
         if(idSender.equals(idReceiver)){
             mainmos.addMessages(idCircle, idSender,
                     receivers.trim(), content, date,
@@ -641,7 +641,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
             for(UserPojo u : cercle.getParticipants()) {
 
                 if (!(u.getLogin()).equals(session.getUserDetails().get(SessionManager.KEY_EMAIL))) {
-                    Log.i("ANTHO", "login loaded" + u.getLogin());
                     loadBitmap(u, false);
                 }
             }
@@ -692,7 +691,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
             @Override
             public void onBitmapFailed(Drawable drawable) {
-                Log.i("ANTHO", "BITMAP FAILED");
                 addMarker(this, u, null, m);
             }
 
@@ -742,8 +740,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         ImageView profilePicture = (ImageView) marker_layout.findViewById(R.id.profile_picture);
         profilePicture.setImageBitmap(b_resized);
 
-        //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
-        Log.i("ANTHO", "marker updated" + m.getTitle());
         m.setIcon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
         m.setVisible(true);
         targetList.remove(target);
@@ -950,12 +946,15 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     @Override
     public void onDestroy(){
-        super.onDestroy();
+        Log.i("ANTHO", "destroy");
 
         shaderBmp.recycle();
         shaderBmp = null;
         shaderOuterBmp.recycle();
         shaderOuterBmp = null;
+        map.clear();
+        map = null;
+        super.onDestroy();
     }
 
     @Override

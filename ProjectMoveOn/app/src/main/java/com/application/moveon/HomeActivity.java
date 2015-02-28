@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -53,6 +54,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class HomeActivity extends FragmentActivity {
 
@@ -164,6 +168,12 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/BebasNeue.otf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
+
         session = new SessionManager(this);
 
         tools = new com.application.moveon.tools.ToolBox(this);
@@ -235,14 +245,16 @@ public class HomeActivity extends FragmentActivity {
         if(currentCercle!=null)
             return;
 
-        MoveOnDB moveOnDB = MoveOnDB.getInstance();
+        MoveOnDB moveOnDB = new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
+        moveOnDB.open();
         ArrayList<CerclePojo> cercles = moveOnDB.getCircles();
+        moveOnDB.close();
 
         if(cercles.size()==0)
             return;
 
         currentCercle = cercles.get(0);
-        currentCercle.setAllInfo(session);
+        currentCercle.setAllInfo(session, getBaseContext());
 
     }
 
@@ -252,13 +264,15 @@ public class HomeActivity extends FragmentActivity {
         if(currentCercle==null)
             return;
 
-        MoveOnDB moveOnDB = MoveOnDB.getInstance();
+        MoveOnDB moveOnDB = new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
+        moveOnDB.open();
         currentCercle = moveOnDB.getCircle(String.valueOf(currentCercle.getId_cercle()));
+        moveOnDB.close();
 
         if(currentCercle==null)
             return;
 
-        currentCercle.setAllInfo(session);
+        currentCercle.setAllInfo(session, getBaseContext());
 
     }
 
@@ -275,6 +289,10 @@ public class HomeActivity extends FragmentActivity {
     public void onResume(){
         super.onResume();
         changeNotificationFrequency();
+    }
+
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     public void startUpdateUI(){
@@ -319,8 +337,15 @@ public class HomeActivity extends FragmentActivity {
     }
 
     @Override
+    public void onStop(){
+        super.onStop();
+        Log.i("ANTHO", "STOP");
+    }
+
+    @Override
     public void onPause(){
         super.onPause();
+        Log.i("ANTHO", "PAUSE");
         stopRepeatingTask();
         amUI.cancel(piUI);
     }

@@ -1,5 +1,6 @@
 package com.application.moveon.rest.modele;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.application.moveon.model.User;
@@ -159,9 +160,10 @@ public class CerclePojo {
 
     }
 
-    public void setAllInfo(SessionManager session)
+    public void setAllInfo(SessionManager session, Context c)
     {
-        MoveOnDB moveOnDB = MoveOnDB.getInstance();
+        MoveOnDB moveOnDB = new MoveOnDB(c, session.getUserDetails().get(SessionManager.KEY_EMAIL));
+        moveOnDB.open();
 
         if(session.getUserDetails().get(SessionManager.KEY_EMAIL).equals(this.getId_creator()))
             this.setCreator(session.getUserPojo());
@@ -173,6 +175,8 @@ public class CerclePojo {
 
         this.setParticipants(participantsToArray);
         this.addParticipant(this.getCreator());
+
+        moveOnDB.close();
 
     }
 }

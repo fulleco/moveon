@@ -44,19 +44,21 @@ public class FragmentInfoCercle extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_infos_cercle, container, false);
         homeActivity = (HomeActivity) getActivity();
-        moveOnDB = MoveOnDB.getInstance();
+
 
         textViewTitre = (TextView) view.findViewById(R.id.text_view_titre);
         textViewCreateur = (TextView) view.findViewById(R.id.text_view_createur);
         listViewParticipants = (ListView) view.findViewById(R.id.list_view);
         btQuitterCercle = (Button) view.findViewById(R.id.bt_quitter_cercle);
         session = new SessionManager(homeActivity);
+        moveOnDB = new MoveOnDB(getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
 
         //updateContent();
 
         btQuitterCercle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                moveOnDB.open();
                 //TODO
 
                 //STEP 1 : Quitter le cercle en BDD distant
@@ -70,6 +72,8 @@ public class FragmentInfoCercle extends Fragment {
 
                 //STEP 3 : Mettre a jour l'UI
                 //se deroule dans la callback
+
+                moveOnDB.close();
 
             }
         });

@@ -25,21 +25,25 @@ import retrofit.client.Response;
  */
 public class UpdateDemands_Callback implements Callback<DemandsPojo[]> {
 
+    private MoveOnDB db;
 
-    public UpdateDemands_Callback() {
+    public UpdateDemands_Callback(MoveOnDB db) {
+        this.db = db;
     }
 
     @Override
     public void success(DemandsPojo[] demandsPojos, Response response) {
 
-        MoveOnDB bdd = MoveOnDB.getInstance();
         ArrayList<DemandsPojo> datas;
         if(demandsPojos != null) {
             datas = new ArrayList<DemandsPojo>(Arrays.asList(demandsPojos));
+            db.open();
+            db.updateDemands(datas);
+            db.close();
         }else{
             datas = new ArrayList<DemandsPojo>();
         }
-        bdd.updateDemands(datas);
+
 
         Flags.setDemandflag(true);
         Flags.checkupdate();
