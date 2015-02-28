@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.application.moveon.LoginActivity;
+import com.application.moveon.custom.CustomProgressDialog;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
@@ -22,14 +23,14 @@ public class Connect_Callback implements Callback<UserPojo> {
     private String mail;
     private String password;
     private SessionManager session;
-    private AnimationDrawable mailAnimation;
+    private CustomProgressDialog p;
 
-    public Connect_Callback(LoginActivity m_act, String m_mail, String m_password, SessionManager m_session, AnimationDrawable m_mailAnimation) {
+    public Connect_Callback(LoginActivity m_act, String m_mail, String m_password, SessionManager m_session, CustomProgressDialog p) {
         act = m_act;
         mail = m_mail;
         password = m_password;
         session = m_session;
-        mailAnimation = m_mailAnimation;
+        this.p = p;
     }
 
 
@@ -41,16 +42,16 @@ public class Connect_Callback implements Callback<UserPojo> {
                     Toast.makeText(act, "Login ou mot de passe incorrect", Toast.LENGTH_SHORT).show();
                 }
             });
-            mailAnimation.stop();
+            p.dismiss();
         } else {
             session.createLoginSession(mail, password, String.valueOf(aUser.getId_client()), aUser.getFirstname(), aUser.getLastname());
-            mailAnimation.stop();
+            p.dismiss();
         }
     }
     @Override
     public void failure(RetrofitError error) {
         Toast.makeText(act, "Impossible de se connecter au serveur", Toast.LENGTH_SHORT).show();
-        mailAnimation.stop();
+        p.dismiss();
     }
 
 

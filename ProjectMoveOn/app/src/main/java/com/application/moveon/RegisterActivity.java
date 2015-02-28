@@ -1,6 +1,7 @@
 package com.application.moveon;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.application.moveon.custom.CustomProgressDialog;
 import com.application.moveon.ftp.FtpUploadTask;
 import com.application.moveon.model.User;
 import com.application.moveon.rest.MoveOnService;
@@ -30,6 +32,9 @@ import junit.runner.Version;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by damota on 25/11/2014.
@@ -60,6 +65,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/BebasNeue.otf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
 
         RestClient r = new RestClient(false);
         mos = r.getApiService();
@@ -118,23 +129,15 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             if (emptyFields.size()==0) {
                 logo.setBackgroundResource(R.drawable.inscription_loader);
 
-                final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
-                logo.post(new Runnable() {
-                    public void run() {
-                        if ( mailAnimation != null ) mailAnimation.start();
-                    }
-                });
 
-                //Calculate the total duration
-                int duration = 0;
-                for(int i = 0; i < mailAnimation.getNumberOfFrames(); i++){
-                    duration += mailAnimation.getDuration(i);
-                }
 
                 User newUser = new User(editEmail.getText().toString(),
                         editPassword1.getText().toString(), editFirstName.getText().toString(), editLastName.getText().toString());
 
-                rc = new Register_Callback(RegisterActivity.this, newUser, mailAnimation, picturePath, tools);
+                CustomProgressDialog p = new CustomProgressDialog(RegisterActivity.this);
+                p.show();
+
+                rc = new Register_Callback(RegisterActivity.this, newUser, p, picturePath, tools);
                 mos.userexists(newUser.getLogin(), rc);
 
             }else{
@@ -214,5 +217,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             profilePicture.setImageBitmap(b_rounded);
         }
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

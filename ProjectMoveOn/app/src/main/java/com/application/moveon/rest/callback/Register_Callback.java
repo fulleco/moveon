@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.application.moveon.LoginActivity;
+import com.application.moveon.custom.CustomProgressDialog;
 import com.application.moveon.ftp.FtpUploadTask;
 import com.application.moveon.model.User;
 import com.application.moveon.rest.MoveOnService;
@@ -27,13 +28,13 @@ public class Register_Callback implements Callback<Boolean> {
     private User newUser;
     private ToolBox tools;
     private String picturePath = "";
-    private AnimationDrawable mailAnimation;
+    private CustomProgressDialog p;
     private MoveOnService mos;
 
-    public Register_Callback(Activity i, User user, AnimationDrawable mailAnimation, String picturePath, ToolBox tools){
+    public Register_Callback(Activity i, User user, CustomProgressDialog p, String picturePath, ToolBox tools){
         this.previousActivity = i;
         this.newUser = user;
-        this.mailAnimation = mailAnimation;
+        this.p = p;
         this.picturePath = picturePath;
         this.tools = tools;
         RestClient r = new RestClient(false);
@@ -58,7 +59,7 @@ public class Register_Callback implements Callback<Boolean> {
             }
         }
 
-        mailAnimation.stop();
+        p.dismiss();
 
 
 
@@ -67,6 +68,7 @@ public class Register_Callback implements Callback<Boolean> {
     @Override
     public void failure(RetrofitError error) {
         msgOnUiThread("Inscription impossible", "Connexion au serveur impossible");
+        p.dismiss();
 
     }
 

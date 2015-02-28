@@ -2,6 +2,7 @@ package com.application.moveon;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.application.moveon.custom.CustomProgressDialog;
 import com.application.moveon.rest.callback.Connect_Callback;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
@@ -18,6 +21,9 @@ import com.application.moveon.session.Connectivity;
 import com.application.moveon.session.SessionManager;
 
 import java.util.ArrayList;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class LoginActivity extends Activity {
@@ -37,9 +43,14 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         final RestClient r = new RestClient(true);
         final MoveOnService mos = r.getApiService();
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/BebasNeue.otf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -53,7 +64,7 @@ public class LoginActivity extends Activity {
         editEmail = (EditText) findViewById(R.id.editEmail);
         editPassword = (EditText) findViewById(R.id.editPassword);
 
-        Button registerButton = (Button) findViewById(R.id.buttonRegister);
+        final Button registerButton = (Button) findViewById(R.id.buttonRegister);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +72,7 @@ public class LoginActivity extends Activity {
                 startActivity(i);
             }
         });
+
 
             Button loginButton = (Button) findViewById(R.id.buttonConnect);
             loginButton.setOnClickListener(new View.OnClickListener() {
@@ -81,20 +93,10 @@ public class LoginActivity extends Activity {
 
                     logo.setBackgroundResource(R.drawable.login_loader);
 
-                    final AnimationDrawable mailAnimation = (AnimationDrawable) logo.getBackground();
-                    logo.post(new Runnable() {
-                        public void run() {
-                            if ( mailAnimation != null ) mailAnimation.start();
-                        }
-                    });
+                    CustomProgressDialog p = new CustomProgressDialog(LoginActivity.this);
+                    p.show();
 
-                    //Calculate the total duration
-                    int duration = 0;
-                    for(int i = 0; i < mailAnimation.getNumberOfFrames(); i++){
-                        duration += mailAnimation.getDuration(i);
-                    }
-
-                    Connect_Callback c = new Connect_Callback(LoginActivity.this, mail,password,session,mailAnimation);
+                    Connect_Callback c = new Connect_Callback(LoginActivity.this, mail,password,session,p);
                     mos.selectuser(mail,password,c);
 
 
@@ -115,5 +117,10 @@ public class LoginActivity extends Activity {
         if (editPassword.getText().toString().equals(""))
             fieldsEmpty.add("Mot de passe");
         return fieldsEmpty;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
