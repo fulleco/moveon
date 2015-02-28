@@ -30,6 +30,9 @@ public class Splashscreen extends Activity {
 
         session = new SessionManager(this);
 
+
+
+
         Flags.initialize(this);
         mos = new RestClient(true).getApiService();
         mosonchild = new RestClient(false).getApiService();
@@ -42,11 +45,10 @@ public class Splashscreen extends Activity {
     public void onStart(){
         super.onStart();
 
-        db = new MoveOnDB(this.getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
 
-        mos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL),new UpdateFriends_Callback( db));
-        mos.getdemands(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateDemands_Callback( db));
-        mos.getAllMessages(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateMessages_Callback( db));
-        mosonchild.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateCirlces_Callback( db));
+        mos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL),new UpdateFriends_Callback( new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL))));
+        mos.getdemands(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateDemands_Callback( new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL))));
+        mos.getAllMessages(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateMessages_Callback( new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL))));
+        mosonchild.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateCirlces_Callback( new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL))));
     }
 }

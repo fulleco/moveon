@@ -27,7 +27,6 @@ public class UpdateFriends_Callback implements Callback<UserPojo[]> {
     @Override
     public void success(UserPojo[] userPojos, Response response) {
 
-        db.open();
         ArrayList<UserPojo> datas;
 
         if(userPojos == null) {
