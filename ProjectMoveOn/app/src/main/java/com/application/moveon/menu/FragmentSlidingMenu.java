@@ -30,7 +30,6 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
 
     @Override
     public void onAttach(Activity activity) {
-
         super.onAttach(activity);
     }
 
@@ -45,8 +44,7 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
         fragmentInfoCercle = new FragmentInfoCercle();
         fragmentListCercle = new FragmentListCercle();
 
-
-
+        fragmentInfoCercle.setTargetFragment(fragmentListCercle,0);
         fragmentListCercle.setTargetFragment(fragmentInfoCercle,0);
 
         setupTabs();

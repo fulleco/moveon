@@ -189,7 +189,7 @@ public class HomeActivity extends FragmentActivity {
         new FtpDownloadTask("www/pfe/images/"+idUser+"/profile.jpg",
                 cacheDir.getAbsolutePath() + "/profile.jpg", profilePicture).execute();
 
-        initCurrentCercle();
+        updateCurrentCercle();
 
         //// Drawer declaration
         mTitle = mDrawerTitle = getTitle();
@@ -246,9 +246,7 @@ public class HomeActivity extends FragmentActivity {
         currentFragment = getFragmentMap();
     }
 
-    private void initCurrentCercle() {
-        if(currentCercle!=null)
-            return;
+    public void initCurrentCercle() {
 
         MoveOnDB moveOnDB = new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
         moveOnDB.open();
@@ -256,7 +254,11 @@ public class HomeActivity extends FragmentActivity {
         moveOnDB.close();
 
         if(cercles.size()==0)
+        {
+            currentCercle=null;
             return;
+        }
+
 
         currentCercle = cercles.get(0);
         currentCercle.setAllInfo(session, getBaseContext());
@@ -271,7 +273,6 @@ public class HomeActivity extends FragmentActivity {
             initCurrentCercle();
             return;
         }
-
 
         MoveOnDB moveOnDB = new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
         moveOnDB.open();
@@ -351,9 +352,9 @@ public class HomeActivity extends FragmentActivity {
 
     @Override
     public void onPause(){
-        super.onPause();
         stopRepeatingTask();
         amUI.cancel(piUI);
+        super.onPause();
     }
 
     /* Called whenever we call invalidateOptionsMenu() */

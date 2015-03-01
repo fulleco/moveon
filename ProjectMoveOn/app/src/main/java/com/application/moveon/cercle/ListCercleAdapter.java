@@ -20,6 +20,7 @@ import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -79,11 +80,16 @@ public class ListCercleAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
 
-                //getInfoCercle(homeActivity, cerclePojo);
                 cerclePojo.setAllInfo(session, context);
 
                 homeActivity.setCurrentCercle(cerclePojo);
                 fragmentInfoCercle.updateContent();
+
+                homeActivity.getFragmentMap().changeCircle();
+
+                //TODO
+                //FERMER le drawer
+                homeActivity.getFragmentMap().getmSlidingPanel().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
             }
         });
@@ -91,18 +97,4 @@ public class ListCercleAdapter extends BaseAdapter {
         return view;
     }
 
-    private void getInfoCercle(HomeActivity homeActivity, CerclePojo cerclePojo)
-    {
-
-        /*
-        RestClient r = new RestClient(true);
-        MoveOnService mos = r.getApiService();
-
-        homeActivity.setCurrentCercle(cerclePojo);
-        mos.getParticipants(String.valueOf(cerclePojo.getId_cercle()),new GetParticipants_Callback(fragmentInfoCercle.getActivity(),fragmentInfoCercle.getListViewParticipants(),fragmentInfoCercle));
-        */
-
-
-
-    }
 }

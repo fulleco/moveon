@@ -58,21 +58,20 @@ public class FragmentInfoCercle extends Fragment {
         btQuitterCercle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                moveOnDB.open();
-                //TODO
 
-                //STEP 1 : Quitter le cercle en BDD distant
-                DeleteParticipant_Callback cb = new DeleteParticipant_Callback(homeActivity);
+
+                if(homeActivity.getCurrentCercle()==null)
+                    return;
+
+                //STEP 1 : Quitter le cercle en BDD distant puis locale
+                DeleteParticipant_Callback cb = new DeleteParticipant_Callback(homeActivity,getTargetFragment());
                 RestClient r = new RestClient(true);
                 MoveOnService mos = r.getApiService();
                 mos.deleteParticipant(session.getUserDetails().get(SessionManager.KEY_EMAIL), homeActivity.getCurrentCercle().getId_cercle(),cb);
 
-                //STEP 2 : Quitter le cercle en BDD Locale
-                moveOnDB.deleteParticipant(session.getUserDetails().get(SessionManager.KEY_EMAIL), homeActivity.getCurrentCercle().getId_cercle());
-
-                //STEP 3 : Mettre a jour l'UI
+                //STEP 2 : Mettre a jour l'UI
                 //se deroule dans la callback
-                moveOnDB.close();
+
 
             }
         });
@@ -88,7 +87,11 @@ public class FragmentInfoCercle extends Fragment {
         setRetainInstance(true);
 
         mInflater = LayoutInflater.from(getActivity());
+    }
 
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        setTargetFragment(null, -1);
     }
 
 
@@ -97,14 +100,23 @@ public class FragmentInfoCercle extends Fragment {
         CerclePojo currentCercle =((HomeActivity)getActivity()).getCurrentCercle();
 
         if(currentCercle==null)
+        {
+            initContent();
             return;
+        }
+
 
         textViewTitre.setText(currentCercle.getTitre());
         textViewCreateur.setText(currentCercle.getCreator().getFirstname() + " " + currentCercle.getCreator().getLastname());
 
         final InfoCercleAdapter a = new InfoCercleAdapter(currentCercle.getParticipants(), getActivity().getBaseContext(), this);
         listViewParticipants.setAdapter(a);
+    }
 
+    private void initContent() {
+         textViewTitre.setText("pas de cercle selectionne");
+         textViewCreateur.setText("pas de cercle selectionne");
+         listViewParticipants.setAdapter(null);
     }
 
     public ListView getListViewParticipants() {
