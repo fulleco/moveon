@@ -189,7 +189,7 @@ public class HomeActivity extends FragmentActivity {
         new FtpDownloadTask("www/pfe/images/"+idUser+"/profile.jpg",
                 cacheDir.getAbsolutePath() + "/profile.jpg", profilePicture).execute();
 
-        initCurrentCercle();
+        updateCurrentCercle();
 
         //// Drawer declaration
         mTitle = mDrawerTitle = getTitle();
