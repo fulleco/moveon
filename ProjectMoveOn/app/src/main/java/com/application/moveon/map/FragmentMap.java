@@ -540,11 +540,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     public void changeCircle(){
-        map.clear();
-        synchronized (markers){
-            markers.clear();
-            initCercle();
-        }
+        refresh();
     }
 
     @Override
@@ -854,6 +850,12 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onConnected(Bundle bundle) {
 
+        refresh();
+
+        homeActivity.startUpdateUI();
+    }
+
+    public void refresh(){
         if(myMarker!=null)
             map.clear();
         myMarker = null;
@@ -887,8 +889,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         });
         //map.setOnMyLocationChangeListener();
         map.setOnMarkerClickListener(this);
-
-        homeActivity.startUpdateUI();
     }
 
     @Override
