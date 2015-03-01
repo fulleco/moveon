@@ -18,7 +18,9 @@ import com.application.moveon.rest.callback.AnswerDemand_Callback;
 import com.application.moveon.rest.modele.DemandsPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
+import com.makeramen.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
@@ -78,14 +80,20 @@ public class DemandsAdapter extends BaseAdapter {
 
         //Handle buttons and add onClickListeners
         ImageView imgv = (ImageView) view.findViewById(R.id.image_profile);
-        Picasso.with(context).load("http://martinezhugo.com/pfe/images/"+ dp.getId()+"/profile.jpg").into(imgv);
+
+        Transformation transformation = new RoundedTransformationBuilder()
+                .cornerRadiusDp(15)
+                .oval(false)
+                .build();
+
+        Picasso.with(context).load("http://martinezhugo.com/pfe/images/"+ dp.getId()+"/profile.jpg").transform(transformation).into(imgv);
 
         ImageButton imgb1 = (ImageButton) view.findViewById(R.id.cancel);
         imgb1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 p.show();
-                mos.answerdemand(dp.getMail(), mail, false, new AnswerDemand_Callback(activity,p, dp.getMail(),false,db));
+                mos.answerdemand(dp.getMail(), mail, false, new AnswerDemand_Callback(activity, p, dp.getMail(), false, db));
                 d.remove(position);
                 db.open();
                 db.deleteDemand(dp.getId());
@@ -99,9 +107,11 @@ public class DemandsAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 p.show();
-                mos.answerdemand(dp.getMail(), mail, true, new AnswerDemand_Callback(activity,p, dp.getMail(),true,db));
+                mos.answerdemand(dp.getMail(), mail, true, new AnswerDemand_Callback(activity, p, dp.getMail(), true, db));
                 d.remove(position);
+                db.open();
                 db.deleteDemand(dp.getId());
+                db.close();
                 notifyDataSetChanged();
             }
         });

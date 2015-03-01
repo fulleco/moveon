@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.application.moveon.cercle.FragmentCreateCercle;
 import com.application.moveon.cercle.FriendPickerDialog;
@@ -27,11 +28,11 @@ public class GetFriendsPicker_Callback implements Callback<UserPojo[]> {
     private String id;
     private Activity activity;
     private ArrayList<Integer> mSelectedItems;
-    private Button b;
+    private ImageButton b;
     private FragmentCreateCercle fcc;
     FragmentManager fm;
 
-    public GetFriendsPicker_Callback(Activity activity, Button b, FragmentCreateCercle fcc, FragmentManager fm) {
+    public GetFriendsPicker_Callback(Activity activity, ImageButton b, FragmentCreateCercle fcc, FragmentManager fm) {
         this.activity = activity;
         this.b = b;
         this.fcc = fcc;

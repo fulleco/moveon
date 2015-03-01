@@ -5,87 +5,130 @@
     android:layout_height="fill_parent"
     android:background="@drawable/inscription_background"
     android:layout_centerHorizontal="true"
-    android:paddingTop="50dp">
+    android:paddingTop="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
-    <TextView
+    <ImageView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="50dp"
-        android:text="Creer cercle"
-        android:layout_centerHorizontal="true"/>
+        android:src="@drawable/titre_createcircle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="title"
+        android:layout_alignLeft="@+id/buttonLocalisation"
+        android:layout_alignStart="@+id/buttonLocalisation"
+        android:layout_alignRight="@+id/buttonLocalisation"
+        android:layout_alignEnd="@+id/buttonLocalisation" />
 
     <EditText
         android:id="@+id/editNameCercle"
         android:layout_below="@+id/title"
         android:layout_width="245dp"
-        android:layout_centerHorizontal="true"
         android:layout_height="42dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="10dp"
         android:padding="5dp"
         android:background="@drawable/rounded_edit"
         android:hint="Nom du cercle"
         android:inputType="text"
         android:textColor="#000"
         android:ellipsize="start"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_alignLeft="@+id/buttonLocalisation"
+        android:layout_alignStart="@+id/buttonLocalisation"
+        android:layout_alignRight="@+id/buttonLocalisation"
+        android:layout_alignEnd="@+id/buttonLocalisation" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/date_debut_title"
+        android:id="@+id/datedebut_title"
+        android:layout_below="@+id/editNameCercle"
+        android:layout_alignLeft="@+id/buttonLocalisation"
+        android:layout_alignStart="@+id/buttonLocalisation"
+        android:layout_alignRight="@+id/buttonLocalisation"
+        android:layout_alignEnd="@+id/buttonLocalisation"
+        android:layout_marginBottom="10dp"/>
     <LinearLayout
         android:id="@+id/linearDebutPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editNameCercle"
-        android:layout_centerHorizontal="true">
+        android:layout_below="@+id/datedebut_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp">
        <TextView
            android:id="@+id/textTimeDebut"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="Time"/>
+           android:text="Time"
+           android:textSize="25sp"/>
         <EditText
             android:id="@+id/editTimeDebut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="timeOnClick"
             android:editable="false"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:textSize="25sp"/>
 
         <TextView
             android:id="@+id/textDateDebut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date"/>
+            android:text="Date"
+            android:textSize="25sp"/>
         <EditText
             android:id="@+id/editDateDebut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="dateOnClick"
             android:editable="false"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:textSize="25sp"/>
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/date_de_fin"
+        android:id="@+id/datefin_title"
+        android:layout_below="@+id/linearDebutPicker"
+        android:layout_alignLeft="@+id/buttonLocalisation"
+        android:layout_alignStart="@+id/buttonLocalisation"
+        android:layout_alignRight="@+id/buttonLocalisation"
+        android:layout_alignEnd="@+id/buttonLocalisation"
+        android:layout_marginBottom="10dp"/>
 
     <LinearLayout
         android:id="@+id/linearFinPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearDebutPicker"
-        android:layout_centerHorizontal="true">
+        android:layout_below="@+id/datefin_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp">
         <TextView
             android:id="@+id/textTimeFin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time"/>
+            android:text="Time"
+            android:textSize="25sp"/>
         <EditText
             android:id="@+id/editTimeFin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="timeOnClick"
             android:editable="false"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:textSize="25sp"/>
 
         <TextView
             android:id="@+id/textDateFin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date"/>
+            android:text="Date"
+            android:textSize="25sp"/>
 
         <EditText
             android:id="@+id/editDateFin"
@@ -93,40 +136,42 @@
             android:layout_height="wrap_content"
             android:onClick="dateOnClick"
             android:editable="false"
-            android:clickable="true" />
+            android:clickable="true"
+            android:textSize="25sp"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearFinPicker"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true">
-        <Button
+
+        <ImageButton
             android:id="@+id/buttonLocalisation"
+            android:layout_below="@+id/linearFinPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Localisation"
+            android:layout_centerHorizontal="true"
             android:textColor="#FFF"
-            android:textStyle="bold"/>
-        <Button
+            android:textStyle="bold"
+            android:background="@drawable/button_localisation"
+            android:layout_marginBottom="20dp"/>
+
+        <ImageButton
+            android:layout_below="@+id/buttonLocalisation"
             android:id="@+id/buttonParticipants"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ajouter Participants"
+            android:layout_centerHorizontal="true"
             android:textColor="#FFF"
-            android:textStyle="bold"/>
-        </LinearLayout>
+            android:textStyle="bold"
+            android:background="@drawable/button_participants"
+            android:layout_marginBottom="20dp"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonValider"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Valider"
+        android:background="@drawable/button_valider"
         android:textColor="#FFF"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"/>
 
 </RelativeLayout>

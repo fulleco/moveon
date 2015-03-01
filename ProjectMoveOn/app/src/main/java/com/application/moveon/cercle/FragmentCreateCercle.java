@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.application.moveon.HomeActivity;
@@ -47,9 +48,9 @@ public class FragmentCreateCercle extends Fragment{
     private EditText editDateFin;
     private Calendar c;
 
-    private Button buttonLocalisation;
-    private Button buttonAjouterParticipants;
-    private Button buttonValider;
+    private ImageButton buttonLocalisation;
+    private ImageButton buttonAjouterParticipants;
+    private ImageButton buttonValider;
 
     private ProgressDialog progressDialog;
 
@@ -69,7 +70,7 @@ public class FragmentCreateCercle extends Fragment{
         c = Calendar.getInstance();
         tools = new ToolBox(activity);
 
-        buttonLocalisation = (Button)view.findViewById(R.id.buttonLocalisation);
+        buttonLocalisation = (ImageButton)view.findViewById(R.id.buttonLocalisation);
         buttonLocalisation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,10 +94,10 @@ public class FragmentCreateCercle extends Fragment{
         nomCercle = (EditText) view.findViewById(R.id.editNameCercle);
 
 
-        buttonAjouterParticipants = (Button) view.findViewById(R.id.buttonParticipants);
+        buttonAjouterParticipants = (ImageButton) view.findViewById(R.id.buttonParticipants);
 
         mos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL), new GetFriendsPicker_Callback(getActivity(),buttonAjouterParticipants, this, getFragmentManager() ));
-        buttonValider = (Button) view.findViewById(R.id.buttonValider);
+        buttonValider = (ImageButton) view.findViewById(R.id.buttonValider);
         buttonValider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
