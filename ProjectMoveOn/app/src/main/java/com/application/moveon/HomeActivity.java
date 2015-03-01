@@ -351,9 +351,9 @@ public class HomeActivity extends FragmentActivity {
 
     @Override
     public void onPause(){
-        super.onPause();
         stopRepeatingTask();
         amUI.cancel(piUI);
+        super.onPause();
     }
 
     /* Called whenever we call invalidateOptionsMenu() */

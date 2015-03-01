@@ -542,24 +542,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onStart(){
         super.onStart();
-
-        // initialize your android device sensor capabilities
-        mSensorManager = (SensorManager) homeActivity.getSystemService(homeActivity.SENSOR_SERVICE);
-
-        fMap.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
-        {
-            @Override
-            public void onGlobalLayout()
-            {
-                // gets called after layout has been done but before display.
-                fMap.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                final int x = (int)fMap.getX()+ fMap.getWidth()/2;
-                final int y = (int)fMap.getY()+ fMap.getHeight()/2;
-                initMenu(x, y);
-            }
-        });
-
-        initMap();
     }
 
     public void initCercle() {
@@ -792,10 +774,28 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onResume(){
         super.onResume();
-        if(mapLoaded)
+
+        //if(mapLoaded)
         // for the system's orientation sensor registered listeners
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                SensorManager.SENSOR_DELAY_GAME);
+
+
+        // initialize your android device sensor capabilities
+        mSensorManager = (SensorManager) homeActivity.getSystemService(homeActivity.SENSOR_SERVICE);
+
+        fMap.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+        {
+            @Override
+            public void onGlobalLayout()
+            {
+                // gets called after layout has been done but before display.
+                fMap.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                final int x = (int)fMap.getX()+ fMap.getWidth()/2;
+                final int y = (int)fMap.getY()+ fMap.getHeight()/2;
+                initMenu(x, y);
+            }
+        });
+
+        initMap();
     }
 
     @Override
@@ -820,6 +820,12 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        Log.i("ANTHO", "STOP FRAGMENT");
+    }
+
+    @Override
     public void onSensorChanged(SensorEvent event) {
         // get the angle around the z-axis rotated
         float degree = Math.round(event.values[0]);
@@ -833,6 +839,12 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     @Override
     public void onConnected(Bundle bundle) {
+
+        if(myMarker!=null)
+            map.clear();
+        myMarker = null;
+        markers.clear();
+
         locationrequest = LocationRequest.create();
         locationrequest.setInterval(100);
         locationclient.requestLocationUpdates(locationrequest, this);
