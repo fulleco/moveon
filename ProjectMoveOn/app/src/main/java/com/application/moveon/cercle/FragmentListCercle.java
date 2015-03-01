@@ -54,10 +54,12 @@ public class FragmentListCercle extends Fragment {
 
     public void updateView(ArrayList<CerclePojo> cerclePojos) {
 
-        if(cerclePojos==null)
+        if(cerclePojos==null ||list_cercles==null)
             return;
 
         final ListCercleAdapter a = new ListCercleAdapter(cerclePojos, getActivity(), (FragmentInfoCercle)getTargetFragment());
+
+
         list_cercles.setAdapter(a);
 
     }

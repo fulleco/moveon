@@ -45,11 +45,14 @@ public class DeleteParticipant_Callback implements Callback<Boolean> {
     public void success(Boolean found, Response response) {
 
         //TODO
+
+        MoveOnDB moveOnDB = new MoveOnDB(activity.getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
+        moveOnDB.open();
+
         //STEP 1 :
         //charger le liste des cercles
-        MoveOnDB moveOnDB = new MoveOnDB(activity.getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
+        moveOnDB.deleteParticipant(session.getUserDetails().get(SessionManager.KEY_EMAIL), activity.getCurrentCercle().getId_cercle());
 
-        moveOnDB.open();
         ArrayList<CerclePojo> cerclePojos= moveOnDB.getCircles();
         moveOnDB.close();
 
@@ -60,9 +63,11 @@ public class DeleteParticipant_Callback implements Callback<Boolean> {
         //SET LE CURRENT CERCLE
         activity.initCurrentCercle();
 
+
         //STEP 4 :
         //Mettre a jour le fragmentInfoCercle
-        ((FragmentInfoCercle)fragmentListCercle.getTargetFragment()).updateContent();
+        if(((FragmentInfoCercle)fragmentListCercle.getTargetFragment())!=null)
+            ((FragmentInfoCercle)fragmentListCercle.getTargetFragment()).updateContent();
 
 
     }

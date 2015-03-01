@@ -247,8 +247,6 @@ public class HomeActivity extends FragmentActivity {
     }
 
     public void initCurrentCercle() {
-        if(currentCercle!=null)
-            return;
 
         MoveOnDB moveOnDB = new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
         moveOnDB.open();
@@ -256,7 +254,11 @@ public class HomeActivity extends FragmentActivity {
         moveOnDB.close();
 
         if(cercles.size()==0)
+        {
+            currentCercle=null;
             return;
+        }
+
 
         currentCercle = cercles.get(0);
         currentCercle.setAllInfo(session, getBaseContext());
