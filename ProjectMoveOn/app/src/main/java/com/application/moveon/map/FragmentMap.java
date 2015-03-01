@@ -587,7 +587,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         }
         if(customProgress!=null){}
             if(customProgress.isShowing()){
-                customProgress.hide();
+                customProgress.dismiss();
         }
 
     }
@@ -834,7 +834,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onPause() {
         super.onPause();
-
         // to stop the listener and save battery
         mSensorManager.unregisterListener(this);
     }
