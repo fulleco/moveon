@@ -487,6 +487,7 @@ public class MoveOnDB {
     }
 
     public boolean deleteParticipant(String login, int idcercle){
+        deleteCircle(idcercle);
         return bdd.delete(TABLE_CIRCLEPARTICIPANTS, COL_EMAIL + "='" + login + "' AND " + COL_IDCERCLESP + "=" + idcercle , null) > 0;
     }
 

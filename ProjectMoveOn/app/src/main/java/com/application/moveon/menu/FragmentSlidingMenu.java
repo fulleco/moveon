@@ -45,8 +45,7 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
         fragmentInfoCercle = new FragmentInfoCercle();
         fragmentListCercle = new FragmentListCercle();
 
-
-
+        fragmentInfoCercle.setTargetFragment(fragmentListCercle,0);
         fragmentListCercle.setTargetFragment(fragmentInfoCercle,0);
 
         setupTabs();

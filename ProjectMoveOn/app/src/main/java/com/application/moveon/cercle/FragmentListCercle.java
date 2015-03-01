@@ -41,26 +41,27 @@ public class FragmentListCercle extends Fragment {
 
         session = new SessionManager(getActivity());
 
-        /*
-        RestClient r = new RestClient(true);
-        MoveOnService mos = r.getApiService();
-        mos.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL),new GetCercles_Callback(getActivity(),list_cercles,(FragmentInfoCercle)getTargetFragment()));
-        */
-
         moveOnDB = new MoveOnDB(this.getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
         moveOnDB.open();
 
         ArrayList<CerclePojo> cerclePojos = moveOnDB.getCircles();
         moveOnDB.close();
 
-        if(cerclePojos == null)
-            return view;
+        updateView(cerclePojos);
+
+        return view;
+    }
+
+    public void updateView(ArrayList<CerclePojo> cerclePojos) {
+
+        if(cerclePojos==null ||list_cercles==null)
+            return;
 
         final ListCercleAdapter a = new ListCercleAdapter(cerclePojos, getActivity(), (FragmentInfoCercle)getTargetFragment());
 
+
         list_cercles.setAdapter(a);
 
-        return view;
     }
 
     @Override
