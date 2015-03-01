@@ -131,7 +131,8 @@ public interface MoveOnService {
     void getmessages(@Query("id_receiver") String idReceiver,
                      GetMessage_Callback cb);
 
-    @DELETE("/delete_participant")
+    @FormUrlEncoded
+    @POST("/delete_participant")
     void deleteParticipant(@Field("login") String login,
                            @Field("id_cercle") int id_cercle,
                            DeleteParticipant_Callback cb);

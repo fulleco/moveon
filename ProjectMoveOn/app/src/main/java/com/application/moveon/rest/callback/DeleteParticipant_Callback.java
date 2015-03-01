@@ -1,13 +1,17 @@
 package com.application.moveon.rest.callback;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.ListView;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.cercle.FragmentInfoCercle;
+import com.application.moveon.cercle.FragmentListCercle;
 import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.UserPojo;
+import com.application.moveon.session.SessionManager;
+import com.application.moveon.sqlitedb.MoveOnDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,35 +23,46 @@ import retrofit.client.Response;
 /**
  * Created by Quentin Bitschene on 13/01/2015.
  */
-public class DeleteParticipant_Callback implements Callback<UserPojo[]> {
+public class DeleteParticipant_Callback implements Callback<Boolean> {
 
 
-    private Activity activity;
+    private HomeActivity activity;
     private ListView list;
     private ArrayList<UserPojo> formatedata;
-    private FragmentInfoCercle fragmentInfoCercle;
+    private FragmentListCercle fragmentListCercle;
+    private SessionManager session;
 
-    public DeleteParticipant_Callback(Activity activity) {
+    public DeleteParticipant_Callback(Activity activity,Fragment fragmentListCercle) {
 
-        this.activity = activity;
+        this.activity = (HomeActivity)activity;
         this.formatedata = new ArrayList<UserPojo>();
-        this.fragmentInfoCercle = fragmentInfoCercle;
+        session = new SessionManager(activity.getBaseContext());
+        this.fragmentListCercle =(FragmentListCercle) fragmentListCercle;
 
     }
 
     @Override
-    public void success(UserPojo[] userPojos, Response response) {
-        Log.d("DELETE : ","DAT DELETE BOBY");
+    public void success(Boolean found, Response response) {
+
         //TODO
         //STEP 1 :
         //charger le liste des cercles
+        MoveOnDB moveOnDB = new MoveOnDB(activity.getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
 
-        //STEP 2 :
-        //Prendre le premier dans la liste
-        //setCurrentCercle
+        moveOnDB.open();
+        ArrayList<CerclePojo> cerclePojos= moveOnDB.getCircles();
+        moveOnDB.close();
+
+        //STEP 2 : recharger la liste des cercles
+        fragmentListCercle.updateView(cerclePojos);
 
         //STEP 3 :
+        //SET LE CURRENT CERCLE
+        activity.initCurrentCercle();
+
+        //STEP 4 :
         //Mettre a jour le fragmentInfoCercle
+        ((FragmentInfoCercle)fragmentListCercle.getTargetFragment()).updateContent();
 
 
     }
@@ -55,6 +70,6 @@ public class DeleteParticipant_Callback implements Callback<UserPojo[]> {
 
     @Override
     public void failure(RetrofitError error) {
-        Log.d("GET_PARTICIPANTS : ",error.toString());
+        Log.d("DELETE_PARTICIPANT : ",error.toString());
     }
 }

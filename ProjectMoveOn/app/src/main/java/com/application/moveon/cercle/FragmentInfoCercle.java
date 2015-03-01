@@ -58,21 +58,26 @@ public class FragmentInfoCercle extends Fragment {
         btQuitterCercle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                moveOnDB.open();
+
+
+                if(homeActivity.getCurrentCercle()==null)
+                    return;
                 //TODO
 
                 //STEP 1 : Quitter le cercle en BDD distant
-                DeleteParticipant_Callback cb = new DeleteParticipant_Callback(homeActivity);
+                DeleteParticipant_Callback cb = new DeleteParticipant_Callback(homeActivity,getTargetFragment());
                 RestClient r = new RestClient(true);
                 MoveOnService mos = r.getApiService();
                 mos.deleteParticipant(session.getUserDetails().get(SessionManager.KEY_EMAIL), homeActivity.getCurrentCercle().getId_cercle(),cb);
 
                 //STEP 2 : Quitter le cercle en BDD Locale
+                moveOnDB.open();
                 moveOnDB.deleteParticipant(session.getUserDetails().get(SessionManager.KEY_EMAIL), homeActivity.getCurrentCercle().getId_cercle());
+                moveOnDB.close();
 
                 //STEP 3 : Mettre a jour l'UI
                 //se deroule dans la callback
-                moveOnDB.close();
+
 
             }
         });
@@ -88,7 +93,6 @@ public class FragmentInfoCercle extends Fragment {
         setRetainInstance(true);
 
         mInflater = LayoutInflater.from(getActivity());
-
     }
 
 
@@ -104,7 +108,6 @@ public class FragmentInfoCercle extends Fragment {
 
         final InfoCercleAdapter a = new InfoCercleAdapter(currentCercle.getParticipants(), getActivity().getBaseContext(), this);
         listViewParticipants.setAdapter(a);
-
     }
 
     public ListView getListViewParticipants() {

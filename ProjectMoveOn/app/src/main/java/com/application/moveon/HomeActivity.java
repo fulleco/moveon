@@ -243,7 +243,7 @@ public class HomeActivity extends FragmentActivity {
         currentFragment = getFragmentMap();
     }
 
-    private void initCurrentCercle() {
+    public void initCurrentCercle() {
         if(currentCercle!=null)
             return;
 
@@ -268,7 +268,6 @@ public class HomeActivity extends FragmentActivity {
             initCurrentCercle();
             return;
         }
-
 
         MoveOnDB moveOnDB = new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
         moveOnDB.open();
