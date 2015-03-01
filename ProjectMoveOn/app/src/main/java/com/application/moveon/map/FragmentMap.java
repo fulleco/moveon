@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
+import com.application.moveon.custom.CustomProgressDialog;
 import com.application.moveon.menu.v1.RadialMenuItem;
 import com.application.moveon.menu.v1.RadialMenuWidget;
 import com.application.moveon.rest.MoveOnService;
@@ -129,6 +130,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     private boolean updatingCircles = false;
 
+    private CustomProgressDialog customProgress;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -147,6 +150,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         homeActivity = (HomeActivity) getActivity();
         activity = (FragmentActivity) getActivity();
+
+        customProgress = new CustomProgressDialog(homeActivity);
 
         targetList = new ArrayList<Target>();
 
@@ -182,6 +187,18 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        fMap.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+        {
+            @Override
+            public void onGlobalLayout()
+            {
+                // gets called after layout has been done but before display.
+                fMap.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                final int x = (int)fMap.getX()+ fMap.getWidth()/2;
+                final int y = (int)fMap.getY()+ fMap.getHeight()/2;
+                initMenu(x, y);
+            }
+        });
     }
 
     private void sendMessage(String idCircle, String idSender, String idReceiver, String content, String date){
@@ -540,6 +557,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     public void changeCircle(){
+        customProgress.show();
         refresh();
     }
 
@@ -564,7 +582,10 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             synchronized (markers){
                 markers.clear();
             }
-
+        }
+        if(customProgress!=null){}
+            if(customProgress.isShowing()){
+                customProgress.hide();
         }
 
     }
@@ -791,19 +812,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) homeActivity.getSystemService(homeActivity.SENSOR_SERVICE);
-
-        fMap.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
-        {
-            @Override
-            public void onGlobalLayout()
-            {
-                // gets called after layout has been done but before display.
-                fMap.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                final int x = (int)fMap.getX()+ fMap.getWidth()/2;
-                final int y = (int)fMap.getY()+ fMap.getHeight()/2;
-                initMenu(x, y);
-            }
-        });
 
         initMap();
     }

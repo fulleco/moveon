@@ -25,7 +25,7 @@ public class CustomProgressDialog extends ProgressDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.progressdialog_layout);
-
+        setCancelable(false);
         ImageView la = (ImageView) findViewById(R.id.animation);
         la.setBackgroundResource(R.drawable.animation);
         animation = (AnimationDrawable) la.getBackground();
