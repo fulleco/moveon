@@ -1,6 +1,5 @@
 package com.application.moveon.map;
 
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,31 +11,18 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.opengl.Visibility;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.animation.BounceInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -44,61 +30,46 @@ import android.widget.Toast;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
+import com.application.moveon.menu.v1.RadialMenuItem;
+import com.application.moveon.menu.v1.RadialMenuWidget;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
-import com.application.moveon.rest.callback.AddFriend_Callback;
 import com.application.moveon.rest.callback.AddMessage_Callback;
 import com.application.moveon.rest.callback.AddMessages_Callback;
 import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ImageHelper;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.application.moveon.menu.v1.RadialMenuItem;
-import com.application.moveon.menu.v1.RadialMenuWidget;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.*;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by damota on 10/12/2014.
  */
-public class FragmentMap extends Fragment implements LocationListener, GoogleMap.OnMarkerClickListener, SensorEventListener {
+public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickListener, SensorEventListener, GooglePlayServicesClient.ConnectionCallbacks,
+        GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 
     private GoogleMap map;
     private MarkerOptions markerOptions;
     private LatLng locationMap;
-    private HashMap<Marker, UserPojo> markers;
+    private HashMap<Marker, UserPojo> markers = new HashMap<Marker, UserPojo>();
 
-    private Double finalLatitude = 0.0;
-    private Double finalLongitude = 0.0;
-    private String finalAdressString = "";
-
-    private Button btn_find;
-
-    private Address currentAddress;
-    private List<Address> addresses;
-
-    private SupportMapFragment supportMapFragment;
+    private MapFragment supportMapFragment;
 
     private int cursor;
     private CircleOptions circle;
@@ -126,8 +97,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     private FragmentActivity activity;
     private static View view;
 
-    private boolean canGetLocation;
-
     private SlidingUpPanelLayout mSlidingPanel;
 
     private ProgressDialog progressDialog;
@@ -144,7 +113,7 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     private Marker myMarker = null;
     private String selectedLogin = null;
 
-    // record the compass picture angle turned
+    // angle compas
     private float currentDegree = 0f;
 
     // device sensor manager
@@ -155,10 +124,14 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     private Bitmap shaderBmp = null;
     private Bitmap shaderOuterBmp = null;
 
+    private LocationClient locationclient;
+    private LocationRequest locationrequest;
+
+    private boolean updatingCircles = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         if (view != null) {
             ViewGroup parent = (ViewGroup) view.getParent();
@@ -192,10 +165,8 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         setHasOptionsMenu(true);
 
-        markers = new HashMap<Marker, UserPojo>();
-
         // Recuperer le fragment de la map
-        supportMapFragment = (SupportMapFragment) activity.getSupportFragmentManager()
+        supportMapFragment = (MapFragment) activity.getFragmentManager()
                 .findFragmentById(R.id.map);
 
         // Recuperer la map
@@ -211,24 +182,6 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // initialize your android device sensor capabilities
-        mSensorManager = (SensorManager) homeActivity.getSystemService(homeActivity.SENSOR_SERVICE);
-
-        fMap.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
-        {
-            @Override
-            public void onGlobalLayout()
-            {
-                // gets called after layout has been done but before display.
-                fMap.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                final int x = (int)fMap.getX()+ fMap.getWidth()/2;
-                final int y = (int)fMap.getY()+ fMap.getHeight()/2;
-                initMenu(x, y);
-            }
-        });
-
-        initMap();
     }
 
     private void sendMessage(String idCircle, String idSender, String idReceiver, String content, String date){
@@ -576,101 +529,81 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     private void initMap(){
 
-        /*
-
-        // Getting LocationManager object from System Service LOCATION_SERVICE
-        LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-
-        // Creating a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
-
-        // Getting the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
-
-        // Getting Current Location
-        while(myLocation==null)
-            myLocation = locationManager.getLastKnownLocation(provider);
-
-        if (myLocation != null) {
-            onLocationChanged(myLocation);
+        int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(homeActivity);
+        if(resp == ConnectionResult.SUCCESS){
+            locationclient = new LocationClient(homeActivity,this,null);
+            locationclient.connect();
         }
-
-        locationManager.requestLocationUpdates(provider, 20000, 0, this);*/
-
-        Location myLocation = getLocation();
-        LatLng myLocationLatlng = new LatLng(myLocation.getLatitude(),
-                myLocation.getLongitude());
-
-        UserPojo user = session.getUserPojo();
-        user.setLatitude(String.valueOf(myLocation.getLatitude()));
-        user.setLongitude(String.valueOf(myLocation.getLongitude()));
-
-        loadBitmap(user, true);
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
-            @Override
-            public void onMapClick(LatLng point) {
-                if(placePoint) {
-                    //lstLatLngs.add(point);
-                    MarkerOptions options = new MarkerOptions();
-                    options.position(point);
-                    options.title("Point de rencontre");
-                    map.addMarker(options);
-                }
-            }
-        });
-        //map.setOnMyLocationChangeListener();
-        map.setOnMarkerClickListener(this);
+        else{
+            Toast.makeText(homeActivity, "Google Play Service indisponible  " + resp, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void onStart(){
         super.onStart();
-        homeActivity.startUpdateUI();
-    }
 
-    private HashMap<Marker, UserPojo> newMarkers;
+        // initialize your android device sensor capabilities
+        mSensorManager = (SensorManager) homeActivity.getSystemService(homeActivity.SENSOR_SERVICE);
+
+        fMap.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+        {
+            @Override
+            public void onGlobalLayout()
+            {
+                // gets called after layout has been done but before display.
+                fMap.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                final int x = (int)fMap.getX()+ fMap.getWidth()/2;
+                final int y = (int)fMap.getY()+ fMap.getHeight()/2;
+                initMenu(x, y);
+            }
+        });
+
+        initMap();
+    }
 
     public void initCercle() {
 
         CerclePojo cercle = homeActivity.getCurrentCercle();
-        if(cercle != null){
+        if (cercle != null) {
 
-            newMarkers = new HashMap<Marker, UserPojo>();
-            //markers.clear();
-
-            for(UserPojo u : cercle.getParticipants()) {
+            //HashMap<Marker, UserPojo> newMarkers = new HashMap<Marker, UserPojo>();
+            for (UserPojo u : cercle.getParticipants()) {
                 if (!(u.getLogin()).equals(session.getUserDetails().get(SessionManager.KEY_EMAIL))) {
-                    loadBitmap(u, false);
+                    loadBitmap(u, false, null);
                 }
             }
-
-            markers = newMarkers;
-            //map.setOnMarkerClickListener(this);
+            Log.i("ANTHO", "test");
         }
+
     }
 
     public Marker removeMarker(UserPojo u, LatLng lastLngUser){
-        Iterator it = markers.entrySet().iterator();
+        Log.i("ANTHO_MAP", "test remove " + u.getLogin());
+        Iterator it = getMarkers().entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            if(pair.getValue().equals(u)){
+            Log.i("ANTHO_MAP", ((UserPojo)pair.getValue()).getLogin() +  "=" + u.getLogin() +"?");
+            if(((UserPojo)pair.getValue()).getLogin().equals(u.getLogin())){
                 Marker m = (Marker)pair.getKey();
                 m.setPosition(lastLngUser);
+                Log.i("ANTHO_MAP", "return marker " + m.getId() + " " + m.getTitle());
                 return m;
             }
             it.remove(); // avoids a ConcurrentModificationException
         }
+        Log.i("ANTHO_MAP", "return null");
         return null;
     }
 
-    public void loadBitmap(final UserPojo u, final boolean isCurrentSession){
+    public void loadBitmap(final UserPojo u, final boolean isCurrentSession, HashMap<Marker, UserPojo> newMarkers){
 
         MarkerOptions markerOptions = new MarkerOptions();
 
         LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
                 Double.parseDouble(u.getLongitude()));
         markerOptions.position(lastLngUser);
+        markerOptions.flat(true);
 
         if(isCurrentSession)
             markerOptions.title("Moi");
@@ -679,41 +612,58 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
         markerOptions.visible(false);
 
-        Marker mTmp = removeMarker(u, lastLngUser);
+        synchronized (markers) {
+            Marker mTmp = removeMarker(u, lastLngUser);
+            final Marker m = mTmp!=null?mTmp:map.addMarker(markerOptions);
 
-        final Marker m = mTmp!=null?mTmp:map.addMarker(markerOptions);
+            if(isCurrentSession){
+                myMarker = m;
 
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                addMarker(this, u, bitmap, m);
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(lastLngUser)      // Sets the center of the map to Mountain View
+                        .zoom(17)                   // Sets the zoom
+                                //.bearing(90)                // Sets the orientation of the camera to east
+                                //.tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                        .build();                   // Creates a CameraPosition from the builder
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                mapLoaded = true;
+                mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+                        SensorManager.SENSOR_DELAY_GAME);
+                //initCercle();
+            }else if(mTmp==null){
+                Log.i("ANTHO","ajout marqueur dictionnaire" + m.getTitle() + " " + getMarkers().size());
+                markers.put(m, u);
+                Log.i("ANTHO","new size " + getMarkers().size());
+                //newMarkers.put(m, u);
             }
 
-            @Override
-            public void onBitmapFailed(Drawable drawable) {
-                addMarker(this, u, null, m);
+            if(mTmp!=null){
+                Log.i("ANTHO_MAP", "Marqueur deja existant " + m.getTitle() + " " + m.getId());
+            }else{
+                Log.i("ANTHO_MAP", "Marqueur ajout " + m.getTitle() + " " + m.getId());
             }
 
-            @Override
-            public void onPrepareLoad(Drawable drawable) {
-            }
-        };
+            Target target = new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    addMarker(this, u, bitmap, m);
+                }
 
-        targetList.add(target);
+                @Override
+                public void onBitmapFailed(Drawable drawable) {
+                    addMarker(this, u, null, m);
+                }
 
-        if(isCurrentSession){
-            myMarker = m;
-            map.animateCamera(CameraUpdateFactory.newLatLng(lastLngUser), 200, null);
-            mapLoaded = true;
-            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                    SensorManager.SENSOR_DELAY_GAME);
-            //initCercle();
-        }else{
-            newMarkers.put(m, u);
+                @Override
+                public void onPrepareLoad(Drawable drawable) {
+                }
+            };
+
+            targetList.add(target);
+
+            String image = "http://martinezhugo.com/pfe/images/"+ u.getId_client()+"/profile.jpg";
+            Picasso.with(homeActivity).load(image).into(target);
         }
-
-        String image = "http://martinezhugo.com/pfe/images/"+ u.getId_client()+"/profile.jpg";
-        Picasso.with(homeActivity).load(image).into(target);
     }
 
     public void addMarker(Target target, UserPojo u, Bitmap b, Marker m){
@@ -770,15 +720,33 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
                     showMenu(pointMenu);
                 }else{
                     if(!selectedMarker.equals(myMarker)){
-                        UserPojo userSelected = markers.get(marker);
-                        pieMenu.setHeader(userSelected.getFirstname()+ " " + userSelected.getLastname(), 20);
-                        selectedLogin = String.valueOf(userSelected.getId_client());
+                        synchronized (markers) {
+                            UserPojo userSelected = getUserByMarker(marker);
+                            if(userSelected==null)
+                                return;
+                            pieMenu.setHeader(userSelected.getFirstname()+ " " + userSelected.getLastname(), 20);
+                            selectedLogin = String.valueOf(userSelected.getId_client());
+                        }
                     }else{
                         pieMenu.setHeader("Moi", 20);
                         selectedLogin = session.getUserDetails().get(SessionManager.KEY_ID);
                     }
                     showMenu(pieMenu);
                 }
+            }
+
+            public UserPojo getUserByMarker(Marker m){
+                Log.i("ANTHO_MAP", "markers length" + getMarkers().size());
+                Iterator it = getMarkers().entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry)it.next();
+                    Marker mPair = ((Marker)pair.getKey());
+                    if(m.getId().equals(mPair.getId()))
+                        return (UserPojo)pair.getValue();
+
+                    it.remove(); // avoids a ConcurrentModificationException
+                }
+                return null;
             }
 
             @Override
@@ -791,148 +759,48 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
         return true;
     }
 
+    private void dropPinEffect(final Marker marker) {
+        // Handler allows us to repeat a code block after a specified delay
+        final android.os.Handler handler = new android.os.Handler();
+        final long start = SystemClock.uptimeMillis();
+        final long duration = 1500;
+
+        // Use the bounce interpolator
+        final android.view.animation.Interpolator interpolator =
+                new BounceInterpolator();
+
+        // Animate marker with a bounce updating its position every 15ms
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                // Calculate t for bounce based on elapsed time
+                float t = Math.max(
+                        1 - interpolator.getInterpolation((float) elapsed
+                                / duration), 0);
+                // Set the anchor
+                marker.setAnchor(0.5f, 1.0f + 14 * t);
+
+                if (t > 0.0) {
+                    // Post this event again 15ms from now.
+                    handler.postDelayed(this, 15);
+                } else { // done elapsing, show window
+                    marker.showInfoWindow();
+                }
+            }
+        });
+    }
+
     private void showMenu(RadialMenuWidget m){
         //pieMenu.setVisibility(View.GONE);
         m.setAnimationSpeed(300L);
         m.show(containerMenu);
     }
 
-    private void displayMenuAnimation(final RadialMenuWidget m, int alpha1, int alpha2,
-                                      final int visibility) {
-
-        AlphaAnimation fadeAnimation = new AlphaAnimation(alpha1, alpha2); // start
-        // alpha,
-        // end
-        // alpha
-        fadeAnimation.setDuration(700); // time for animation in
-        // milliseconds
-        fadeAnimation.setFillAfter(false); // make the transformation persist
-        fadeAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                m.setVisibility(visibility);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-        });
-
-        m.setAnimation(fadeAnimation);
-    }
-
     private void dismissMenu(RadialMenuWidget m) {
         //displayMenuAnimation(1, 0, View.GONE);
         m.dismiss();
         m.setSelected(false);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        myLocation = location;
-
-        // Getting latitude of the current location
-        double latitude = location.getLatitude();
-
-        // Getting longitude of the current location
-        double longitude = location.getLongitude();
-
-        // Creating a LatLng object for the current location
-        LatLng latLng = new LatLng(latitude, longitude);
-        if(myMarker!=null)
-            myMarker.setPosition(latLng);
-
-        // Showing the current location in Google Map
-        // map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-//		CircleOptions c = new CircleOptions();
-//		c.center(latLng);
-//		// 55 represents percentage of transparency. For 100% transparency,
-//		// specify 00.
-//		// For 0% transparency ( ie, opaque ) , specify ff
-//		// The remaining 6 characters(00ff00) specify the fill color
-//		c.fillColor(0x5500ff00);
-//		c.strokeWidth(2);
-//		c.radius(radius*1000);
-
-        //map.animateCamera(CameraUpdateFactory.zoomTo(15));
-        //map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-
-//		map.addCircle(c);
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO Auto-generated method stub
-    }
-
-    public static long MIN_TIME_BW_UPDATES = 2000;
-    public static float MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;
-
-    public Location getLocation() {
-
-        Location location = null;
-        LocationManager locationManager = (LocationManager) homeActivity.getSystemService(Context.LOCATION_SERVICE);
-
-        try {
-
-            // getting GPS status
-            boolean isGPSEnabled = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-            // getting network status
-            boolean isNetworkEnabled = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-            if (!isGPSEnabled && !isNetworkEnabled) {
-                // no network provider is enabled
-                Log.i("ANTHO", "pas de gps ni network");
-            } else {
-                canGetLocation = true;
-                if (isNetworkEnabled) {
-                    locationManager.requestLocationUpdates(
-                            LocationManager.NETWORK_PROVIDER,
-                            MIN_TIME_BW_UPDATES,MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    if (locationManager != null) {
-                        location = locationManager
-                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    }
-                }
-                // if GPS Enabled get lat/long using GPS Services
-                if (isGPSEnabled) {
-                    if (location == null) {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        }
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return location;
     }
 
     @Override
@@ -946,14 +814,14 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     @Override
     public void onDestroy(){
-        Log.i("ANTHO", "destroy");
-
         shaderBmp.recycle();
         shaderBmp = null;
         shaderOuterBmp.recycle();
         shaderOuterBmp = null;
         map.clear();
         map = null;
+        if(locationclient!=null)
+            locationclient.disconnect();
         super.onDestroy();
     }
 
@@ -967,15 +835,97 @@ public class FragmentMap extends Fragment implements LocationListener, GoogleMap
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
         // get the angle around the z-axis rotated
         float degree = Math.round(event.values[0]);
         myMarker.setRotation(degree);
         currentDegree = -degree;
-
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        locationrequest = LocationRequest.create();
+        locationrequest.setInterval(100);
+        locationclient.requestLocationUpdates(locationrequest, this);
+
+        UserPojo user = session.getUserPojo();
+        myLocation =locationclient.getLastLocation();
+        user.setLatitude(String.valueOf(myLocation.getLatitude()));
+        user.setLongitude(String.valueOf(myLocation.getLongitude()));
+
+        synchronized (markers) {
+            loadBitmap(user, true, null);
+        }
+
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng point) {
+                if(placePoint) {
+                    //lstLatLngs.add(point);
+                    MarkerOptions options = new MarkerOptions();
+                    options.position(point);
+                    options.title("Point de rencontre");
+                    Marker m = map.addMarker(options);
+                }
+            }
+        });
+        //map.setOnMyLocationChangeListener();
+        map.setOnMarkerClickListener(this);
+
+        Log.i("ANTHO", "ds");
+        homeActivity.startUpdateUI();
+        Log.i("ANTHO", "ds");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if(location!=null){
+            myLocation = location;
+
+            UserPojo user = session.getUserPojo();
+            user.setLatitude(String.valueOf(myLocation.getLatitude()));
+            user.setLongitude(String.valueOf(myLocation.getLongitude()));
+
+            // Getting latitude of the current location
+            double latitude = location.getLatitude();
+
+            // Getting longitude of the current location
+            double longitude = location.getLongitude();
+
+            // Creating a LatLng object for the current location
+            LatLng latLng = new LatLng(latitude, longitude);
+            if(myMarker!=null)
+                myMarker.setPosition(latLng);
+        }
+    }
+
+    @Override
+    public void onDisconnected() {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Toast.makeText(homeActivity, "GPS indisponible", Toast.LENGTH_LONG).show();
+    }
+
+    public boolean isUpdatingCircles() {
+        return updatingCircles;
+    }
+
+    public void setUpdatingCircles(boolean updatingCircles) {
+        this.updatingCircles = updatingCircles;
+    }
+
+    public HashMap<Marker, UserPojo> getMarkers() {
+        return markers;
+    }
+
+    public void setMarkers(HashMap<Marker, UserPojo> markers) {
+        this.markers = markers;
     }
 }

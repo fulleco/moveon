@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,6 +23,8 @@ import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.rest.callback.UpdatePosition_Callback;
 import com.application.moveon.session.SessionManager;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
@@ -31,7 +34,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by user on 18/02/2015.
  */
-public class ProviderService extends Service implements LocationListener {
+public class ProviderService extends Service implements GooglePlayServicesClient.ConnectionCallbacks {
     private PowerManager.WakeLock mWakeLock;
     private Context context = this;
     private NotificationManager notifManager;
@@ -40,6 +43,7 @@ public class ProviderService extends Service implements LocationListener {
     private MoveOnService mainmos;
     private LatLng currentPosition;
     private boolean canGetLocation;
+    private LocationClient locationclient;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -48,13 +52,16 @@ public class ProviderService extends Service implements LocationListener {
 
     private void handleIntent(Intent intent) {
 
-        Location l = getLocation();
-        currentPosition = new LatLng(l.getLatitude(), l.getLongitude());
+        //Location l = getLocation();
+        //currentPosition = new LatLng(l.getLatitude(), l.getLongitude());
 
         PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 "Notification Service");
         mWakeLock.acquire();
+
+        locationclient = new LocationClient(context,this,null);
+        locationclient.connect();
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         if (cm.getActiveNetworkInfo() == null) {
@@ -69,7 +76,7 @@ public class ProviderService extends Service implements LocationListener {
 
         if((idUser!=null)||(idUser!="")) {
             mainmos.getmessages(idUser, new GetMessage_Callback(this));
-            mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
+            //mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
         }
     }
 
@@ -93,84 +100,19 @@ public class ProviderService extends Service implements LocationListener {
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onConnected(Bundle bundle) {
+        Location l =locationclient.getLastLocation();
+        currentPosition = new LatLng(l.getLatitude(), l.getLongitude());
+        locationclient.disconnect();
 
-        // Getting latitude of the current location
-        double latitude = location.getLatitude();
-
-        // Getting longitude of the current location
-        double longitude = location.getLongitude();
-
-        // Creating a LatLng object for the current location
-        currentPosition = new LatLng(latitude, longitude);
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO Auto-generated method stub
-    }
-
-    public static long MIN_TIME_BW_UPDATES = 2000;
-    public static float MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;
-
-    public Location getLocation() {
-
-        Location location = null;
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-        try {
-
-            // getting GPS status
-            boolean isGPSEnabled = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-            // getting network status
-            boolean isNetworkEnabled = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-            if (!isGPSEnabled && !isNetworkEnabled) {
-                // no network provider is enabled
-                Log.i("ANTHO", "pas de gps ni network");
-            } else {
-                canGetLocation = true;
-                if (isNetworkEnabled) {
-                    locationManager.requestLocationUpdates(
-                            LocationManager.NETWORK_PROVIDER,
-                            MIN_TIME_BW_UPDATES,MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    if (locationManager != null) {
-                        location = locationManager
-                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    }
-                }
-                // if GPS Enabled get lat/long using GPS Services
-                if (isGPSEnabled) {
-                    if (location == null) {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        }
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if((idUser!=null)||(idUser!="")) {
+            //mainmos.getmessages(idUser, new GetMessage_Callback(this));
+            mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
         }
+    }
 
-        return location;
+    @Override
+    public void onDisconnected() {
+
     }
 }
