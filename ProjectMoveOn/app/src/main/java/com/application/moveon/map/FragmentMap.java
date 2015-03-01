@@ -176,6 +176,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         mSlidingPanel = (SlidingUpPanelLayout) view
                 .findViewById(R.id.sliding_layout);
         mSlidingPanel.setAnchorPoint(0.45f);
+
+
         return view;
     }
 
@@ -937,5 +939,9 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     public void setMarkers(HashMap<Marker, UserPojo> markers) {
         this.markers = markers;
+    }
+
+    public SlidingUpPanelLayout getmSlidingPanel() {
+        return mSlidingPanel;
     }
 }
