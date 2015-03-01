@@ -539,6 +539,14 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         }
     }
 
+    public void changeCircle(){
+        map.clear();
+        synchronized (markers){
+            markers.clear();
+            initCercle();
+        }
+    }
+
     @Override
     public void onStart(){
         super.onStart();
