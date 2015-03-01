@@ -573,26 +573,21 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                     loadBitmap(u, false, null);
                 }
             }
-            Log.i("ANTHO", "test");
         }
 
     }
 
     public Marker removeMarker(UserPojo u, LatLng lastLngUser){
-        Log.i("ANTHO_MAP", "test remove " + u.getLogin());
-        Iterator it = getMarkers().entrySet().iterator();
+        Iterator it = markers.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            Log.i("ANTHO_MAP", ((UserPojo)pair.getValue()).getLogin() +  "=" + u.getLogin() +"?");
             if(((UserPojo)pair.getValue()).getLogin().equals(u.getLogin())){
                 Marker m = (Marker)pair.getKey();
                 m.setPosition(lastLngUser);
-                Log.i("ANTHO_MAP", "return marker " + m.getId() + " " + m.getTitle());
                 return m;
             }
             it.remove(); // avoids a ConcurrentModificationException
         }
-        Log.i("ANTHO_MAP", "return null");
         return null;
     }
 
@@ -631,16 +626,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         SensorManager.SENSOR_DELAY_GAME);
                 //initCercle();
             }else if(mTmp==null){
-                Log.i("ANTHO","ajout marqueur dictionnaire" + m.getTitle() + " " + getMarkers().size());
                 markers.put(m, u);
-                Log.i("ANTHO","new size " + getMarkers().size());
                 //newMarkers.put(m, u);
-            }
-
-            if(mTmp!=null){
-                Log.i("ANTHO_MAP", "Marqueur deja existant " + m.getTitle() + " " + m.getId());
-            }else{
-                Log.i("ANTHO_MAP", "Marqueur ajout " + m.getTitle() + " " + m.getId());
             }
 
             Target target = new Target() {
@@ -736,8 +723,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             }
 
             public UserPojo getUserByMarker(Marker m){
-                Log.i("ANTHO_MAP", "markers length" + getMarkers().size());
-                Iterator it = getMarkers().entrySet().iterator();
+                Iterator it = markers.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry pair = (Map.Entry)it.next();
                     Marker mPair = ((Marker)pair.getKey());
@@ -876,9 +862,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         //map.setOnMyLocationChangeListener();
         map.setOnMarkerClickListener(this);
 
-        Log.i("ANTHO", "ds");
         homeActivity.startUpdateUI();
-        Log.i("ANTHO", "ds");
     }
 
     @Override

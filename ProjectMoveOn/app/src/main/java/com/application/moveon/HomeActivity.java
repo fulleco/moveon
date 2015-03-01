@@ -312,7 +312,7 @@ public class HomeActivity extends FragmentActivity {
     }
 
     public void startUpdateUI(){
-        int secondUpdateUI = 7;
+        int secondUpdateUI = 4;
 
         amUI.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + secondUpdateUI * 1000,
@@ -326,7 +326,7 @@ public class HomeActivity extends FragmentActivity {
             updateCurrentCercle();
             Log.i("ANTHO_MAP", "marker before update " + fragmentMap.getMarkers().size());
             fragmentMap.initCercle();
-            //mHandler.postDelayed(mStatusChecker, mInterval);
+            mHandler.postDelayed(mStatusChecker, mInterval);
         }
     };
 
