@@ -555,6 +555,12 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                     loadBitmap(u, false, null);
                 }
             }
+        }else{
+            map.clear();
+            synchronized (markers){
+                markers.clear();
+            }
+
         }
 
     }
