@@ -30,6 +30,7 @@ import com.application.moveon.tools.ToolBox;
 
 import junit.runner.Version;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -194,7 +195,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 && null != data) {
             Uri selectedImage = data.getData();
 
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            /*String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
@@ -210,7 +211,13 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             options.outHeight = 8;
             //mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
 
-            Bitmap b_gallery = tools.decodeSampledBitmapFromResource(picturePath, 60, 60);
+            Bitmap b_gallery = tools.decodeSampledBitmapFromResource(picturePath, 60, 60);*/
+            Bitmap b_gallery = null;
+            try {
+                b_gallery = ImageHelper.getCorrectlyOrientedImage(this, selectedImage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Bitmap b_rounded = ImageHelper.getRoundedCornerBitmap(b_gallery, 15, 0);
 
             profilePicture.setBackground(null);
