@@ -35,7 +35,7 @@ public class ProviderReceiver extends BroadcastReceiver{
             mainmos.addMessage(circle, receiver, sender, "Ok", "DATE",
                     0, new AddMessage_Callback(null, null));
         }
-        notifManager.cancel(sender.hashCode());
+        notifManager.cancel(Integer.valueOf(sender));
 	}
 
 }

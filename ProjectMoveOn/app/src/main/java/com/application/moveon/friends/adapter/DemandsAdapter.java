@@ -85,8 +85,11 @@ public class DemandsAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 p.show();
-                mos.answerdemand(dp.getMail(), mail, false, new AnswerDemand_Callback(activity,p, session.getUserDetails().get(SessionManager.KEY_EMAIL),false,db));
+                mos.answerdemand(dp.getMail(), mail, false, new AnswerDemand_Callback(activity,p, dp.getMail(),false,db));
                 d.remove(position);
+                db.open();
+                db.deleteDemand(dp.getId());
+                db.close();
                 notifyDataSetChanged();
             }
         });
@@ -96,8 +99,9 @@ public class DemandsAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 p.show();
-                mos.answerdemand(dp.getMail(), mail, true, new AnswerDemand_Callback(activity,p, session.getUserDetails().get(SessionManager.KEY_EMAIL),true,db));
+                mos.answerdemand(dp.getMail(), mail, true, new AnswerDemand_Callback(activity,p, dp.getMail(),true,db));
                 d.remove(position);
+                db.deleteDemand(dp.getId());
                 notifyDataSetChanged();
             }
         });

@@ -32,10 +32,12 @@ public class UpdateParticipants_Callback implements Callback<UserPojo[]> {
             datas =new ArrayList<UserPojo>();
         }else{
             datas = new ArrayList<UserPojo>(Arrays.asList(userPojos));
-            db.open();
-            db.updateParticipants(datas);
-            db.close();
+
         }
+
+        db.open();
+        db.updateParticipants(datas);
+        db.close();
 
         //for( UserPojo u)
 

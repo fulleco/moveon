@@ -49,11 +49,14 @@ import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
+import com.google.android.gms.maps.model.Marker;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -293,7 +296,14 @@ public class HomeActivity extends FragmentActivity {
     @Override
     public void onResume(){
         super.onResume();
+        Intent intentUpdate = new Intent(
+                this,
+                UpdaterService.class);
         changeNotificationFrequency();
+        mHandler = new Handler();
+        amUI = (AlarmManager) getSystemService(ALARM_SERVICE);
+        piUI = PendingIntent.getService(this, 0, intentUpdate, 0);
+        amUI.cancel(piUI);
     }
 
     protected void attachBaseContext(Context newBase) {
@@ -302,14 +312,7 @@ public class HomeActivity extends FragmentActivity {
 
     public void startUpdateUI(){
         int secondUpdateUI = 7;
-        mHandler = new Handler();
-        Intent intentUpdate = new Intent(
-                this,
-                UpdaterService.class);
 
-        amUI = (AlarmManager) getSystemService(ALARM_SERVICE);
-        piUI = PendingIntent.getService(this, 0, intentUpdate, 0);
-        amUI.cancel(piUI);
         amUI.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + secondUpdateUI * 1000,
                 secondUpdateUI * 1000, piUI);
@@ -320,8 +323,9 @@ public class HomeActivity extends FragmentActivity {
         @Override
         public void run() {
             updateCurrentCercle();
+            Log.i("ANTHO_MAP", "marker before update " + fragmentMap.getMarkers().size());
             fragmentMap.initCercle();
-            mHandler.postDelayed(mStatusChecker, mInterval);
+            //mHandler.postDelayed(mStatusChecker, mInterval);
         }
     };
 
@@ -342,13 +346,11 @@ public class HomeActivity extends FragmentActivity {
     @Override
     public void onStop(){
         super.onStop();
-        Log.i("ANTHO", "STOP");
     }
 
     @Override
     public void onPause(){
         super.onPause();
-        Log.i("ANTHO", "PAUSE");
         stopRepeatingTask();
         amUI.cancel(piUI);
     }

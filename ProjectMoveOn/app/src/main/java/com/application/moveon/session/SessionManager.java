@@ -137,8 +137,9 @@ public class SessionManager {
         up.setLogin(pref.getString(KEY_EMAIL, null));
         up.setFirstname(pref.getString(KEY_FIRSTNAME, null));
         up.setLastname(pref.getString(KEY_LASTNAME, null));
-        up.setId_client(Integer.valueOf(pref.getString(KEY_ID, null)));
-
+        String idClient = pref.getString(KEY_ID, null);
+        if(idClient!=null)
+            up.setId_client(Integer.valueOf(idClient));
         return up;
     }
 

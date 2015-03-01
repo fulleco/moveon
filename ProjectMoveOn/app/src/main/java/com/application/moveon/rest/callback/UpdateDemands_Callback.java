@@ -37,13 +37,14 @@ public class UpdateDemands_Callback implements Callback<DemandsPojo[]> {
         ArrayList<DemandsPojo> datas;
         if(demandsPojos != null) {
             datas = new ArrayList<DemandsPojo>(Arrays.asList(demandsPojos));
-            db.open();
-            db.updateDemands(datas);
-            db.close();
+
         }else{
             datas = new ArrayList<DemandsPojo>();
         }
 
+        db.open();
+        db.updateDemands(datas);
+        db.close();
 
         Flags.setDemandflag(true);
         Flags.checkupdate();

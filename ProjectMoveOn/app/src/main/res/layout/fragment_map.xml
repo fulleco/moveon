@@ -17,7 +17,7 @@
             android:id="@+id/map"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            class="com.google.android.gms.maps.SupportMapFragment"/>
+            class="com.google.android.gms.maps.MapFragment"/>
 
         <fragment
             android:id="@+id/slidingContent"
