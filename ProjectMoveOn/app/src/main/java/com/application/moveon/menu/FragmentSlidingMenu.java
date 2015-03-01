@@ -30,7 +30,6 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
 
     @Override
     public void onAttach(Activity activity) {
-
         super.onAttach(activity);
     }
 
