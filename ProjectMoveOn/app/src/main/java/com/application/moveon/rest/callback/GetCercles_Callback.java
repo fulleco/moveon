@@ -1,12 +1,11 @@
 package com.application.moveon.rest.callback;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.util.Log;
 import android.widget.ListView;
 
 import com.application.moveon.cercle.FragmentInfoCercle;
-import com.application.moveon.cercle.ListCercleAdapter;
+import com.application.moveon.cercle.Adapter.ListCercleAdapter;
 import com.application.moveon.rest.modele.CerclePojo;
 
 import java.util.ArrayList;
