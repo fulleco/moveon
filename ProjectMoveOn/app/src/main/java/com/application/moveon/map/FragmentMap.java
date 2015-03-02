@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.custom.CustomProgressDialog;
+import com.application.moveon.menu.FragmentSlidingMenu;
 import com.application.moveon.menu.v1.RadialMenuItem;
 import com.application.moveon.menu.v1.RadialMenuWidget;
 import com.application.moveon.rest.MoveOnService;
@@ -134,6 +135,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     private CustomProgressDialog customProgress;
 
+    private FragmentSlidingMenu fragmentSlidingMenu;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -175,6 +178,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         // Recuperer le fragment de la map
         supportMapFragment = (MapFragment) activity.getFragmentManager()
                 .findFragmentById(R.id.map);
+
+        fragmentSlidingMenu = (FragmentSlidingMenu) activity.getSupportFragmentManager().findFragmentById(R.id.slidingContent);
 
         mSlidingPanel = (SlidingUpPanelLayout) view
                 .findViewById(R.id.sliding_layout);
@@ -969,5 +974,9 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     public SlidingUpPanelLayout getmSlidingPanel() {
         return mSlidingPanel;
+    }
+
+    public void updateSlidingUpDrawer() {
+        fragmentSlidingMenu.updateContent();
     }
 }

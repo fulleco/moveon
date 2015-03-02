@@ -53,7 +53,7 @@ public class FragmentInfoCercle extends Fragment {
         session = new SessionManager(homeActivity);
         moveOnDB = new MoveOnDB(getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
 
-        updateContent();
+        updateView();
 
         btQuitterCercle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +95,7 @@ public class FragmentInfoCercle extends Fragment {
     }
 
 
-    public void updateContent() {
+    public void updateView() {
         homeActivity.updateCurrentCercle();
         CerclePojo currentCercle =((HomeActivity)getActivity()).getCurrentCercle();
 

@@ -325,6 +325,7 @@ public class HomeActivity extends FragmentActivity {
         @Override
         public void run() {
             updateCurrentCercle();
+            fragmentMap.updateSlidingUpDrawer();
             fragmentMap.initCercle();
             mHandler.postDelayed(mStatusChecker, mInterval);
         }

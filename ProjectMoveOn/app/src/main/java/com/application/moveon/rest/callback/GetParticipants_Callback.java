@@ -47,7 +47,7 @@ public class GetParticipants_Callback implements Callback<UserPojo[]> {
         UserPojo[] filled = new UserPojo[0];
         homeActivity.getCurrentCercle().setParticipants(datas.toArray(filled));
         CerclePojo c = homeActivity.getCurrentCercle();
-        fragmentInfoCercle.updateContent();
+        fragmentInfoCercle.updateView();
     }
 
 
