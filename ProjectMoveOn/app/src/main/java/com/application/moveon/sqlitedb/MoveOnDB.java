@@ -78,14 +78,10 @@ public class MoveOnDB {
     private static final int COL_DATESEND_NUMBER = 5;
     private static final String COL_SEEN = "seen";
     private static final int COL_SEEN_NUMBER = 6;
-<<<<<<< HEAD
     private static final String COL_ID_RECEIVER = "id_receiver";
     private static final int COL_ID_RECEIVER_NUMBER = 7;
-=======
-    private static final String COL_ID_RECEIVER="id_receiver";
-    private static final int COL_ID_RECEIVER_NUMBER = 7;
 
->>>>>>> 835d42c4dbda30555e0fc85883bc2710cac8c7f1
+
 
     private static final String TABLE_FRIENDDEMANDS = "Friendship";
     private static final String COL_ID_DEMAND = "id_demand";
