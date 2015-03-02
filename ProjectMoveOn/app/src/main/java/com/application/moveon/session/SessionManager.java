@@ -83,7 +83,6 @@ public class SessionManager {
      * */
     public void checkLogin(boolean redirect){
 
-        Log.i("ANTHO", "connecté ? " + isLoggedIn());
         // Check login status
         if(!this.isLoggedIn()){
 
@@ -106,6 +105,8 @@ public class SessionManager {
             ((Activity) _context).finish();
         }else if(redirect){
             Intent i = new Intent(_context, Splashscreen.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("caller", _context.getClass().getName());
             _context.startActivity(i);
         }

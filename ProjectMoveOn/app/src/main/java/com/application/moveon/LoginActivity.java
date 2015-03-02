@@ -100,7 +100,7 @@ public class LoginActivity extends Activity {
                     final String mail = editEmail.getText().toString();
                     final String password = editPassword.getText().toString();
 
-                    logo.setBackgroundResource(R.drawable.login_loader);
+                    //logo.setBackgroundResource(R.drawable.login_loader);
 
                     CustomProgressDialog p = new CustomProgressDialog(LoginActivity.this);
                     p.show();

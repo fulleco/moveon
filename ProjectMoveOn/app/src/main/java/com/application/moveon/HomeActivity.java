@@ -331,12 +331,13 @@ public class HomeActivity extends FragmentActivity {
         }
     };
 
-    void startRepeatingTask() {
+    public void startRepeatingTask() {
         mStatusChecker.run();
     }
 
-    void stopRepeatingTask() {
+    public void stopRepeatingTask() {
         mHandler.removeCallbacks(mStatusChecker);
+        amUI.cancel(piUI);
     }
 
     @Override
@@ -352,8 +353,6 @@ public class HomeActivity extends FragmentActivity {
 
     @Override
     public void onPause(){
-        stopRepeatingTask();
-        amUI.cancel(piUI);
         super.onPause();
     }
 

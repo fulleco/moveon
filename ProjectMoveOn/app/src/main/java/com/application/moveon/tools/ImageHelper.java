@@ -76,7 +76,7 @@ public class ImageHelper {
 		canvas.drawBitmap(tmpBitmap, rect, rect, paint);
 
 		// Soutput = Bitmap.createBitmap(final_dimension, final_dimension,
-		tmpBitmap.recycle();
+		//tmpBitmap.recycle();
 		tmpBitmap = null;
 		
 		// Config.ARGB_8888);
