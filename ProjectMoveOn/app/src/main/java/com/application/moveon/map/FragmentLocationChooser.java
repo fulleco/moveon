@@ -196,8 +196,8 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
             @Override
             public void onClick(View v) {
                 FragmentCreateCercle fcc = (FragmentCreateCercle)getTargetFragment();
-                fcc.setLongitude(selectedMarker.getPosition().latitude);
-                fcc.setLatitude(selectedMarker.getPosition().longitude);
+                fcc.setLatitude(selectedMarker.getPosition().latitude);
+                fcc.setLongitude(selectedMarker.getPosition().longitude);
                 map.clear();
                 HomeActivity home = (HomeActivity)getActivity();
                 home.switchFragment(fcc);
@@ -291,6 +291,8 @@ public class FragmentLocationChooser extends Fragment implements LocationListene
                 //MarkerOptions mOptions = new MarkerOptions();
                 //mOptions.title(marker.getTitle());
                 //mOptions.position(marker.getPosition());
+                Log.i("ANTHO_EXC", "CHOOSER " + marker.getPosition().latitude
+                        + " " + marker.getPosition().longitude);
                 selectedMarker = marker;
                 btn_validate.setEnabled(true);
                 marker.showInfoWindow();

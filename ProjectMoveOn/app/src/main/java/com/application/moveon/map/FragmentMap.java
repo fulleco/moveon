@@ -113,6 +113,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     private Marker selectedMarker = null;
     private Marker myMarker = null;
+    private Marker markerLocation = null;
     private String selectedLogin = null;
 
     // angle compas
@@ -564,9 +565,12 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     public void changeCircle(){
         homeActivity.stopRepeatingTask();
+        if(markerLocation!=null)
+            markerLocation.remove();
         customProgress = new CustomProgressDialog(homeActivity);
         customProgress.show();
         refresh();
+        placeLocation(homeActivity.getCurrentCercle());
     }
 
     @Override
@@ -578,6 +582,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         CerclePojo currentCercle = homeActivity.getCurrentCercle();
         if (currentCercle != null) {
+
             //HashMap<Marker, UserPojo> newMarkers = new HashMap<Marker, UserPojo>();
             for (UserPojo u : currentCercle.getParticipants()) {
                 if (!(u.getLogin()).equals(session.getUserDetails().get(SessionManager.KEY_EMAIL))) {
@@ -592,6 +597,20 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                 customProgress.dismiss();
                 customProgress = null;
             }
+    }
+
+    public void placeLocation(CerclePojo cercle){
+        LatLng locationCircle = new LatLng(cercle.getLatitude(), cercle.getLongitude());
+        if(locationCircle!=null) {
+            Log.i("ANTHO_EXC", "location circle add");
+            MarkerOptions options = new MarkerOptions();
+            options.position(locationCircle);
+            options.title("Point de rencontre");
+            options.flat(true);
+            options.visible(true);
+            markerLocation = map.addMarker(options);
+            dropPinEffect(markerLocation);
+        }
     }
 
     public Marker removeMarker(UserPojo u, LatLng lastLngUser){
@@ -633,7 +652,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(lastLngUser)      // Sets the center of the map to Mountain View
-                        .zoom(17)                   // Sets the zoom
+                        .zoom(12)                   // Sets the zoom
                                 //.bearing(90)                // Sets the orientation of the camera to east
                                 //.tilt(30)                   // Sets the tilt of the camera to 30 degrees
                         .build();                   // Creates a CameraPosition from the builder
@@ -650,7 +669,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             Target target = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    Log.i("ANTHO_EXC", "bitmap loaded" + u.getLogin());
                     addMarker(this, u, bitmap, m);
                 }
 
@@ -698,7 +716,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             ImageView profilePicture = (ImageView) marker_layout.findViewById(R.id.profile_picture);
             profilePicture.setImageBitmap(b_resized);
 
-            Log.i("ANTHO_EXC", "ADD MARKER " + m.getTitle());
             m.setIcon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
             m.setVisible(true);
             targetList.remove(target);
@@ -718,9 +735,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             {
                 map.getUiSettings().setScrollGesturesEnabled(true);
                 selectedMarker = marker;
-                if(marker.getTitle().equals("Point de rencontre")) {
-                    showMenu(pointMenu);
-                }else{
+
+                if(!marker.getTitle().equals("Point de rencontre")) {
                     if(!selectedMarker.equals(myMarker)){
                         synchronized (markers) {
                             UserPojo userSelected = getUserByMarker(marker);
@@ -844,7 +860,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onStop() {
         super.onStop();
-        Log.i("ANTHO", "STOP FRAGMENT");
     }
 
     @Override
@@ -917,7 +932,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     @Override
     public void onDisconnected() {
-        Log.i("ANTHO_EXC", "disconnected");
     }
 
     @Override
