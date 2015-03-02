@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.application.moveon.R;
+import com.application.moveon.model.MessagePojo;
 import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
@@ -17,11 +18,11 @@ import java.util.ArrayList;
 /**
  * Created by Quentin Bitschene on 19/02/2015.
  */
-public class FragmentListCercle extends Fragment {
+public class FragmentListMessage extends Fragment {
 
     private static View view;
     private LayoutInflater mInflater;
-    private ListView list_cercles;
+    private ListView list_messages;
     MoveOnDB moveOnDB;
 
     SessionManager session;
@@ -30,31 +31,34 @@ public class FragmentListCercle extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_list_cercle, container, false);
-        list_cercles = (ListView)view.findViewById(R.id.list_view);
+        view = inflater.inflate(R.layout.fragment_list_messages, container, false);
+        list_messages = (ListView)view.findViewById(R.id.list_view);
 
         session = new SessionManager(getActivity());
 
-        moveOnDB = new MoveOnDB(this.getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
-        moveOnDB.open();
-
-        ArrayList<CerclePojo> cerclePojos = moveOnDB.getCircles();
-        moveOnDB.close();
-
-        updateView(cerclePojos);
+        updateView();
 
         return view;
     }
 
-    public void updateView(ArrayList<CerclePojo> cerclePojos) {
+    public void updateView() {
 
-        if(cerclePojos==null ||list_cercles==null)
+        if(list_messages==null)
             return;
 
-        final ListCercleAdapter a = new ListCercleAdapter(cerclePojos, getActivity(), (FragmentInfoCercle)getTargetFragment());
+        moveOnDB = new MoveOnDB(this.getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
+        moveOnDB.open();
+        ArrayList<MessagePojo> messagePojos = moveOnDB.getMessages(session.getUserDetails().get(SessionManager.KEY_ID));
+        moveOnDB.close();
 
+        if(messagePojos==null) {
+            list_messages.setAdapter(null);
+            return;
+        }
 
-        list_cercles.setAdapter(a);
+        final ListMessagesAdapter a = new ListMessagesAdapter(messagePojos, getActivity());
+
+        list_messages.setAdapter(a);
 
     }
 

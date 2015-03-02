@@ -47,6 +47,7 @@
     <string name="cancel">Cancel</string>
     <string name="tab_info_cercle">Infos Cercle</string>
     <string name="tab_list_cercle">Liste Cercle</string>
+    <string name="tab_list_message">Messages</string>
     
     <string name="pref_sync">Notifications</string>
     <string name="pref_sync_summ">Permet de ne plus recevoir de notification.</string>
