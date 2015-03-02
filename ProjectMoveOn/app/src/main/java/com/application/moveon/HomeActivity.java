@@ -465,6 +465,10 @@ public class HomeActivity extends FragmentActivity {
     private void selectItem(int position) {
         setTitle(mDrawerArray[position]);
         switch (position){
+            case MAP_INDEX :
+                switchFragment(getFragmentMap());
+                break;
+
             case VIEW_PROFIL_INDEX :
                 switchFragment(fragmentViewProfil);
                 break;
