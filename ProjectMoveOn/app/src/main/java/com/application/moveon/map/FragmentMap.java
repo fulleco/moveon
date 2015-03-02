@@ -53,7 +53,9 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -186,8 +188,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.i("ANTHO", "VIEW CREATED");
-
         // Recuperer la map
         map = supportMapFragment.getMap();
         fMap = view.findViewById(R.id.map);
@@ -218,11 +218,11 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         if(idSender.equals(idReceiver)){
             mainmos.addMessages(idCircle, idSender,
-                    receivers.trim(), content, date,
+                    receivers.trim(), content, new SimpleDateFormat("dd-MM-yyyy").format(new Date()),
                     0, new AddMessages_Callback(activity, progressDialog));
         }else {
             mainmos.addMessage(idCircle, idSender,
-                    idReceiver, content, date,
+                    idReceiver, content, new SimpleDateFormat("dd-MM-yyyy").format(new Date()),
                     0, new AddMessage_Callback(activity, progressDialog));
         }
     }
@@ -553,7 +553,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(homeActivity);
         if(resp == ConnectionResult.SUCCESS){
-            Log.i("ANTHO_EXC", "connect from init map");
             locationclient = new LocationClient(homeActivity,this,null);
             locationclient.connect();
         }
@@ -573,19 +572,23 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         super.onStart();
     }
 
+    CerclePojo oldCercle = null;
     public void initCercle() {
 
-        CerclePojo cercle = homeActivity.getCurrentCercle();
-        if (cercle != null) {
-
+        CerclePojo currentCercle = homeActivity.getCurrentCercle();
+        if (currentCercle != null) {
+            oldCercle = currentCercle;
             //HashMap<Marker, UserPojo> newMarkers = new HashMap<Marker, UserPojo>();
-            for (UserPojo u : cercle.getParticipants()) {
+            for (UserPojo u : currentCercle.getParticipants()) {
                 if (!(u.getLogin()).equals(session.getUserDetails().get(SessionManager.KEY_EMAIL))) {
                     loadBitmap(u, false);
                 }
             }
         }else{
-            map.clear();
+            if(oldCercle!=null){
+                map.clear();
+                oldCercle = null;
+            }
             synchronized (markers){
                 markers.clear();
             }
@@ -872,7 +875,9 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onConnected(Bundle bundle) {
         refresh();
-        homeActivity.startUpdateUI();
+        synchronized (markers) {
+            homeActivity.startUpdateUI();
+        }
     }
 
     public void refresh(){
@@ -894,7 +899,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         user.setLongitude(String.valueOf(myLocation.getLongitude()));
 
         synchronized (markers) {
-            Log.i("ANTHO_EXC", "LOAD BITMAP LOCAL");
             loadBitmap(user, true);
         }
 

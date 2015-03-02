@@ -325,7 +325,6 @@ public class HomeActivity extends FragmentActivity {
         @Override
         public void run() {
             updateCurrentCercle();
-            Log.i("ANTHO_MAP", "marker before update " + fragmentMap.getMarkers().size());
             fragmentMap.initCercle();
             mHandler.postDelayed(mStatusChecker, mInterval);
         }
