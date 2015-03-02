@@ -103,8 +103,6 @@ public class HomeActivity extends FragmentActivity {
 
     private SessionManager session;
 
-    private MenuItem itemPlacePoint;
-
     private CerclePojo currentCercle;
 
     public CerclePojo getCurrentCercle() {
@@ -468,30 +466,24 @@ public class HomeActivity extends FragmentActivity {
         setTitle(mDrawerArray[position]);
         switch (position){
             case VIEW_PROFIL_INDEX :
-                itemPlacePoint.setVisible(false);
                 switchFragment(fragmentViewProfil);
                 break;
 
             case CREATE_CERCLE_INDEX :
-                itemPlacePoint.setVisible(false);
                 switchFragment(getFragmentCreateCercle());
                 break;
 
             case FRIENDS :
-                itemPlacePoint.setVisible(false);
                 switchFragment(fragmentFriends);
                 break;
             case DEMANDS :
-                itemPlacePoint.setVisible(false);
                 switchFragment(fragmentFriendDemands);
                 break;
             case SETTINGS :
-                itemPlacePoint.setVisible(false);
                 switchFragment(fragmentSettings);
                 break;
 
             default :
-                itemPlacePoint.setVisible(false);
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                         .hide(getFragmentMap())

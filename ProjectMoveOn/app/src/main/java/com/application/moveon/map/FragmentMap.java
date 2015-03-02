@@ -563,6 +563,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     public void changeCircle(){
+        homeActivity.stopRepeatingTask();
         customProgress = new CustomProgressDialog(homeActivity);
         customProgress.show();
         refresh();
