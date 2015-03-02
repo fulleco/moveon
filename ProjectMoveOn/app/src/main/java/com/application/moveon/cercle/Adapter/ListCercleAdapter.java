@@ -84,7 +84,7 @@ public class ListCercleAdapter extends BaseAdapter {
                 cerclePojo.setAllInfo(session, context);
 
                 homeActivity.setCurrentCercle(cerclePojo);
-                fragmentInfoCercle.updateContent();
+                fragmentInfoCercle.updateView();
 
                 homeActivity.getFragmentMap().changeCircle();
 
