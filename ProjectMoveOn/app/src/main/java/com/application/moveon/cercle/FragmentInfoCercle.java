@@ -71,6 +71,7 @@ public class FragmentInfoCercle extends Fragment {
 
                 //STEP 2 : Mettre a jour l'UI
                 //se deroule dans la callback
+                homeActivity.getFragmentMap().refresh();
 
 
             }
