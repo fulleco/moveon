@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
+import com.application.moveon.cercle.Adapter.InfoCercleAdapter;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.DeleteParticipant_Callback;

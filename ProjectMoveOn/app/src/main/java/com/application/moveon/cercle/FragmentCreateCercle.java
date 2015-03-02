@@ -15,13 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.CreateCircle_Callback;
-import com.application.moveon.rest.callback.GetFriendsPicker_Callback;
+import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ToolBox;
 
@@ -40,6 +41,7 @@ public class FragmentCreateCercle extends Fragment{
 
     private double longitude;
     private double latitude;
+    private ArrayList<UserPojo> selected;
 
     private EditText nomCercle;
     private EditText editTimeDebut;
@@ -47,6 +49,7 @@ public class FragmentCreateCercle extends Fragment{
     private EditText editTimeFin;
     private EditText editDateFin;
     private Calendar c;
+    private FragmentPickFriends fpc;
 
     private ImageButton buttonLocalisation;
     private ImageButton buttonAjouterParticipants;
@@ -55,20 +58,36 @@ public class FragmentCreateCercle extends Fragment{
     private ProgressDialog progressDialog;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (FragmentActivity)getActivity();
+        session = new SessionManager(activity);
+        tools = new ToolBox(activity);
+        if(selected == null){
+            selected = new ArrayList<UserPojo>();
+        }
+
+        fpc = ((HomeActivity)activity).getFragmentPickFriends();
+        fpc.setSelected(selected);
+
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_cercle, container, false);
         RestClient r = new RestClient(true);
         final MoveOnService mos = r.getApiService();
 
+
+
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(true);
 
-        activity = (FragmentActivity)getActivity();
-        session = new SessionManager(activity);
+
         c = Calendar.getInstance();
-        tools = new ToolBox(activity);
 
         buttonLocalisation = (ImageButton)view.findViewById(R.id.buttonLocalisation);
         buttonLocalisation.setOnClickListener(new View.OnClickListener() {
@@ -95,20 +114,38 @@ public class FragmentCreateCercle extends Fragment{
 
 
         buttonAjouterParticipants = (ImageButton) view.findViewById(R.id.buttonParticipants);
-
-        mos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL), new GetFriendsPicker_Callback(getActivity(),buttonAjouterParticipants, this, getFragmentManager() ));
+        buttonAjouterParticipants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fpc.setSelected(selected);
+                ((HomeActivity)activity).switchFragment(fpc);
+            }
+        });
         buttonValider = (ImageButton) view.findViewById(R.id.buttonValider);
         buttonValider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                String susers = new String ();
-               if(users != null){
+                if(latitude == 0 && longitude == 0){
+                    Toast.makeText(getActivity(),"Veuillez indiquer une localisation", Toast.LENGTH_SHORT).show();
+                }
+               if(selected.size() > 0){
 
-                   for(String s : users){
-                       susers += s + " ";
+                   for(UserPojo s : selected){
+                       susers += s.getLogin() + " ";
                    }
                    susers = susers.substring(0, susers.length() -1);
+               }else{
+                   Toast.makeText(getActivity(),"Veuillez inviter au moins un ami", Toast.LENGTH_SHORT).show();
+                   return;
                }
+
+                if(nomCercle.getText().toString().equals("")){
+                    Toast.makeText(getActivity(),"Veuillez mettre un titre", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
                 Log.i("HUGO", editTimeDebut.getText().toString());
                 Log.i("ANTHO", "LATITUDE" + String.valueOf(latitude));
                 Log.i("ANTHO", "LONGITUDE" + String.valueOf(longitude));
@@ -145,5 +182,13 @@ public class FragmentCreateCercle extends Fragment{
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public ArrayList<UserPojo> getSelected() {
+        return selected;
+    }
+
+    public void setSelected(ArrayList<UserPojo> selected) {
+        this.selected = selected;
     }
 }

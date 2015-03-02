@@ -1,4 +1,4 @@
-package com.application.moveon.cercle;
+package com.application.moveon.cercle.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
+import com.application.moveon.cercle.FragmentInfoCercle;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.GetParticipants_Callback;

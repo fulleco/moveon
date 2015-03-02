@@ -35,6 +35,7 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.application.moveon.cercle.FragmentCreateCercle;
+import com.application.moveon.cercle.FragmentPickFriends;
 import com.application.moveon.friends.FragmentFriendDemands;
 import com.application.moveon.friends.FragmentFriends;
 import com.application.moveon.ftp.FtpDownloadTask;
@@ -82,6 +83,7 @@ public class HomeActivity extends FragmentActivity {
     private FragmentFriends fragmentFriends = new FragmentFriends();
     private FragmentFriendDemands fragmentFriendDemands = new FragmentFriendDemands();
     private FragmentSettings fragmentSettings = new FragmentSettings();
+    private FragmentPickFriends fragmentPickFriends = new FragmentPickFriends();
 
 
     private Fragment currentFragment;
@@ -233,12 +235,14 @@ public class HomeActivity extends FragmentActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         //// End Drawer declaration
 
-
+        fragmentPickFriends.setTargetFragment(fragmentCreateCercle,10);
 
         setFragmentMap(new FragmentMap());
         fragmentLocationChooser = new FragmentLocationChooser();
         fragmentLocationChooser.setTargetFragment(getFragmentCreateCercle(),1);
         fragmentManager = getFragmentManager();
+
+
 
         fragmentManager.beginTransaction()
                 .add(R.id.content_frame, getFragmentMap())
@@ -414,6 +418,10 @@ public class HomeActivity extends FragmentActivity {
 
     public void setFragmentCreateCercle(FragmentCreateCercle fragmentCreateCercle) {
         this.fragmentCreateCercle = fragmentCreateCercle;
+    }
+
+    public FragmentPickFriends getFragmentPickFriends() {
+        return fragmentPickFriends;
     }
 
 
