@@ -1,48 +1,36 @@
 package com.application.moveon.cercle;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
-import com.application.moveon.rest.MoveOnService;
-import com.application.moveon.rest.RestClient;
-import com.application.moveon.rest.callback.GetCercles_Callback;
-import com.application.moveon.rest.callback.GetParticipants_Callback;
+import com.application.moveon.model.MessagePojo;
 import com.application.moveon.rest.modele.CerclePojo;
-import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 /**
  * Created by Quentin Bitschene on 13/01/2015.
  */
-public class ListCercleAdapter extends BaseAdapter {
+public class ListMessagesAdapter extends BaseAdapter {
 
-    private ArrayList<CerclePojo> list = new ArrayList<CerclePojo>();
+    private ArrayList<MessagePojo> list = new ArrayList<MessagePojo>();
     private Context context;
-    private FragmentInfoCercle fragmentInfoCercle;
-    private SessionManager session;
-    private MoveOnDB moveOnDB;
 
 
-    public ListCercleAdapter(ArrayList<CerclePojo> list, Context context, FragmentInfoCercle fragmentInfoCercle) {
+
+    public ListMessagesAdapter(ArrayList<MessagePojo> list, Context context) {
         this.list = list;
         this.context = context;
-        this.fragmentInfoCercle = fragmentInfoCercle;
-        session = new SessionManager(fragmentInfoCercle.getActivity());
-        moveOnDB = new MoveOnDB(context, session.getUserDetails().get(SessionManager.KEY_EMAIL));
     }
 
     @Override
@@ -69,26 +57,18 @@ public class ListCercleAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.layout_cerclelist, null);
         }
 
-        final HomeActivity homeActivity = ((HomeActivity) fragmentInfoCercle.getActivity());
-        final CerclePojo cerclePojo = list.get(position);
+
+        final MessagePojo messagePojo = list.get(position);
         //Handle TextView and display string from your list
         TextView listItemText = (TextView) view.findViewById(R.id.label);
-        listItemText.setText(cerclePojo.getTitre());
+        listItemText.setText(messagePojo.getFirstname_sender() + " a dit : " + messagePojo.getContent());
 
         LinearLayout linear_cercle_list = (LinearLayout) view.findViewById(R.id.linear_cercle_list);
         linear_cercle_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                cerclePojo.setAllInfo(session, context);
 
-                homeActivity.setCurrentCercle(cerclePojo);
-                fragmentInfoCercle.updateContent();
-
-                homeActivity.getFragmentMap().changeCircle();
-
-                //FERMER le drawer
-                homeActivity.getFragmentMap().getmSlidingPanel().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
             }
         });

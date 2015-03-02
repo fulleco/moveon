@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.application.moveon.R;
 import com.application.moveon.cercle.FragmentInfoCercle;
 import com.application.moveon.cercle.FragmentListCercle;
+import com.application.moveon.cercle.FragmentListMessage;
 
 public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener {
 
@@ -23,10 +24,12 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
     private int mCurrentTab;
     private FragmentInfoCercle fragmentInfoCercle;
     private FragmentListCercle fragmentListCercle;
+    private FragmentListMessage fragmentListMessage;
 
 
     public static final String TAB_INFO_CERCLE = "Infos cercle";
     public static final String TAB_LIST_CERCLE = "Liste cercle";
+    public static final String TAB_LIST_MSG = "Messages";
 
     @Override
     public void onAttach(Activity activity) {
@@ -43,6 +46,7 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
 
         fragmentInfoCercle = new FragmentInfoCercle();
         fragmentListCercle = new FragmentListCercle();
+        fragmentListMessage = new FragmentListMessage();
 
         fragmentInfoCercle.setTargetFragment(fragmentListCercle,0);
         fragmentListCercle.setTargetFragment(fragmentInfoCercle,0);
@@ -74,6 +78,10 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
                 fm.beginTransaction()
                         .replace(placeholder, fragmentListCercle, tabId)
                         .commit();
+            if(tabId==TAB_LIST_MSG)
+                fm.beginTransaction()
+                        .replace(placeholder,fragmentListMessage,tabId)
+                        .commit();
         }
     }
 
@@ -81,6 +89,7 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
         mTabHost.setup(); // you must call this before adding your tabs!
         mTabHost.addTab(newTab(TAB_INFO_CERCLE, R.string.tab_info_cercle, R.id.tab_1));
         mTabHost.addTab(newTab(TAB_LIST_CERCLE, R.string.tab_list_cercle, R.id.tab_2));
+        mTabHost.addTab(newTab(TAB_LIST_MSG,R.string.tab_list_message,R.id.tab_3));
 
     }
 
@@ -110,6 +119,11 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
         if (TAB_LIST_CERCLE.equals(tabId)) {
             updateTab(tabId, R.id.tab_2);
             mCurrentTab = 1;
+            return;
+        }
+        if(TAB_LIST_MSG.equals(tabId)) {
+            updateTab(tabId,R.id.tab_3);
+            mCurrentTab = 2;
             return;
         }
     }

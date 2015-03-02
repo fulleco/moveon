@@ -57,7 +57,8 @@ public class DeleteParticipant_Callback implements Callback<Boolean> {
         moveOnDB.close();
 
         //STEP 2 : recharger la liste des cercles
-        fragmentListCercle.updateView(cerclePojos);
+        if(fragmentListCercle!=null)
+            fragmentListCercle.updateView(cerclePojos);
 
         //STEP 3 :
         //SET LE CURRENT CERCLE
@@ -68,7 +69,6 @@ public class DeleteParticipant_Callback implements Callback<Boolean> {
         //Mettre a jour le fragmentInfoCercle
         if(((FragmentInfoCercle)fragmentListCercle.getTargetFragment())!=null)
             ((FragmentInfoCercle)fragmentListCercle.getTargetFragment()).updateContent();
-
 
     }
 
