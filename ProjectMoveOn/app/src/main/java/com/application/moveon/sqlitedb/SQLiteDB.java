@@ -41,6 +41,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static final String COL_CONTENT="id_content";
     private static final String COL_DATESEND="date";
     private static final String COL_SEEN = "seen";
+    private static final String COL_ID_RECEIVER = "id_receiver";
 
     private static final String TABLE_FRIENDDEMANDS = "Friendship";
     private static final String COL_ID_DEMAND = "id_demand";
@@ -64,7 +65,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + TABLE_MESSAGES + " (" + COL_ID_MESSAGE + " INTEGER PRIMARY KEY, "
                                 +COL_ID_CERCLEM +" INTEGER , "+ COL_ID_SENDER + " INTEGER , " + COL_NAMESENDER + " TEXT , " + COL_CONTENT + " TEXT , "
-                                + COL_DATESEND + " TEXT , " + COL_SEEN + " INTEGER  );";
+                                + COL_DATESEND + " TEXT , " + COL_SEEN + " INTEGER, "+ COL_ID_RECEIVER +" INTEGER );";
 
     private static final String CREATE_TABLE_FRIENDDEMAND = "CREATE TABLE " + TABLE_FRIENDDEMANDS + " (" + COL_ID_DEMAND + " INTEGER PRIMARY KEY, "
                                 + COL_IDSENDER + " INTEGER , " + COL_MAILSENDER + " TEXT , " + COL_NAMESENDERD

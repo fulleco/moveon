@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MoveOnDB {
 
-    private static final int VERSION_BDD = 14;
+    private static final int VERSION_BDD = 15;
     private static final String NOM_BDD = "moveon_";
     private static final String TAG = "MOVEON DATABASE";
 
@@ -78,6 +78,8 @@ public class MoveOnDB {
     private static final int COL_DATESEND_NUMBER = 5;
     private static final String COL_SEEN = "seen";
     private static final int COL_SEEN_NUMBER = 6;
+    private static final String COL_ID_RECEIVER = "id_receiver";
+    private static final int COL_ID_RECEIVER_NUMBER = 7;
 
     private static final String TABLE_FRIENDDEMANDS = "Friendship";
     private static final String COL_ID_DEMAND = "id_demand";
@@ -191,6 +193,7 @@ public class MoveOnDB {
         mp.setId_sender(String.valueOf(c.getInt(COL_ID_SENDER_NUMBER)));
         mp.setId(String.valueOf(c.getInt(COL_ID_MESSAGE_NUMBER)));
         mp.setSeen(c.getInt(COL_SEEN_NUMBER));
+        mp.setId_receiver(String.valueOf(COL_ID_RECEIVER_NUMBER));
 
         return mp;
     }
@@ -208,6 +211,7 @@ public class MoveOnDB {
         values.put(COL_ID_MESSAGE, mp.getId());
         values.put(COL_SEEN, mp.getSeen());
         values.put(COL_ID_SENDER, mp.getId_sender());
+        values.put(COL_ID_RECEIVER, mp.getId_receiver());
 
         //on insère l'objet dans la BDD via le ContentValues
         return bdd.insert(TABLE_MESSAGES, null, values);
