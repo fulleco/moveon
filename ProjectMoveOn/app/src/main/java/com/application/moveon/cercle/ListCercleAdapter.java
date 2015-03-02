@@ -1,27 +1,19 @@
 package com.application.moveon.cercle;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
-import com.application.moveon.rest.MoveOnService;
-import com.application.moveon.rest.RestClient;
-import com.application.moveon.rest.callback.GetCercles_Callback;
-import com.application.moveon.rest.callback.GetParticipants_Callback;
 import com.application.moveon.rest.modele.CerclePojo;
-import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -83,7 +75,7 @@ public class ListCercleAdapter extends BaseAdapter {
                 cerclePojo.setAllInfo(session, context);
 
                 homeActivity.setCurrentCercle(cerclePojo);
-                fragmentInfoCercle.updateContent();
+                fragmentInfoCercle.updateView();
 
                 homeActivity.getFragmentMap().changeCircle();
 

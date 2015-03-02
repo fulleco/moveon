@@ -14,7 +14,6 @@ import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -58,7 +57,7 @@ public class DeleteParticipant_Callback implements Callback<Boolean> {
 
         //STEP 2 : recharger la liste des cercles
         if(fragmentListCercle!=null)
-            fragmentListCercle.updateView(cerclePojos);
+            fragmentListCercle.updateView();
 
         //STEP 3 :
         //SET LE CURRENT CERCLE
@@ -68,7 +67,7 @@ public class DeleteParticipant_Callback implements Callback<Boolean> {
         //STEP 4 :
         //Mettre a jour le fragmentInfoCercle
         if(((FragmentInfoCercle)fragmentListCercle.getTargetFragment())!=null)
-            ((FragmentInfoCercle)fragmentListCercle.getTargetFragment()).updateContent();
+            ((FragmentInfoCercle)fragmentListCercle.getTargetFragment()).updateView();
 
     }
 

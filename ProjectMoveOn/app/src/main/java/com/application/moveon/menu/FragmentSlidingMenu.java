@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,5 +125,18 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
             mCurrentTab = 2;
             return;
         }
+    }
+
+    public void updateContent() {
+
+        if(fragmentInfoCercle!=null)
+            fragmentInfoCercle.updateView();
+
+        if(fragmentListCercle!=null)
+            fragmentListCercle.updateView();
+
+        if(fragmentListMessage!=null)
+            fragmentListMessage.updateView();
+
     }
 }

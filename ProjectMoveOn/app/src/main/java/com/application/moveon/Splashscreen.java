@@ -45,7 +45,7 @@ public class Splashscreen extends Activity {
 
         mos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL),new UpdateFriends_Callback( new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL))));
         mos.getdemands(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateDemands_Callback( new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL))));
-        mos.getAllMessages(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateMessages_Callback( new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL))));
+        mos.getAllMessages(session.getUserDetails().get(SessionManager.KEY_ID), new UpdateMessages_Callback( new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL))));
         mosonchild.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateCirlces_Callback( new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL))));
     }
 }

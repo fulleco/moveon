@@ -35,20 +35,25 @@ public class FragmentListCercle extends Fragment {
 
         session = new SessionManager(getActivity());
 
+
+
+        updateView();
+
+        return view;
+    }
+
+    public void updateView() {
+
+        if(list_cercles==null)
+            return;
+
         moveOnDB = new MoveOnDB(this.getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
         moveOnDB.open();
 
         ArrayList<CerclePojo> cerclePojos = moveOnDB.getCircles();
         moveOnDB.close();
 
-        updateView(cerclePojos);
-
-        return view;
-    }
-
-    public void updateView(ArrayList<CerclePojo> cerclePojos) {
-
-        if(cerclePojos==null ||list_cercles==null)
+        if(cerclePojos==null)
             return;
 
         final ListCercleAdapter a = new ListCercleAdapter(cerclePojos, getActivity(), (FragmentInfoCercle)getTargetFragment());

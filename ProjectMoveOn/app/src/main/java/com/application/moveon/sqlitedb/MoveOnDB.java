@@ -316,7 +316,7 @@ public class MoveOnDB {
                 ret.add(cp);
                 cursor.moveToNext();
             }
-            Log.i(TAG, "My circles loaded successfully.");
+            Log.i("QUENTIN : ", "My circles loaded successfully.");
         }
 
         return ret;

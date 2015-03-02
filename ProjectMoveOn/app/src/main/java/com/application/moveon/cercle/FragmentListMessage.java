@@ -48,7 +48,8 @@ public class FragmentListMessage extends Fragment {
 
         moveOnDB = new MoveOnDB(this.getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
         moveOnDB.open();
-        ArrayList<MessagePojo> messagePojos = moveOnDB.getMessages(session.getUserDetails().get(SessionManager.KEY_ID));
+        ArrayList<MessagePojo> messagePojos = moveOnDB.getMessages(null);
+        //ArrayList<MessagePojo> messagePojos = moveOnDB.getMessages(session.getUserDetails().get(SessionManager.KEY_ID));
         moveOnDB.close();
 
         if(messagePojos==null) {
@@ -57,7 +58,6 @@ public class FragmentListMessage extends Fragment {
         }
 
         final ListMessagesAdapter a = new ListMessagesAdapter(messagePojos, getActivity());
-
         list_messages.setAdapter(a);
 
     }
