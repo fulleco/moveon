@@ -56,6 +56,7 @@ public class UpdaterService extends Service {
         MoveOnService mosonchild;
         mosonchild = new RestClient(false).getApiService();
         mosonchild.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new GetCirclesService_Callback(db));
+        mosonchild.getAllMessages(session.getUserDetails().get(SessionManager.KEY_ID), new GetMessage_Callback(getBaseContext()));
     }
 
     @Override

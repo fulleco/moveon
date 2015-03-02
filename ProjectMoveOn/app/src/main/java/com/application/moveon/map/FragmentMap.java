@@ -586,10 +586,11 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         }else{
             return;
         }
-        if (customProgress.isShowing()) {
-            customProgress.dismiss();
-            customProgress = null;
-        }
+        if (customProgress!=null)
+            if(customProgress.isShowing()) {
+                customProgress.dismiss();
+                customProgress = null;
+            }
     }
 
     public Marker removeMarker(UserPojo u, LatLng lastLngUser){
