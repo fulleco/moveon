@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.custom.CustomProgressDialog;
+import com.application.moveon.menu.FragmentSlidingMenu;
 import com.application.moveon.menu.v1.RadialMenuItem;
 import com.application.moveon.menu.v1.RadialMenuWidget;
 import com.application.moveon.rest.MoveOnService;
@@ -53,7 +54,9 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -108,8 +111,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     private HomeActivity homeActivity;
 
-    private boolean placePoint = false;
-
     private Marker selectedMarker = null;
     private Marker myMarker = null;
     private String selectedLogin = null;
@@ -130,7 +131,9 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     private boolean updatingCircles = false;
 
-    private CustomProgressDialog customProgress;
+    private CustomProgressDialog customProgress = null;
+
+    private FragmentSlidingMenu fragmentSlidingMenu;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -150,8 +153,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         homeActivity = (HomeActivity) getActivity();
         activity = (FragmentActivity) getActivity();
-
-        customProgress = new CustomProgressDialog(homeActivity);
 
         targetList = new ArrayList<Target>();
 
@@ -174,6 +175,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         supportMapFragment = (MapFragment) activity.getFragmentManager()
                 .findFragmentById(R.id.map);
 
+        fragmentSlidingMenu = (FragmentSlidingMenu) activity.getSupportFragmentManager().findFragmentById(R.id.slidingContent);
+
         mSlidingPanel = (SlidingUpPanelLayout) view
                 .findViewById(R.id.sliding_layout);
         mSlidingPanel.setAnchorPoint(0.45f);
@@ -185,8 +188,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        Log.i("ANTHO", "VIEW CREATED");
 
         // Recuperer la map
         map = supportMapFragment.getMap();
@@ -218,11 +219,11 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         if(idSender.equals(idReceiver)){
             mainmos.addMessages(idCircle, idSender,
-                    receivers.trim(), content, date,
+                    receivers.trim(), content, new SimpleDateFormat("dd-MM-yyyy").format(new Date()),
                     0, new AddMessages_Callback(activity, progressDialog));
         }else {
             mainmos.addMessage(idCircle, idSender,
-                    idReceiver, content, date,
+                    idReceiver, content, new SimpleDateFormat("dd-MM-yyyy").format(new Date()),
                     0, new AddMessage_Callback(activity, progressDialog));
         }
     }
@@ -553,7 +554,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(homeActivity);
         if(resp == ConnectionResult.SUCCESS){
-            Log.i("ANTHO_EXC", "connect from init map");
             locationclient = new LocationClient(homeActivity,this,null);
             locationclient.connect();
         }
@@ -563,6 +563,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     public void changeCircle(){
+        homeActivity.stopRepeatingTask();
         customProgress = new CustomProgressDialog(homeActivity);
         customProgress.show();
         refresh();
@@ -575,25 +576,22 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     public void initCercle() {
 
-        CerclePojo cercle = homeActivity.getCurrentCercle();
-        if (cercle != null) {
-
+        CerclePojo currentCercle = homeActivity.getCurrentCercle();
+        if (currentCercle != null) {
             //HashMap<Marker, UserPojo> newMarkers = new HashMap<Marker, UserPojo>();
-            for (UserPojo u : cercle.getParticipants()) {
+            for (UserPojo u : currentCercle.getParticipants()) {
                 if (!(u.getLogin()).equals(session.getUserDetails().get(SessionManager.KEY_EMAIL))) {
                     loadBitmap(u, false);
                 }
             }
         }else{
-            map.clear();
-            synchronized (markers){
-                markers.clear();
-            }
+            return;
         }
-        if(customProgress!=null){}
-            if(customProgress.isShowing()){
+        if (customProgress!=null)
+            if(customProgress.isShowing()) {
                 customProgress.dismiss();
-        }
+                customProgress = null;
+            }
     }
 
     public Marker removeMarker(UserPojo u, LatLng lastLngUser){
@@ -708,14 +706,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             //b_rounded.recycle();
             //b_rounded = null;
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==(R.id.action_point)){
-            placePoint = !placePoint;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -872,15 +862,16 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onConnected(Bundle bundle) {
         refresh();
-        homeActivity.startUpdateUI();
     }
 
     public void refresh(){
+        homeActivity.stopRepeatingTask();
+        synchronized (markers) {
+
         if(myMarker!=null)
             map.clear();
         myMarker = null;
 
-        synchronized (markers) {
             markers.clear();
         }
 
@@ -894,25 +885,12 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         user.setLongitude(String.valueOf(myLocation.getLongitude()));
 
         synchronized (markers) {
-            Log.i("ANTHO_EXC", "LOAD BITMAP LOCAL");
             loadBitmap(user, true);
         }
 
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
-            @Override
-            public void onMapClick(LatLng point) {
-                if(placePoint) {
-                    //lstLatLngs.add(point);
-                    MarkerOptions options = new MarkerOptions();
-                    options.position(point);
-                    options.title("Point de rencontre");
-                    Marker m = map.addMarker(options);
-                }
-            }
-        });
         //map.setOnMyLocationChangeListener();
         map.setOnMarkerClickListener(this);
+        homeActivity.startUpdateUI();
     }
 
     @Override
@@ -965,5 +943,9 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     public SlidingUpPanelLayout getmSlidingPanel() {
         return mSlidingPanel;
+    }
+
+    public void updateSlidingUpDrawer() {
+        fragmentSlidingMenu.updateContent();
     }
 }

@@ -13,10 +13,4 @@
         android:orderInCategory="200"
         android:title="Se déconnecter"/>
 
-    <item android:id="@+id/action_point"
-        android:icon="@drawable/custom_marker"
-        android:title="@string/action_point"
-        android:visible="true"
-        android:showAsAction="ifRoom" />
-
 </menu>

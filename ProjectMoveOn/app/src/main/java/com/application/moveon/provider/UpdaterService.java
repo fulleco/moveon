@@ -18,6 +18,8 @@ import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.GetCirclesService_Callback;
 import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.rest.callback.UpdateCirlces_Callback;
+import com.application.moveon.rest.callback.UpdateMessagesService_Callback;
+import com.application.moveon.rest.callback.UpdateMessages_Callback;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.sqlitedb.MoveOnDB;
 import com.google.android.gms.maps.model.LatLng;
@@ -56,6 +58,7 @@ public class UpdaterService extends Service {
         MoveOnService mosonchild;
         mosonchild = new RestClient(false).getApiService();
         mosonchild.getCercles(session.getUserDetails().get(SessionManager.KEY_EMAIL), new GetCirclesService_Callback(db));
+        mosonchild.getAllMessages(session.getUserDetails().get(SessionManager.KEY_ID), new UpdateMessagesService_Callback( new MoveOnDB(getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL))));
     }
 
     @Override

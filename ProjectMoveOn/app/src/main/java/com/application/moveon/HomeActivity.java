@@ -105,8 +105,6 @@ public class HomeActivity extends FragmentActivity {
 
     private SessionManager session;
 
-    private MenuItem itemPlacePoint;
-
     private CerclePojo currentCercle;
 
     public CerclePojo getCurrentCercle() {
@@ -329,19 +327,26 @@ public class HomeActivity extends FragmentActivity {
         @Override
         public void run() {
             updateCurrentCercle();
-            Log.i("ANTHO_MAP", "marker before update " + fragmentMap.getMarkers().size());
+            fragmentMap.updateSlidingUpDrawer();
             fragmentMap.initCercle();
             mHandler.postDelayed(mStatusChecker, mInterval);
         }
     };
 
+    private boolean updateActivated = false;
     public void startRepeatingTask() {
-        mStatusChecker.run();
+        if(!updateActivated){
+            updateActivated = true;
+            mStatusChecker.run();
+        }
     }
 
     public void stopRepeatingTask() {
-        mHandler.removeCallbacks(mStatusChecker);
-        amUI.cancel(piUI);
+        if(updateActivated){
+            mHandler.removeCallbacks(mStatusChecker);
+            amUI.cancel(piUI);
+            updateActivated = false;
+        }
     }
 
     @Override
@@ -365,7 +370,6 @@ public class HomeActivity extends FragmentActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        itemPlacePoint = menu.findItem(R.id.action_point);
         //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -470,35 +474,28 @@ public class HomeActivity extends FragmentActivity {
         setTitle(mDrawerArray[position]);
         switch (position){
             case MAP_INDEX :
-                itemPlacePoint.setVisible(true);
                 switchFragment(getFragmentMap());
                 break;
 
             case VIEW_PROFIL_INDEX :
-                itemPlacePoint.setVisible(false);
                 switchFragment(fragmentViewProfil);
                 break;
 
             case CREATE_CERCLE_INDEX :
-                itemPlacePoint.setVisible(false);
                 switchFragment(getFragmentCreateCercle());
                 break;
 
             case FRIENDS :
-                itemPlacePoint.setVisible(false);
                 switchFragment(fragmentFriends);
                 break;
             case DEMANDS :
-                itemPlacePoint.setVisible(false);
                 switchFragment(fragmentFriendDemands);
                 break;
             case SETTINGS :
-                itemPlacePoint.setVisible(false);
                 switchFragment(fragmentSettings);
                 break;
 
             default :
-                itemPlacePoint.setVisible(false);
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                         .hide(getFragmentMap())
