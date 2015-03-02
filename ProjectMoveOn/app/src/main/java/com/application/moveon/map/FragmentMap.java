@@ -174,10 +174,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         supportMapFragment = (MapFragment) activity.getFragmentManager()
                 .findFragmentById(R.id.map);
 
-        // Recuperer la map
-        map = supportMapFragment.getMap();
-        fMap = view.findViewById(R.id.map);
-
         mSlidingPanel = (SlidingUpPanelLayout) view
                 .findViewById(R.id.sliding_layout);
         mSlidingPanel.setAnchorPoint(0.45f);
@@ -189,6 +185,13 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Log.i("ANTHO", "VIEW CREATED");
+
+        // Recuperer la map
+        map = supportMapFragment.getMap();
+        fMap = view.findViewById(R.id.map);
+
         fMap.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
         {
             @Override
@@ -550,6 +553,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(homeActivity);
         if(resp == ConnectionResult.SUCCESS){
+            Log.i("ANTHO_EXC", "connect from init map");
             locationclient = new LocationClient(homeActivity,this,null);
             locationclient.connect();
         }
@@ -559,6 +563,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     public void changeCircle(){
+        customProgress = new CustomProgressDialog(homeActivity);
         customProgress.show();
         refresh();
     }
@@ -576,7 +581,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             //HashMap<Marker, UserPojo> newMarkers = new HashMap<Marker, UserPojo>();
             for (UserPojo u : cercle.getParticipants()) {
                 if (!(u.getLogin()).equals(session.getUserDetails().get(SessionManager.KEY_EMAIL))) {
-                    loadBitmap(u, false, null);
+                    loadBitmap(u, false);
                 }
             }
         }else{
@@ -589,7 +594,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             if(customProgress.isShowing()){
                 customProgress.dismiss();
         }
-
     }
 
     public Marker removeMarker(UserPojo u, LatLng lastLngUser){
@@ -606,7 +610,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         return null;
     }
 
-    public void loadBitmap(final UserPojo u, final boolean isCurrentSession, HashMap<Marker, UserPojo> newMarkers){
+    public void loadBitmap(final UserPojo u, final boolean isCurrentSession){
 
         MarkerOptions markerOptions = new MarkerOptions();
 
@@ -648,6 +652,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             Target target = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    Log.i("ANTHO_EXC", "bitmap loaded" + u.getLogin());
                     addMarker(this, u, bitmap, m);
                 }
 
@@ -671,33 +676,38 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     public void addMarker(Target target, UserPojo u, Bitmap b, Marker m){
 
         if(!isAdded()) {
+            Log.i("ANTHO_EXC", "!Added");
             return;
         }
 
-        //LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
-        //        Double.parseDouble(u.getLongitude()));
+        synchronized (markers) {
 
-        Bitmap b_rounded;
-        Bitmap b_resized;
+            //LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
+            //        Double.parseDouble(u.getLongitude()));
 
-        if (b == null) {
-            b = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.profile_test);
+            Bitmap b_rounded;
+            Bitmap b_resized;
+
+            if (b == null) {
+                b = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.profile_test);
+            }
+
+            b_rounded = ImageHelper.getRoundedCornerBitmap(b, 1000, 0);
+            b_resized = Bitmap.createScaledBitmap(b_rounded, 60, 60, false);
+
+            View marker_layout = ((LayoutInflater) homeActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
+            ImageView profilePicture = (ImageView) marker_layout.findViewById(R.id.profile_picture);
+            profilePicture.setImageBitmap(b_resized);
+
+            Log.i("ANTHO_EXC", "ADD MARKER " + m.getTitle());
+            m.setIcon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
+            m.setVisible(true);
+            targetList.remove(target);
+
+            //b_rounded.recycle();
+            //b_rounded = null;
         }
-
-        b_rounded = ImageHelper.getRoundedCornerBitmap(b, 1000, 0);
-        b_resized = Bitmap.createScaledBitmap(b_rounded, 60, 60, false);
-
-        View marker_layout = ((LayoutInflater) homeActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
-        ImageView profilePicture = (ImageView) marker_layout.findViewById(R.id.profile_picture);
-        profilePicture.setImageBitmap(b_resized);
-
-        m.setIcon(BitmapDescriptorFactory.fromBitmap(ImageHelper.createDrawableFromView(activity, marker_layout)));
-        m.setVisible(true);
-        targetList.remove(target);
-
-        b_rounded.recycle();
-        b_rounded = null;
     }
 
     @Override
@@ -808,10 +818,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     public void onResume(){
         super.onResume();
 
-        //if(mapLoaded)
-        // for the system's orientation sensor registered listeners
-
-
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) homeActivity.getSystemService(homeActivity.SENSOR_SERVICE);
 
@@ -824,8 +830,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         shaderBmp = null;
         shaderOuterBmp.recycle();
         shaderOuterBmp = null;
-        map.clear();
-        map = null;
+        //map.clear();
+        //map = null;
         if(locationclient!=null)
             locationclient.disconnect();
         super.onDestroy();
@@ -833,9 +839,16 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     @Override
     public void onPause() {
-        super.onPause();
+        homeActivity.stopRepeatingTask();
         // to stop the listener and save battery
         mSensorManager.unregisterListener(this);
+        map.clear();
+        synchronized (markers){
+            markers.clear();
+            myMarker = null;
+        }
+
+        super.onPause();
     }
 
     @Override
@@ -858,9 +871,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     @Override
     public void onConnected(Bundle bundle) {
-
         refresh();
-
         homeActivity.startUpdateUI();
     }
 
@@ -868,7 +879,10 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         if(myMarker!=null)
             map.clear();
         myMarker = null;
-        markers.clear();
+
+        synchronized (markers) {
+            markers.clear();
+        }
 
         locationrequest = LocationRequest.create();
         locationrequest.setInterval(100);
@@ -880,7 +894,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         user.setLongitude(String.valueOf(myLocation.getLongitude()));
 
         synchronized (markers) {
-            loadBitmap(user, true, null);
+            Log.i("ANTHO_EXC", "LOAD BITMAP LOCAL");
+            loadBitmap(user, true);
         }
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -924,7 +939,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     @Override
     public void onDisconnected() {
-
+        Log.i("ANTHO_EXC", "disconnected");
     }
 
     @Override

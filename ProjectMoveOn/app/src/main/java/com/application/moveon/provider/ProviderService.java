@@ -61,7 +61,11 @@ public class ProviderService extends Service implements GooglePlayServicesClient
         mWakeLock.acquire();
 
         locationclient = new LocationClient(context,this,null);
-        locationclient.connect();
+        if(!locationclient.isConnected()){
+            locationclient.connect();
+        }else{
+            refreshPosition();
+        }
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         if (cm.getActiveNetworkInfo() == null) {
@@ -101,11 +105,17 @@ public class ProviderService extends Service implements GooglePlayServicesClient
 
     @Override
     public void onConnected(Bundle bundle) {
-        Location l =locationclient.getLastLocation();
+        if(locationclient.isConnected()) {
+            refreshPosition();
+        }
+    }
+
+    public void refreshPosition(){
+        Location l = locationclient.getLastLocation();
         currentPosition = new LatLng(l.getLatitude(), l.getLongitude());
         locationclient.disconnect();
 
-        if((idUser!=null)||(idUser!="")) {
+        if ((idUser != null) || (idUser != "")) {
             //mainmos.getmessages(idUser, new GetMessage_Callback(this));
             mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
         }

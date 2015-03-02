@@ -30,6 +30,9 @@ import com.application.moveon.tools.ToolBox;
 
 import junit.runner.Version;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -220,8 +223,28 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             }
             Bitmap b_rounded = ImageHelper.getRoundedCornerBitmap(b_gallery, 15, 0);
 
+            //create a file to write bitmap data
+            File f = new File(this.getCacheDir(), "profile.png");
+            try {
+                f.createNewFile();
+
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            b_rounded.compress(Bitmap.CompressFormat.JPEG, 90 /*ignored for PNG*/, bos);
+            byte[] bitmapdata = bos.toByteArray();
+
+            //write the bytes in file
+            FileOutputStream fos = new FileOutputStream(f);
+            fos.write(bitmapdata);
+
+            //write the bytes in file
+            picturePath = f.getAbsolutePath();
+
             profilePicture.setBackground(null);
             profilePicture.setImageBitmap(b_rounded);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }

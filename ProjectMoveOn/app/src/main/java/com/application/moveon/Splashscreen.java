@@ -30,9 +30,6 @@ public class Splashscreen extends Activity {
 
         session = new SessionManager(this);
 
-
-
-
         Flags.initialize(this);
         mos = new RestClient(true).getApiService();
         mosonchild = new RestClient(false).getApiService();
