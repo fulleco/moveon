@@ -6,6 +6,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:scrollbars="vertical"
     android:layout_gravity="center_horizontal"
     android:background="@drawable/inscription_background"
     tools:context="com.application.moveon.HomeActivity">
@@ -16,19 +17,25 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
         android:adjustViewBounds="true"
         android:visibility="visible"
         android:background="@drawable/editer_header"
         android:scaleType="fitCenter" />
 
-    <LinearLayout
+
+    <RelativeLayout
         android:id="@+id/linear_photo"
         android:layout_below="@+id/logo"
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_marginBottom="18dp"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/logo"
+        android:layout_alignStart="@+id/logo"
+        android:layout_alignRight="@+id/logo"
+        android:layout_alignEnd="@+id/logo">
 
 
         <ImageView
@@ -36,8 +43,10 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:paddingRight="5dp"
-            android:background="@drawable/inscription_question_mark"
-            android:layout_gravity="bottom"/>
+            android:background="@drawable/profil_default"
+            android:layout_gravity="bottom"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
 
         <Button
             android:id="@+id/buttonParcourir"
@@ -48,63 +57,58 @@
             android:scaleType="centerInside"
             android:textColor="#FFF"
             android:textStyle="bold"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/imageProfil"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <EditText
         android:id="@+id/editFirstName"
         android:layout_below="@+id/linear_photo"
         android:layout_width="245dp"
-        android:layout_centerHorizontal="true"
         android:layout_height="42dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="20dp"
         android:padding="5dp"
         android:background="@drawable/rounded_edit"
         android:hint="Prénom"
         android:inputType="text"
         android:textColor="#000"
         android:ellipsize="start"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_alignRight="@+id/logo"
+        android:layout_alignEnd="@+id/logo"
+        android:layout_alignLeft="@+id/logo"
+        android:layout_alignStart="@+id/logo" />
 
     <EditText
         android:id="@+id/editLastName"
         android:layout_width="245dp"
-        android:layout_centerHorizontal="true"
         android:layout_height="42dp"
         android:layout_below="@+id/editFirstName"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="20dp"
         android:padding="5dp"
         android:background="@drawable/rounded_edit"
         android:hint="Nom"
         android:inputType="text"
         android:textColor="#000"
         android:ellipsize="start"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_alignRight="@+id/logo"
+        android:layout_alignEnd="@+id/logo"
+        android:layout_alignLeft="@+id/logo"
+        android:layout_alignStart="@+id/logo"/>
 
-    <EditText
-        android:id="@+id/editEmail"
-        android:layout_width="245dp"
-        android:layout_centerHorizontal="true"
-        android:layout_height="42dp"
-        android:layout_below="@+id/editLastName"
-        android:layout_marginBottom="25dp"
-        android:padding="5dp"
-        android:background="@drawable/rounded_edit"
-        android:hint="Email"
-        android:inputType="text"
-        android:textColor="#000"
-        android:ellipsize="start"
-        android:textSize="14sp" />
+
 
     <EditText
         android:id="@+id/editPassword1"
         android:layout_width="245dp"
         android:layout_height="42dp"
-        android:layout_below="@+id/editEmail"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
+        android:layout_below="@+id/editLastName"
+        android:layout_marginBottom="20dp"
         android:maxLength="12"
         android:padding="5dp"
         android:background="@drawable/rounded_edit"
@@ -112,31 +116,38 @@
         android:inputType="textPassword"
         android:textColor="#000"
         android:ellipsize="start"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_alignLeft="@+id/editPassword2"
+        android:layout_alignStart="@+id/editPassword2"
+        android:layout_alignRight="@+id/editPassword2"
+        android:layout_alignEnd="@+id/editPassword2" />
 
     <EditText
         android:id="@+id/editPassword2"
         android:layout_width="245dp"
         android:layout_height="42dp"
         android:layout_below="@+id/editPassword1"
-        android:layout_alignLeft="@+id/editPassword1"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="20dp"
         android:padding="5dp"
         android:background="@drawable/rounded_edit"
         android:hint="Confirmer le mot de passe"
         android:inputType="textPassword"
         android:textColor="#000"
         android:ellipsize="start"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_alignRight="@+id/buttonModifier"
+        android:layout_alignEnd="@+id/buttonModifier"
+        android:layout_alignLeft="@+id/buttonModifier"
+        android:layout_alignStart="@+id/buttonModifier" />
 
     <Button
         android:id="@+id/buttonModifier"
+        android:layout_below="@+id/editPassword2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:adjustViewBounds="true"
-        android:layout_alignParentBottom="true"
         android:background="@drawable/button_modifier_selector"
         android:scaleType="centerInside"
         android:textColor="#FFF"

@@ -17,7 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
+import com.application.moveon.custom.CustomProgressDialog;
 import com.application.moveon.model.User;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
@@ -84,13 +86,16 @@ public class FragmentEditProfil extends Fragment {
               public void onClick(View view) {
                   ArrayList<String> emptyFields = validFields();
                   String message = "";
-                  if (emptyFields.size() == 0) {
+                  CustomProgressDialog cpd = new CustomProgressDialog(getActivity());
 
+                  if (emptyFields.size() == 0) {
+                      cpd.show();
                       // mettre a jour la BDD avec la valeur dans les champs
                       User newUser = new User(session.getUserDetails().get(SessionManager.KEY_ID), session.getUserDetails().get(SessionManager.KEY_EMAIL),
                               session.getUserDetails().get(SessionManager.KEY_PASSWORD), editFirstName.getText().toString(), editLastName.getText().toString());
-                      mos.updateuser(newUser.getFirstName(),newUser.getLastName(),newUser.getPassword(), newUser.getLogin(), newUser.getId(), new EditUser_Callback(picturePath,newUser,tools));
+                      mos.updateuser(newUser.getFirstName(),newUser.getLastName(),newUser.getPassword(), newUser.getLogin(), newUser.getId(), new EditUser_Callback(picturePath,newUser,tools, (HomeActivity)getActivity(),cpd));
                   } else {
+
                       for (String field : emptyFields)
                           message += "-" + field + "\n";
                       tools.alertUser("Champs manquants", message);
@@ -107,8 +112,6 @@ public class FragmentEditProfil extends Fragment {
         editLastName = (EditText) view.findViewById(R.id.editLastName);
         editLastName.setText(session.getUserDetails().get(SessionManager.KEY_LASTNAME));
 
-        editEmail = (EditText) view.findViewById(R.id.editEmail);
-        editEmail.setText(session.getUserDetails().get(SessionManager.KEY_EMAIL));
 
         return view;
     }
