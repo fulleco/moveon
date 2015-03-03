@@ -220,7 +220,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         if(idSender.equals(idReceiver)){
             mainmos.addMessages(idCircle, idSender,
-                    receivers.trim(), content, new SimpleDateFormat("dd-MM-yyyy").format(new Date()),
+                    receivers.trim(), content, new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss").format(new Date()),
                     0, new AddMessages_Callback(activity, progressDialog));
         }else {
             mainmos.addMessage(idCircle, idSender,
