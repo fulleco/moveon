@@ -123,6 +123,9 @@ public class HomeActivity extends FragmentActivity {
         this.currentFragment = currentFragment;
     }
 
+    public FragmentViewProfil getFragmentViewProfil(){
+        return fragmentViewProfil;
+    }
     public FragmentFriends getFragmentFriends() {
         return fragmentFriends;
     }

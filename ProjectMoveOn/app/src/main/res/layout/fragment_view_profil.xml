@@ -2,31 +2,141 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/profil_background"
+    android:background="@drawable/inscription_background"
     tools:context="com.application.moveon.HomeActivity">
 
     <ImageView
         android:id="@+id/imageProfil"
         android:layout_width="90dp"
         android:layout_height="90dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/inscription_question_mark"
         android:layout_centerHorizontal="true"/>
 
+    <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/nom_title"
+    android:layout_below="@+id/imageProfil"
+    android:id="@+id/name_title"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="5dp"/>
+
     <TextView
         android:id="@+id/textViewName"
-        android:layout_below="@+id/imageProfil"
+        android:layout_below="@+id/name_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textSize="30dp"
-        android:text="default value"/>
+        android:textSize="30sp"
+        android:text="default value"
+        android:layout_marginBottom="20dp"
+        android:layout_alignLeft="@+id/name_title"
+        android:layout_alignStart="@+id/name_title"
+        android:layout_alignRight="@+id/name_title"
+        android:layout_alignEnd="@+id/name_title" />
 
-    <Button
-        android:id="@+id/buttonModifier"
-        android:layout_below="@+id/textViewName"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_editer_profil_selector"
-        android:layout_centerHorizontal="true" />
+        android:src="@drawable/email_title"
+        android:layout_below="@+id/textViewName"
+        android:id="@+id/mail_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/textViewMail"
+        android:layout_below="@+id/mail_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="default value"
+        android:layout_marginBottom="25dp"
+        android:layout_alignLeft="@+id/name_title"
+        android:layout_alignStart="@+id/name_title"
+        android:layout_alignRight="@+id/name_title"
+        android:layout_alignEnd="@+id/name_title" />
+
+    <ImageButton
+        android:id="@+id/buttonModifier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:background="@drawable/editericon"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/stats_title"
+        android:layout_below="@+id/textViewMail"
+        android:layout_marginBottom="15dp"
+        android:id="@+id/title_stats"
+        android:layout_alignLeft="@+id/name_title"
+        android:layout_alignStart="@+id/name_title"
+        android:layout_alignRight="@+id/name_title"
+        android:layout_alignEnd="@+id/name_title"/>
+
+    <LinearLayout
+        android:layout_below="@+id/title_stats"
+        android:id="@+id/info_cercles"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/name_title"
+        android:layout_alignStart="@+id/name_title"
+        android:layout_alignRight="@+id/name_title"
+        android:layout_alignEnd="@+id/name_title">
+
+        <ImageView
+            android:src="@drawable/cercle_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textSize="30sp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:gravity="center_vertical"
+            android:id="@+id/text_nombre_cercle"/>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_below="@+id/info_cercles"
+        android:id="@+id/info_amis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/name_title"
+        android:layout_alignStart="@+id/name_title"
+        android:layout_alignRight="@+id/name_title"
+        android:layout_alignEnd="@+id/name_title">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/friends_icon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:textSize="30sp"
+            android:gravity="center_vertical"
+            android:id="@+id/text_nombre_amis"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

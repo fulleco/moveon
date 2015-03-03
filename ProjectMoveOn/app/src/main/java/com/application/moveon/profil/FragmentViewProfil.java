@@ -12,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.ToolBox;
 import com.squareup.picasso.Picasso;
 
@@ -29,7 +31,7 @@ public class FragmentViewProfil extends Fragment {
 
     private TextView name;
 
-    private Button buttonEditer;
+    private ImageButton buttonEditer;
 
     SessionManager session;
 
@@ -50,14 +52,26 @@ public class FragmentViewProfil extends Fragment {
         session = new SessionManager(activity);
         tools = new ToolBox(activity);
 
+        MoveOnDB db = new MoveOnDB(activity.getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
+        db.open();
+
         profilePicture = (ImageView)view.findViewById(R.id.imageProfil);
-        buttonEditer = (Button) view.findViewById(R.id.buttonModifier);
+        buttonEditer = (ImageButton) view.findViewById(R.id.buttonModifier);
 
         HomeActivity h = (HomeActivity)getActivity();
 
         // Remplir les champs par leur valeur actuelle
         name = (TextView) view.findViewById(R.id.textViewName);
         name.setText(session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " " + session.getUserDetails().get(SessionManager.KEY_LASTNAME));
+
+        TextView mail = (TextView) view.findViewById(R.id.textViewMail);
+        mail.setText(session.getUserDetails().get(SessionManager.KEY_EMAIL));
+
+        TextView nombrecercle = (TextView) view.findViewById(R.id.text_nombre_cercle);
+        nombrecercle.setText("Cercles : " + db.getCircles().size());
+        TextView nombreamis = (TextView) view.findViewById(R.id.text_nombre_amis);
+        nombreamis.setText("Amis : " + db.getFriends().size());
+
 
         //TODO
         //profilPicture = get picture here
