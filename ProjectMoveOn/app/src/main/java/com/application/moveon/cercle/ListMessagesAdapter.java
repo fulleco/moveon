@@ -1,10 +1,12 @@
 package com.application.moveon.cercle;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -61,7 +63,14 @@ public class ListMessagesAdapter extends BaseAdapter {
         final MessagePojo messagePojo = list.get(position);
         //Handle TextView and display string from your list
         TextView listItemText = (TextView) view.findViewById(R.id.label);
-        listItemText.setText(messagePojo.getFirstname_sender() + " a dit : " + messagePojo.getContent());
+        listItemText.setText(messagePojo.getFirstname_sender() + ": " + messagePojo.getContent());
+
+        ImageView icon = (ImageView) view.findViewById(R.id.icon);
+        int id_image = messagePojo.getId_image();
+        if(id_image!=-1) {
+            Drawable d = context.getResources().getDrawable(id_image);
+            icon.setImageDrawable(d);
+        }
 
         LinearLayout linear_cercle_list = (LinearLayout) view.findViewById(R.id.linear_cercle_list);
         linear_cercle_list.setOnClickListener(new View.OnClickListener() {
