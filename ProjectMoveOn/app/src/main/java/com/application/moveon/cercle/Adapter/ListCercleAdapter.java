@@ -88,7 +88,6 @@ public class ListCercleAdapter extends BaseAdapter {
 
                 homeActivity.getFragmentMap().changeCircle();
 
-                //TODO
                 //FERMER le drawer
                 homeActivity.getFragmentMap().getmSlidingPanel().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 

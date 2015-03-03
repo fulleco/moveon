@@ -42,7 +42,8 @@
         android:id="@+id/bt_quitter_cercle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quitter cercle"/>
+        android:text="Quitter cercle"
+        android:visibility="gone"/>
 
     <TextView
         android:text="Participants : "
