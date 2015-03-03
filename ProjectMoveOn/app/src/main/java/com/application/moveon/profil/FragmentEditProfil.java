@@ -28,6 +28,10 @@ import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -124,7 +128,7 @@ public class FragmentEditProfil extends Fragment {
                 && null != data) {
             Uri selectedImage = data.getData();
 
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            /*String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
             Cursor cursor = getActivity().getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
@@ -137,14 +141,40 @@ public class FragmentEditProfil extends Fragment {
             cursor.close();
 
             BitmapFactory.Options options=new BitmapFactory.Options();
-            options.outHeight = 8;
+            options.outHeight = 8;*/
             //mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
 
-            Bitmap b_gallery = tools.decodeSampledBitmapFromResource(picturePath, 60, 60);
+            //Bitmap b_gallery = tools.decodeSampledBitmapFromResource(picturePath, 60, 60);
+            Bitmap b_gallery = null;
+            try {
+                b_gallery = ImageHelper.getCorrectlyOrientedImage(getActivity(), selectedImage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Bitmap b_rounded = ImageHelper.getRoundedCornerBitmap(b_gallery, 15, 0);
 
-            profilePicture.setBackground(null);
-            profilePicture.setImageBitmap(b_rounded);
+            //create a file to write bitmap data
+            File f = new File(getActivity().getCacheDir(), "profile.png");
+            try {
+                f.createNewFile();
+
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                b_rounded.compress(Bitmap.CompressFormat.JPEG, 90 /*ignored for PNG*/, bos);
+                byte[] bitmapdata = bos.toByteArray();
+
+                //write the bytes in file
+                FileOutputStream fos = new FileOutputStream(f);
+                fos.write(bitmapdata);
+
+                //write the bytes in file
+                picturePath = f.getAbsolutePath();
+
+                profilePicture.setBackground(null);
+                profilePicture.setImageBitmap(b_rounded);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }

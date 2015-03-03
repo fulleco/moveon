@@ -10,19 +10,15 @@ import com.application.moveon.model.MessagePojo;
 import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.DemandsPojo;
 import com.application.moveon.rest.modele.UserPojo;
-import com.application.moveon.session.SessionManager;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Hugo on 20/02/2015.
  */
 public class MoveOnDB {
 
-    private static final int VERSION_BDD = 15;
+    private static final int VERSION_BDD = 16;
     private static final String NOM_BDD = "moveon_";
     private static final String TAG = "MOVEON DATABASE";
 
@@ -80,6 +76,8 @@ public class MoveOnDB {
     private static final int COL_SEEN_NUMBER = 6;
     private static final String COL_ID_RECEIVER = "id_receiver";
     private static final int COL_ID_RECEIVER_NUMBER = 7;
+    private static final String COL_ID_IMAGE = "id_image";
+    private static final int COL_ID_IMAGE_NUMBER = 8;
 
 
 
@@ -195,7 +193,8 @@ public class MoveOnDB {
         mp.setId_sender(String.valueOf(c.getInt(COL_ID_SENDER_NUMBER)));
         mp.setId(String.valueOf(c.getInt(COL_ID_MESSAGE_NUMBER)));
         mp.setSeen(c.getInt(COL_SEEN_NUMBER));
-        mp.setId_receiver(String.valueOf(COL_ID_RECEIVER_NUMBER));
+        mp.setId_receiver(String.valueOf(c.getInt(COL_ID_RECEIVER_NUMBER)));
+        mp.setId_image(c.getInt(COL_ID_IMAGE_NUMBER));
 
         return mp;
     }
@@ -214,6 +213,7 @@ public class MoveOnDB {
         values.put(COL_SEEN, mp.getSeen());
         values.put(COL_ID_SENDER, mp.getId_sender());
         values.put(COL_ID_RECEIVER, mp.getId_receiver());
+        values.put(COL_ID_IMAGE, mp.getId_image());
 
         //on insère l'objet dans la BDD via le ContentValues
         return bdd.insert(TABLE_MESSAGES, null, values);
