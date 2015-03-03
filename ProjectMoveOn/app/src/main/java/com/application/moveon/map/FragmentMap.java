@@ -239,9 +239,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                 .setOnMenuItemPressed(new RadialMenuItem.RadialMenuItemClickListener() {
                     @Override
                     public void execute() {
-
                         dismissMenu(pointMenu);
-
                     }
                 });
 
@@ -602,7 +600,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     public void placeLocation(CerclePojo cercle){
         LatLng locationCircle = new LatLng(cercle.getLatitude(), cercle.getLongitude());
         if(locationCircle!=null) {
-            Log.i("ANTHO_EXC", "location circle add");
             MarkerOptions options = new MarkerOptions();
             options.position(locationCircle);
             options.title("Point de rencontre");
@@ -838,13 +835,13 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         shaderOuterBmp = null;
         //map.clear();
         //map = null;
-        if(locationclient!=null)
-            locationclient.disconnect();
         super.onDestroy();
     }
 
     @Override
     public void onPause() {
+        if(locationclient!=null)
+            locationclient.disconnect();
         homeActivity.stopRepeatingTask();
         // to stop the listener and save battery
         mSensorManager.unregisterListener(this);
@@ -891,7 +888,9 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         }
 
         locationrequest = LocationRequest.create();
-        locationrequest.setInterval(100);
+        locationrequest.setInterval(1000);
+        locationrequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationrequest.setSmallestDisplacement(0);
         locationclient.requestLocationUpdates(locationrequest, this);
 
         UserPojo user = session.getUserPojo();
@@ -913,18 +912,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         if(location!=null){
             myLocation = location;
 
-            UserPojo user = session.getUserPojo();
-            user.setLatitude(String.valueOf(myLocation.getLatitude()));
-            user.setLongitude(String.valueOf(myLocation.getLongitude()));
-
-            // Getting latitude of the current location
-            double latitude = location.getLatitude();
-
-            // Getting longitude of the current location
-            double longitude = location.getLongitude();
-
-            // Creating a LatLng object for the current location
-            LatLng latLng = new LatLng(latitude, longitude);
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             if(myMarker!=null)
                 myMarker.setPosition(latLng);
         }
@@ -937,14 +925,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(homeActivity, "GPS indisponible", Toast.LENGTH_LONG).show();
-    }
-
-    public boolean isUpdatingCircles() {
-        return updatingCircles;
-    }
-
-    public void setUpdatingCircles(boolean updatingCircles) {
-        this.updatingCircles = updatingCircles;
     }
 
     public HashMap<Marker, UserPojo> getMarkers() {
