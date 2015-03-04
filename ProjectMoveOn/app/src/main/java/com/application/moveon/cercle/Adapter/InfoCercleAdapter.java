@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,6 +18,9 @@ import com.application.moveon.rest.callback.GetParticipants_Callback;
 import com.application.moveon.rest.modele.CerclePojo;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
+import com.makeramen.RoundedTransformationBuilder;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 
@@ -65,6 +69,14 @@ public class InfoCercleAdapter extends BaseAdapter {
         //Handle TextView and display string from your list
         TextView listItemText = (TextView) view.findViewById(R.id.label);
         listItemText.setText(userPojo.getFirstname() + " " + userPojo.getLastname());
+
+        ImageView imgv = (ImageView)view.findViewById(R.id.icon);
+        Transformation transformation = new RoundedTransformationBuilder()
+                .cornerRadiusDp(15)
+                .oval(false)
+                .build();
+
+        Picasso.with(context).load("http://martinezhugo.com/pfe/images/"+ userPojo.getId_client()+"/profile.jpg").resize(100, 100).transform(transformation).into(imgv);
 
 
         return view;

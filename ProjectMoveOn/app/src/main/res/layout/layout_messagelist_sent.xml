@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="70dp"
-    android:id="@+id/linear_cercle_list">
+    android:id="@+id/linear_cercle_list"
+    android:gravity="end">
 
     <ImageView
         android:contentDescription="row"
@@ -13,16 +14,19 @@
         android:layout_marginRight="6dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_launcher" >
+        android:src="@drawable/ic_launcher"
+       android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true">
     </ImageView>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:orientation="vertical"
-        android:layout_toRightOf="@+id/icon"
-        android:layout_toEndOf="@+id/icon"
-        android:gravity="center_vertical">
+         android:id="@+id/linear_text"
+        android:gravity="center_vertical"
+        android:layout_toLeftOf="@+id/icon"
+        android:layout_toStartOf="@+id/icon">
         <TextView
             android:id="@+id/label"
             android:layout_width="wrap_content"
@@ -30,7 +34,8 @@
             android:layout_marginLeft="10dp"
             android:text="text"
             android:textSize="15sp"
-           />
+            android:layout_gravity="end"
+            />
 
         <TextView
             android:id="@+id/content"
@@ -39,10 +44,7 @@
             android:layout_marginLeft="10dp"
             android:text="text"
             android:textSize="25sp"
+            android:layout_gravity="end"
             />
-        </LinearLayout>
-
-
-
-
+    </LinearLayout>
 </RelativeLayout>

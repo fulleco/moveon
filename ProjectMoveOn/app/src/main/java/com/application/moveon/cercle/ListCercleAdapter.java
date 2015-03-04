@@ -63,16 +63,19 @@ public class ListCercleAdapter extends BaseAdapter {
 
         final HomeActivity homeActivity = ((HomeActivity) fragmentInfoCercle.getActivity());
         final CerclePojo cerclePojo = list.get(position);
+
+        cerclePojo.setAllInfo(session, context);
         //Handle TextView and display string from your list
         TextView listItemText = (TextView) view.findViewById(R.id.label);
         listItemText.setText(cerclePojo.getTitre());
+
+        TextView creatorText = (TextView) view.findViewById(R.id.createur);
+        creatorText.setText("Créateur : "+cerclePojo.getCreator().getFirstname() + " " + cerclePojo.getCreator().getLastname());
 
         LinearLayout linear_cercle_list = (LinearLayout) view.findViewById(R.id.linear_cercle_list);
         linear_cercle_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                cerclePojo.setAllInfo(session, context);
 
                 homeActivity.setCurrentCercle(cerclePojo);
                 fragmentInfoCercle.updateView();

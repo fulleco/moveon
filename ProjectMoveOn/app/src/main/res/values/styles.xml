@@ -6,7 +6,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#000000</item>
         <item name="colorPrimaryDark">#ffffff</item>
-        <item name="colorAccent">#f9c216</item>
+        <item name="colorAccent">#f1c12f</item>
     </style>
 
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">

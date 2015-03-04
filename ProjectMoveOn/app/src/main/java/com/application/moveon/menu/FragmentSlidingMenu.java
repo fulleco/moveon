@@ -86,6 +86,7 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
 
     private void setupTabs() {
         mTabHost.setup(); // you must call this before adding your tabs!
+
         mTabHost.addTab(newTab(TAB_INFO_CERCLE, R.string.tab_info_cercle, R.id.tab_1));
         mTabHost.addTab(newTab(TAB_LIST_CERCLE, R.string.tab_list_cercle, R.id.tab_2));
         mTabHost.addTab(newTab(TAB_LIST_MSG,R.string.tab_list_message,R.id.tab_3));

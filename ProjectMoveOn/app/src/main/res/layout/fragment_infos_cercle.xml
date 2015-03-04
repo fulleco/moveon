@@ -2,53 +2,91 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/inscription_background">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:gravity="center_vertical"
+        android:layout_height="80dp"
+        android:background="@drawable/boderbackground">
+
+        <ImageView
+            android:id="@+id/icon_cercle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cercle_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"/>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:text="Titre du cercle : "
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="30dp"/>
-        <TextView
-            android:id="@+id/text_view_titre"
-            android:text="Je suis les infos cercle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="30dp"/>
-    </LinearLayout>
-
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/icon_cercle"
+        android:layout_toEndOf="@+id/icon_cercle"
+        android:layout_marginTop="3dp">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp">
+
+
+
         <TextView
             android:text="Createur : "
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="30dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:textSize="15sp" />
         <TextView
             android:id="@+id/text_view_createur"
             android:text="Je suis les infos cercle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="30dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:textSize="15sp"/>
+
+
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/bt_quitter_cercle"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quitter cercle"/>
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp">
+        <TextView
+            android:id="@+id/text_view_titre"
+            android:text="Je suis les infos cercle"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:textSize="25sp"/>
+    </LinearLayout>
+    </LinearLayout>
 
-    <TextView
-        android:text="Participants : "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"/>
+        <ImageButton
+            android:id="@+id/bt_quitter_cercle"
+            android:src="@drawable/quitcirlce"
+            android:scaleType="centerCrop"
+            android:background="@null"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+
+            />
+    </RelativeLayout>
+
+
+
+
     <ListView
         android:id="@+id/list_view"
         android:layout_width="wrap_content"
