@@ -373,6 +373,28 @@ public class MoveOnDB {
         return ret;
     }
 
+    public UserPojo getParticipantById(String id_user){
+
+
+        Cursor cursor;
+
+        cursor = bdd.rawQuery("SELECT * FROM " +TABLE_CIRCLEPARTICIPANTS+ " WHERE " + COL_ID + "=" + id_user + ";", null);
+
+
+        Log.i(TAG, "Loaded " + cursor.getCount() + " participants.");
+
+        if(verifyCursor(cursor)) {
+            while (!cursor.isAfterLast()) {
+                UserPojo up = cursorToParticipant(cursor);
+                return up;
+
+            }
+            Log.i(TAG, "Participants loaded successfully.");
+        }
+
+        return null;
+    }
+
 
     private boolean verifyCursor(Cursor c){
         if(c.getCount() == 0){
