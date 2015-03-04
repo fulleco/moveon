@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.application.moveon.HomeActivity;
@@ -16,6 +18,7 @@ import com.application.moveon.R;
 import com.application.moveon.cercle.FragmentInfoCercle;
 import com.application.moveon.cercle.FragmentListCercle;
 import com.application.moveon.cercle.FragmentListMessage;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener {
 
@@ -25,6 +28,7 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
     private FragmentInfoCercle fragmentInfoCercle;
     private FragmentListCercle fragmentListCercle;
     private FragmentListMessage fragmentListMessage;
+    private TabWidget tabWidget;
 
 
     public static final String TAB_INFO_CERCLE = "Infos cercle";
@@ -83,6 +87,8 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
                         .replace(placeholder,fragmentListMessage,tabId)
                         .commit();
         }
+        ((HomeActivity)getActivity()).getFragmentMap().getmSlidingPanel().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+
     }
 
     private void setupTabs() {
@@ -115,18 +121,17 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
         if (TAB_INFO_CERCLE.equals(tabId)) {
             updateTab(tabId, R.id.tab_1);
             mCurrentTab = 0;
-            return;
-        }
-        if (TAB_LIST_CERCLE.equals(tabId)) {
+
+        } else if (TAB_LIST_CERCLE.equals(tabId)) {
             updateTab(tabId, R.id.tab_2);
             mCurrentTab = 1;
-            return;
-        }
-        if(TAB_LIST_MSG.equals(tabId)) {
+
+        } else if(TAB_LIST_MSG.equals(tabId)) {
             updateTab(tabId,R.id.tab_3);
             mCurrentTab = 2;
-            return;
+
         }
+
     }
 
     public void updateContent() {
