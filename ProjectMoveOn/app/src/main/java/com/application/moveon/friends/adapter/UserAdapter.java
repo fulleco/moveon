@@ -65,7 +65,7 @@ public class UserAdapter extends BaseAdapter {
 
         //Handle buttons and add onClickListeners
         ImageView imgv = (ImageView) view.findViewById(R.id.icon);
-        Picasso.with(context).load("http://martinezhugo.com/pfe/images/"+ us.getId_client()+"/profile.jpg").transform(transformation).into(imgv);
+        Picasso.with(context).load("http://martinezhugo.com/pfe/images/"+ us.getId_client()+"/profile.jpg").resize(100, 100).transform(transformation).into(imgv);
 
 
 

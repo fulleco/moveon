@@ -86,7 +86,7 @@ public class DemandsAdapter extends BaseAdapter {
                 .oval(false)
                 .build();
 
-        Picasso.with(context).load("http://martinezhugo.com/pfe/images/"+ dp.getId()+"/profile.jpg").transform(transformation).into(imgv);
+        Picasso.with(context).load("http://martinezhugo.com/pfe/images/"+ dp.getId()+"/profile.jpg").resize(100, 100).transform(transformation).into(imgv);
 
         ImageButton imgb1 = (ImageButton) view.findViewById(R.id.cancel);
         imgb1.setOnClickListener(new View.OnClickListener() {
