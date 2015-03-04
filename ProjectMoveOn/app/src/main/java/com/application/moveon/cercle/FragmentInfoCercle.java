@@ -3,6 +3,7 @@ package com.application.moveon.cercle;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,8 +81,6 @@ public class FragmentInfoCercle extends Fragment {
             }
         });
 
-
-
         return view;
     }
 
@@ -110,6 +109,11 @@ public class FragmentInfoCercle extends Fragment {
             initView();
             return;
         }
+
+        if(currentCercle.getId_creator().equals(session.getUserDetails().get(SessionManager.KEY_EMAIL)))
+            btQuitterCercle.setVisibility(View.GONE);
+        else
+            btQuitterCercle.setVisibility(View.VISIBLE);
 
         textViewTitre.setText(currentCercle.getTitre());
         textViewCreateur.setText(currentCercle.getCreator().getFirstname() + " " + currentCercle.getCreator().getLastname());

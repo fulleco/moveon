@@ -72,10 +72,10 @@ public class ProviderService extends Service implements GooglePlayServicesClient
         //new NotifTask().execute();
 
         String pref_sync_key = getResources().getString(R.string.pref_sync_key);
-        boolean notif = session.getPref().getBoolean(pref_sync_key,false);
+        boolean notif = session.getPref().getBoolean(pref_sync_key,true);
 
         String pref_loc_key = getResources().getString(R.string.pref_loc_key);
-        boolean location = session.getPref().getBoolean(pref_loc_key,false);
+        boolean location = session.getPref().getBoolean(pref_loc_key,true);
 
         if(location == true) {
 
