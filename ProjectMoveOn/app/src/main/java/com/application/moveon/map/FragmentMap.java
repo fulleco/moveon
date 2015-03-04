@@ -738,17 +738,17 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             public void onFinish()
             {
                 map.getUiSettings().setScrollGesturesEnabled(true);
-                selectedMarker = marker;
 
                 if(!marker.getTitle().equals("Point de rencontre")) {
-                    if(!selectedMarker.equals(myMarker)){
-                        //synchronized (markers) {
-                            UserPojo userSelected = getUserByMarker(marker);
-                            if(userSelected==null)
-                                return;
-                            pieMenu.setHeader(userSelected.getFirstname()+ " " + userSelected.getLastname(), 20);
-                            selectedLogin = String.valueOf(userSelected.getId_client());
-                        //}
+                    if(!marker.getId().equals(myMarker.getId())){
+                        synchronized (markers) {
+                            UserPojo userSelected = getUserByMarker(marker.getId());
+                            if(userSelected!=null){
+                                pieMenu.setHeader(userSelected.getFirstname()+ " " + userSelected.getLastname(), 20);
+                                selectedMarker = marker;
+                                selectedLogin = String.valueOf(userSelected.getId_client());
+                            }
+                        }
                     }else{
                         pieMenu.setHeader("Moi", 20);
                         selectedLogin = session.getUserDetails().get(SessionManager.KEY_ID);
@@ -757,15 +757,15 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                 }
             }
 
-            public UserPojo getUserByMarker(Marker m){
+            public UserPojo getUserByMarker(String mId){
                 Iterator it = markers.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry pair = (Map.Entry)it.next();
                     Marker mPair = ((Marker)pair.getKey());
-                    if(m.getId().equals(mPair.getId()))
+                    if(mId.equals(mPair.getId()))
                         return (UserPojo)pair.getValue();
 
-                    it.remove(); // avoids a ConcurrentModificationException
+                    //it.remove(); // avoids a ConcurrentModificationException
                 }
                 return null;
             }
@@ -879,7 +879,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
     public void refresh(){
         homeActivity.stopRepeatingTask();
-        synchronized (markers) {
 
         if(myMarker!=null)
             map.clear();
@@ -902,7 +901,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         //map.setOnMyLocationChangeListener();
         map.setOnMarkerClickListener(this);
         homeActivity.startUpdateUI();
-        }
     }
 
     @Override
