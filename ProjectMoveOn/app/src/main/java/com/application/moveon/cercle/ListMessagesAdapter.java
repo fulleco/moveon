@@ -1,6 +1,7 @@
 package com.application.moveon.cercle;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,8 +69,15 @@ public class ListMessagesAdapter extends BaseAdapter {
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
         int id_image = messagePojo.getId_image();
         if(id_image!=-1) {
-            Drawable d = context.getResources().getDrawable(id_image);
-            icon.setImageDrawable(d);
+            try {
+                Drawable d = context.getResources().getDrawable(id_image);
+                icon.setImageDrawable(d);
+            }
+            catch (Resources.NotFoundException e)
+            {
+                Drawable d = convertView.getResources().getDrawable(R.drawable.ic_launcher);
+                icon.setImageDrawable(d);
+            }
         }
 
         LinearLayout linear_cercle_list = (LinearLayout) view.findViewById(R.id.linear_cercle_list);
