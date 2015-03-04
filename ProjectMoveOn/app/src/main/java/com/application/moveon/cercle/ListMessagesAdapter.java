@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import com.application.moveon.R;
 import com.application.moveon.model.MessagePojo;
+import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
+import com.application.moveon.sqlitedb.MoveOnDB;
 
 import java.util.ArrayList;
 
@@ -28,6 +30,7 @@ public class ListMessagesAdapter extends BaseAdapter {
     private ArrayList<MessagePojo> list = new ArrayList<MessagePojo>();
     private Context context;
     private SessionManager session;
+    private MoveOnDB db;
 
 
 
@@ -35,6 +38,7 @@ public class ListMessagesAdapter extends BaseAdapter {
         this.list = list;
         this.context = context;
         session = new SessionManager(context);
+        db = new MoveOnDB(context, session.getUserDetails().get(SessionManager.KEY_EMAIL));
     }
 
     @Override
@@ -63,23 +67,30 @@ public class ListMessagesAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(messagePojo.getId_sender().equals(session.getUserDetails().get(SessionManager.KEY_ID))){
             view = inflater.inflate(R.layout.layout_messagelist_sent, null);
+
+            db.open();
+            UserPojo receiver = db.getParticipantById(messagePojo.getId_receiver());
+            db.close();
+
+            //Handle TextView and display string from your list
+            TextView listItemText = (TextView) view.findViewById(R.id.label);
+            listItemText.setText("Moi à " + receiver.getFirstname() + " " +receiver.getLastname());
+
+            TextView contentText = (TextView) view.findViewById(R.id.content);
+            contentText.setText(messagePojo.getContent());
         }else{
             view = inflater.inflate(R.layout.layout_messagelist, null);
+
+            //Handle TextView and display string from your list
+            TextView listItemText = (TextView) view.findViewById(R.id.label);
+            listItemText.setText(messagePojo.getFirstname_sender());
+
+            TextView contentText = (TextView) view.findViewById(R.id.content);
+            contentText.setText(messagePojo.getContent());
         }
 
 
-
-
-
-
-        //Handle TextView and display string from your list
-        TextView listItemText = (TextView) view.findViewById(R.id.label);
-        listItemText.setText(messagePojo.getFirstname_sender());
-
-        TextView contentText = (TextView) view.findViewById(R.id.content);
-        contentText.setText(messagePojo.getContent());
         RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.linear_cercle_list);
-        rl.setHorizontalGravity(Gravity.RIGHT);
 
 
 
