@@ -66,19 +66,30 @@ public class ProviderService extends Service implements GooglePlayServicesClient
             return;
         }
 
-        locationclient = new LocationClient(context,this,null);
-        if(!locationclient.isConnected()){
-            locationclient.connect();
-        }else{
-            refreshPosition();
-        }
-
         session = new SessionManager(ProviderService.this);
         //session.checkLogin(false);
         idUser = session.getUserDetails().get(SessionManager.KEY_ID);
         //new NotifTask().execute();
 
-        if((idUser!=null)||(idUser!="")) {
+        String pref_sync_key = getResources().getString(R.string.pref_sync_key);
+        boolean notif = session.getPref().getBoolean(pref_sync_key,false);
+
+        String pref_loc_key = getResources().getString(R.string.pref_loc_key);
+        boolean location = session.getPref().getBoolean(pref_loc_key,false);
+
+        if(location == true) {
+
+            locationclient = new LocationClient(context, this, null);
+            if (!locationclient.isConnected()) {
+                locationclient.connect();
+            } else {
+                refreshPosition();
+            }
+        }
+
+
+
+        if((idUser!=null)&&(idUser!="")&&(notif==true)) {
             mainmos.getmessages(idUser, new GetMessage_Callback(this));
             //mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
         }
