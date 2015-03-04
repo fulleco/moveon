@@ -27,15 +27,15 @@ public class ProviderReceiver extends BroadcastReceiver{
         SessionManager session = new SessionManager(context);
         MoveOnService mainmos = (new RestClient(true)).getApiService();
         String action = intent.getAction();
-        String sender = intent.getStringExtra("SENDER");
-        String receiver = intent.getStringExtra("RECEIVER");
-        String circle = intent.getStringExtra("CIRCLE");
 
         if(GetMessage_Callback.OK_ACTION.equals(action)) {
+            String sender = intent.getStringExtra("SENDER");
+            String receiver = intent.getStringExtra("RECEIVER");
+            String circle = intent.getStringExtra("CIRCLE");
             mainmos.addMessage(circle, receiver, sender, "Ok", "DATE",
                     0,"R.drawable.holo_check", new AddMessage_Callback(null, null));
+            notifManager.cancel(Integer.valueOf(sender));
         }
-        notifManager.cancel(Integer.valueOf(sender));
 	}
 
 }

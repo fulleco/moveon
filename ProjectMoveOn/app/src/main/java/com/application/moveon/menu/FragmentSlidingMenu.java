@@ -132,7 +132,7 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
 
         if(getActivity()==null)
             return;
-        
+
         if(fragmentInfoCercle!=null)
             fragmentInfoCercle.updateView();
 
