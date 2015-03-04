@@ -13,4 +13,17 @@
         android:orderInCategory="200"
         android:title="Se déconnecter"/>
 
+    <item android:id="@+id/action_create_circle"
+        android:icon="@drawable/cercle_icon"
+        android:title="Créer un cercle"
+        android:showAsAction="always" />
+    <item android:id="@+id/action_add_friend"
+        android:icon="@drawable/friends_add_user"
+        android:title="Créer un cercle"
+        android:showAsAction="always" />
+    <item android:id="@+id/action_map"
+        android:icon="@drawable/map_icon"
+        android:title="Ouvrir la carte"
+        android:showAsAction="always" />
+
 </menu>
