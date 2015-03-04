@@ -12,6 +12,8 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +36,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.application.moveon.cercle.FragmentCreateCercle;
 import com.application.moveon.cercle.FragmentPickFriends;
@@ -51,6 +55,11 @@ import com.application.moveon.sqlitedb.MoveOnDB;
 import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
 import com.google.android.gms.maps.model.Marker;
+import com.heinrichreimersoftware.materialdrawer.DrawerFrameLayout;
+import com.heinrichreimersoftware.materialdrawer.DrawerView;
+import com.heinrichreimersoftware.materialdrawer.structure.DrawerHeaderItem;
+import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
+import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,7 +73,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class HomeActivity extends FragmentActivity {
 
-    private DrawerLayout mDrawerLayout;
+    private DrawerFrameLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
@@ -72,6 +81,7 @@ public class HomeActivity extends FragmentActivity {
     private String[] mDrawerArray;
     private Calendar c = Calendar.getInstance();
     private MoveOnDB db;
+    private DrawerView drawer;
 
 
 
@@ -102,6 +112,7 @@ public class HomeActivity extends FragmentActivity {
     private int RESULT_LOAD_IMAGE = 0;
 
     private Bitmap profilePicture;
+
 
     private SessionManager session;
 
@@ -195,17 +206,15 @@ public class HomeActivity extends FragmentActivity {
         updateCurrentCercle();
 
         //// Drawer declaration
-        mTitle = mDrawerTitle = getTitle();
-        mDrawerArray = getResources().getStringArray(R.array.drawer_array);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
+        mTitle = mDrawerTitle = getTitle();
+        mDrawerLayout = (DrawerFrameLayout) findViewById(R.id.drawer_layout);
+
+
         // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mDrawerArray));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -233,7 +242,91 @@ public class HomeActivity extends FragmentActivity {
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+
+
+        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primary_dark_material_dark));
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setProfile(new DrawerProfile()
+                        .setAvatar((BitmapDrawable) getResources().getDrawable(R.drawable.profile_test))
+                        .setBackground(getResources().getDrawable(R.drawable.background))
+                        .setName(session.getUserDetails().get(SessionManager.KEY_EMAIL))
+                        .setDescription(session.getUserDetails().get(SessionManager.KEY_FIRSTNAME))
+                .setOnProfileClickListener(new DrawerProfile.OnProfileClickListener() {
+                    @Override
+                    public void onClick(DrawerProfile drawerProfile) {
+                        mDrawerLayout.closeDrawer();
+                        switchFragment(fragmentViewProfil);
+                    }
+                })
+        );
+
+        mDrawerLayout.addItem(new DrawerHeaderItem()
+                .setTitle("Cercles"));
+
+        mDrawerLayout.addItem(new DrawerItem()
+                .setTextPrimary("Carte")
+                .setImage(getResources().getDrawable(R.drawable.map_icon))
+                .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
+                    @Override
+                    public void onClick(DrawerItem drawerItem, int i, int i2) {
+                        mDrawerLayout.selectItem(i2);
+                        mDrawerLayout.closeDrawer();
+                        switchFragment(fragmentMap);
+                    }
+                }));
+
+        mDrawerLayout.addItem(new DrawerItem()
+                .setTextPrimary("Création de cercle")
+                .setImage(getResources().getDrawable(R.drawable.cercle_icon))
+                .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
+                    @Override
+                    public void onClick(DrawerItem drawerItem, int i, int i2) {
+                        mDrawerLayout.selectItem(i2);
+                        mDrawerLayout.closeDrawer();
+                        switchFragment(fragmentCreateCercle);
+                    }
+                }));
+
+        mDrawerLayout.addItem(new DrawerHeaderItem()
+                .setTitle("Amis"));
+        mDrawerLayout.addItem(new DrawerItem()
+                .setTextPrimary("Mes amis")
+                .setImage(getResources().getDrawable(R.drawable.friend_icon))
+                .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
+                    @Override
+                    public void onClick(DrawerItem drawerItem, int i, int i2) {
+                        mDrawerLayout.selectItem(i2);
+                        mDrawerLayout.closeDrawer();
+                        switchFragment(fragmentFriends);
+
+                    }
+                }));
+
+        mDrawerLayout.addItem(new DrawerItem()
+        .setTextPrimary("Mes demandes d'amis")
+         .setImage(getResources().getDrawable(R.drawable.dem_icon))
+        .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
+            @Override
+            public void onClick(DrawerItem drawerItem, int i, int i2) {
+                mDrawerLayout.selectItem(i2);
+                mDrawerLayout.closeDrawer();
+                switchFragment(fragmentFriendDemands);
+            }
+        }));
+        mDrawerLayout.addDivider();
+        mDrawerLayout.addItem(new DrawerItem()
+                .setTextPrimary("Settings")
+                .setImage(getResources().getDrawable(R.drawable.setting_icon))
+                .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
+                    @Override
+                    public void onClick(DrawerItem drawerItem, int i, int i2) {
+                        mDrawerLayout.selectItem(i2);
+                        mDrawerLayout.closeDrawer();
+                        switchFragment(fragmentSettings);
+                    }
+                }));
+
+        mDrawerLayout.setDrawerMaxWidth(800);
         //// End Drawer declaration
 
         fragmentPickFriends.setTargetFragment(fragmentCreateCercle,10);
@@ -369,13 +462,7 @@ public class HomeActivity extends FragmentActivity {
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
