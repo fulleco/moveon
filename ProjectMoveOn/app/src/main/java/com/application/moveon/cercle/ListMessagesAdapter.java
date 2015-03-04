@@ -75,7 +75,7 @@ public class ListMessagesAdapter extends BaseAdapter {
             }
             catch (Resources.NotFoundException e)
             {
-                Drawable d = convertView.getResources().getDrawable(R.drawable.ic_launcher);
+                Drawable d = context.getResources().getDrawable(R.drawable.ic_launcher);
                 icon.setImageDrawable(d);
             }
         }
