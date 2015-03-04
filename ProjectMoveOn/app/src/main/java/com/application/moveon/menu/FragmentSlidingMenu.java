@@ -11,6 +11,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
+import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.cercle.FragmentInfoCercle;
 import com.application.moveon.cercle.FragmentListCercle;
@@ -128,6 +129,9 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
     }
 
     public void updateContent() {
+
+        if(getActivity()==null)
+            return;
 
         if(fragmentInfoCercle!=null)
             fragmentInfoCercle.updateView();
