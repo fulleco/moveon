@@ -24,6 +24,7 @@ public class FragmentListMessage extends Fragment {
     private LayoutInflater mInflater;
     private ListView list_messages;
     MoveOnDB moveOnDB;
+    private ListMessagesAdapter a=null;
 
     SessionManager session;
 
@@ -49,16 +50,25 @@ public class FragmentListMessage extends Fragment {
         moveOnDB = new MoveOnDB(this.getActivity().getBaseContext(), session.getUserDetails().get(SessionManager.KEY_EMAIL));
         moveOnDB.open();
         ArrayList<MessagePojo> messagePojos = moveOnDB.getMessages(null);
-        //ArrayList<MessagePojo> messagePojos = moveOnDB.getMessages(session.getUserDetails().get(SessionManager.KEY_ID));
+
         moveOnDB.close();
 
+        /*
         if(messagePojos==null) {
             list_messages.setAdapter(null);
             return;
+        }*/
+
+        if(a==null)
+        {
+            a = new ListMessagesAdapter(messagePojos, getActivity());
+            list_messages.setAdapter(a);
+        }else{
+            a.setList(messagePojos);
+            a.notifyDataSetChanged();
         }
 
-        final ListMessagesAdapter a = new ListMessagesAdapter(messagePojos, getActivity());
-        list_messages.setAdapter(a);
+
 
     }
 

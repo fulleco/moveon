@@ -85,4 +85,11 @@ public class ListMessagesAdapter extends BaseAdapter {
         return view;
     }
 
+    public ArrayList<MessagePojo> getList() {
+        return list;
+    }
+
+    public void setList(ArrayList<MessagePojo> list) {
+        this.list = list;
+    }
 }

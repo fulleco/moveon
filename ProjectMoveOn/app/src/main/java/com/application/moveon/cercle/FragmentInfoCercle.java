@@ -38,6 +38,7 @@ public class FragmentInfoCercle extends Fragment {
     private SessionManager session;
 
     private HomeActivity homeActivity;
+    private InfoCercleAdapter a=null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +79,8 @@ public class FragmentInfoCercle extends Fragment {
             }
         });
 
+
+
         return view;
     }
 
@@ -103,19 +106,25 @@ public class FragmentInfoCercle extends Fragment {
 
         if(currentCercle==null)
         {
-            initContent();
+            initView();
             return;
         }
-
 
         textViewTitre.setText(currentCercle.getTitre());
         textViewCreateur.setText(currentCercle.getCreator().getFirstname() + " " + currentCercle.getCreator().getLastname());
 
-        final InfoCercleAdapter a = new InfoCercleAdapter(currentCercle.getParticipants(), getActivity().getBaseContext(), this);
-        listViewParticipants.setAdapter(a);
+        if(a==null) {
+            a = new InfoCercleAdapter(currentCercle.getParticipants(), getActivity().getBaseContext(), this);
+            listViewParticipants.setAdapter(a);
+        }
+        else {
+            a.setList(currentCercle.getParticipants());
+            a.notifyDataSetChanged();
+        }
+
     }
 
-    private void initContent() {
+    private void initView() {
          textViewTitre.setText("pas de cercle selectionne");
          textViewCreateur.setText("pas de cercle selectionne");
          listViewParticipants.setAdapter(null);

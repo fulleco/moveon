@@ -88,4 +88,11 @@ public class ListCercleAdapter extends BaseAdapter {
         return view;
     }
 
+    public ArrayList<CerclePojo> getList() {
+        return list;
+    }
+
+    public void setList(ArrayList<CerclePojo> list) {
+        this.list = list;
+    }
 }
