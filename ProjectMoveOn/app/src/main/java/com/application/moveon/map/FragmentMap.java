@@ -628,8 +628,15 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         MarkerOptions markerOptions = new MarkerOptions();
 
-        LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
-                Double.parseDouble(u.getLongitude()));
+
+        LatLng lastLngUser = null;
+        if(!isCurrentSession){
+            lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
+            Double.parseDouble(u.getLongitude()));
+        }else{
+            lastLngUser = new LatLng(myLocation.getLatitude(),
+            myLocation.getLongitude());
+        }
         markerOptions.position(lastLngUser);
         markerOptions.flat(true);
 
@@ -689,7 +696,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     public void addMarker(Target target, UserPojo u, Bitmap b, Marker m){
 
         if(!isAdded()) {
-            Log.i("ANTHO_EXC", "!Added");
             return;
         }
 
@@ -855,11 +861,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void onSensorChanged(SensorEvent event) {
         // get the angle around the z-axis rotated
         float degree = Math.round(event.values[0]);
@@ -895,8 +896,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         UserPojo user = session.getUserPojo();
         myLocation =locationclient.getLastLocation();
-        user.setLatitude(String.valueOf(myLocation.getLatitude()));
-        user.setLongitude(String.valueOf(myLocation.getLongitude()));
 
         synchronized (markers) {
             loadBitmap(user, true);

@@ -60,17 +60,17 @@ public class ProviderService extends Service implements GooglePlayServicesClient
                 "Notification Service");
         mWakeLock.acquire();
 
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        if (cm.getActiveNetworkInfo() == null) {
+            stopSelf();
+            return;
+        }
+
         locationclient = new LocationClient(context,this,null);
         if(!locationclient.isConnected()){
             locationclient.connect();
         }else{
             refreshPosition();
-        }
-
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        if (cm.getActiveNetworkInfo() == null) {
-            stopSelf();
-            return;
         }
 
         session = new SessionManager(ProviderService.this);
@@ -112,12 +112,14 @@ public class ProviderService extends Service implements GooglePlayServicesClient
 
     public void refreshPosition(){
         Location l = locationclient.getLastLocation();
-        currentPosition = new LatLng(l.getLatitude(), l.getLongitude());
-        locationclient.disconnect();
+        if(l!=null){
+            currentPosition = new LatLng(l.getLatitude(), l.getLongitude());
+            locationclient.disconnect();
 
-        if ((idUser != null) || (idUser != "")) {
-            //mainmos.getmessages(idUser, new GetMessage_Callback(this));
-            mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
+            if ((idUser != null) || (idUser != "")) {
+                //mainmos.getmessages(idUser, new GetMessage_Callback(this));
+                mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
+            }
         }
     }
 
