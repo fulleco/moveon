@@ -87,8 +87,6 @@ public class ProviderService extends Service implements GooglePlayServicesClient
             }
         }
 
-
-
         if((idUser!=null)&&(idUser!="")&&(notif==true)) {
             mainmos.getmessages(idUser, new GetMessage_Callback(this));
             //mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
