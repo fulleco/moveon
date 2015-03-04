@@ -331,6 +331,7 @@ public class HomeActivity extends FragmentActivity {
 
         fragmentPickFriends.setTargetFragment(fragmentCreateCercle,10);
 
+
         setFragmentMap(new FragmentMap());
         fragmentLocationChooser = new FragmentLocationChooser();
         fragmentLocationChooser.setTargetFragment(getFragmentCreateCercle(),1);
@@ -342,6 +343,7 @@ public class HomeActivity extends FragmentActivity {
                 .add(R.id.content_frame, getFragmentMap())
                 .commit();
         currentFragment = getFragmentMap();
+        mDrawerLayout.selectItem(1);
     }
 
     public void initCurrentCercle() {
