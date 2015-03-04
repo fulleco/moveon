@@ -18,6 +18,9 @@ import com.application.moveon.rest.callback.AddMessage_Callback;
 import com.application.moveon.rest.callback.GetMessage_Callback;
 import com.application.moveon.session.SessionManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ProviderReceiver extends BroadcastReceiver{
 
 	@Override
@@ -32,8 +35,8 @@ public class ProviderReceiver extends BroadcastReceiver{
         String circle = intent.getStringExtra("CIRCLE");
 
         if(GetMessage_Callback.OK_ACTION.equals(action)) {
-            mainmos.addMessage(circle, receiver, sender, "Ok", "DATE",
-                    0,"R.drawable.holo_check", new AddMessage_Callback(null, null));
+            mainmos.addMessage(circle, receiver, sender, "Ok", new SimpleDateFormat("dd-MM-yyyy'T'HH:mm").format(new Date()),
+                    0,"holo_check", new AddMessage_Callback(null, null));
         }
         notifManager.cancel(Integer.valueOf(sender));
 	}
