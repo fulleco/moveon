@@ -51,7 +51,7 @@ public class Register_Callback implements Callback<Boolean> {
             int id = mos.adduser(newUser.getFirstName(),newUser.getLastName(),newUser.getLogin(),newUser.getPassword(),picturePath);
             if(id!= 0){
                 new FtpUploadTask(picturePath, "profile.jpg", Integer.toString(id)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                msgOnUiThread("Inscription reussie",  "Vous êtes maintenant inscript sur moveon");
+                msgOnUiThread("Inscription reussie",  "Vous êtes maintenant inscrit sur moveon");
                 Intent i = new Intent(previousActivity, LoginActivity.class);
                 previousActivity.startActivity(i);
             }else{

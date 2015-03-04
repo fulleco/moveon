@@ -611,12 +611,9 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     public Marker removeMarker(UserPojo u, LatLng lastLngUser){
-        Log.i("ANTHO_MAP", "size " + markers.size());
         Iterator it = markers.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            Log.i("ANTHO_MAP", "login pair " +((UserPojo)pair.getValue()).getLogin());
-            Log.i("ANTHO_MAP", "login user " +u.getLogin());
             if(((UserPojo)pair.getValue()).getLogin().equals(u.getLogin())){
                 Marker m = (Marker)pair.getKey();
                 m.setPosition(lastLngUser);
@@ -647,8 +644,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         synchronized (markers) {
             Marker mTmp = removeMarker(u, lastLngUser);
-
-            Log.i("ANTHO_MAP", "user existant " + mTmp + " user current " + u.getLogin());
             final Marker m = mTmp!=null?mTmp:map.addMarker(markerOptions);
 
             if(isCurrentSession){
@@ -666,9 +661,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         SensorManager.SENSOR_DELAY_GAME);
                 //initCercle();
             }else if(mTmp==null){
-                Log.i("ANTHO_MAP", "marker added" + u.getLogin());
                 markers.put(m, u);
-                //newMarkers.put(m, u);
             }
 
             Target target = new Target() {
@@ -690,7 +683,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             targetList.add(target);
 
             String image = "http://martinezhugo.com/pfe/images/"+ u.getId_client()+"/profile.jpg";
-            Picasso.with(homeActivity).load(image).into(target);
+            Picasso.with(homeActivity).load(image).resize(100, 100).into(target);
         }
     }
 
@@ -853,7 +846,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         // to stop the listener and save battery
         mSensorManager.unregisterListener(this);
         map.clear();
-        Log.i("ANTHO_MAP", "pause clear");
         markers.clear();
         myMarker = null;
 
@@ -883,7 +875,6 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         if(myMarker!=null)
             map.clear();
         myMarker = null;
-            Log.i("ANTHO_MAP", "REFRESH ");
             markers.clear();
 
         locationrequest = LocationRequest.create();

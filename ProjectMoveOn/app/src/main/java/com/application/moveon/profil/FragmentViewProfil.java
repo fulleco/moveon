@@ -86,7 +86,7 @@ public class FragmentViewProfil extends Fragment {
         buttonEditer.setOnClickListener(btEditClickListener);
 
         Picasso.with(getActivity()).load("http://martinezhugo.com/pfe/images/"+
-                session.getUserDetails().get(SessionManager.KEY_ID)+"/profile.jpg").into(profilePicture);
+                session.getUserDetails().get(SessionManager.KEY_ID)+"/profile.jpg").resize(100, 100).into(profilePicture);
 
         return view;
     }

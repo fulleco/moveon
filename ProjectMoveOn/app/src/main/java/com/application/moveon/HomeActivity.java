@@ -175,7 +175,7 @@ public class HomeActivity extends FragmentActivity {
         this.profilePicture = profilePicture;
     }
 
-    private int mInterval = 10000; // 5 seconds by default, can be changed later
+    private int mInterval = 10000;
     private Handler mHandler;
     private PendingIntent piUI;
     private AlarmManager amUI;
@@ -411,7 +411,7 @@ public class HomeActivity extends FragmentActivity {
     }
 
     public void startUpdateUI(){
-        int secondUpdateUI = 4;
+        int secondUpdateUI = 10;
 
         amUI.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + secondUpdateUI * 1000,
