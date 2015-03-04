@@ -33,7 +33,7 @@ public class ProviderReceiver extends BroadcastReceiver{
 
         if(GetMessage_Callback.OK_ACTION.equals(action)) {
             mainmos.addMessage(circle, receiver, sender, "Ok", "DATE",
-                    0,-1, new AddMessage_Callback(null, null));
+                    0,R.drawable.holo_check, new AddMessage_Callback(null, null));
         }
         notifManager.cancel(Integer.valueOf(sender));
 	}

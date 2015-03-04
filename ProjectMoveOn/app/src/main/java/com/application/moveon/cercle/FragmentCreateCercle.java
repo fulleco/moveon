@@ -128,13 +128,14 @@ public class FragmentCreateCercle extends Fragment{
                String susers = new String ();
                 if(latitude == 0 && longitude == 0){
                     Toast.makeText(getActivity(),"Veuillez indiquer une localisation", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                if(selected.size() > 0){
 
                    for(UserPojo s : selected){
                        susers += s.getLogin() + " ";
                    }
-                   susers = susers.substring(0, susers.length() -1);
+                   susers = susers.trim();
                }else{
                    Toast.makeText(getActivity(),"Veuillez inviter au moins un ami", Toast.LENGTH_SHORT).show();
                    return;
