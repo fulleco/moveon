@@ -66,20 +66,16 @@ public class ListMessagesAdapter extends BaseAdapter {
         String id_image = messagePojo.getId_image();
         if(id_image!=null) {
             try {
-                Log.d("QUENTIN : 1",id_image);
+
                 Resources resources = context.getResources();
-                Log.d("QUENTIN : 2",id_image);
                 final int resourceId = resources.getIdentifier(id_image, "drawable",
                         context.getPackageName());
-                Log.d("QUENTIN : 3",String.valueOf(resourceId));
                 Drawable d = context.getResources().getDrawable(resourceId);
-                Log.d("QUENTIN : 4",String.valueOf(resourceId));
                 icon.setImageDrawable(d);
-                Log.d("QUENTIN : 5",String.valueOf(resourceId));
             }
             catch (Resources.NotFoundException e)
             {
-                Log.d("QUENTIN : ",e.toString());
+                Log.d("MESSAGE : ",e.toString());
                 Drawable d = context.getResources().getDrawable(R.drawable.ic_launcher);
                 icon.setImageDrawable(d);
             }

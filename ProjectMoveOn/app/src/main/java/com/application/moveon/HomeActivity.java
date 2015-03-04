@@ -484,6 +484,11 @@ public class HomeActivity extends FragmentActivity {
                 startActivity(i);
                 return true;
             case R.id.action_settings:
+                //TODO
+                setTitle("Paramètres");
+                switchFragment(fragmentSettings);
+                mDrawerLayout.selectItem(7);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
