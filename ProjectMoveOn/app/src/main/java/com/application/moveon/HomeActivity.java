@@ -238,7 +238,7 @@ public class HomeActivity extends FragmentActivity {
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
+                //getActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -272,6 +272,7 @@ public class HomeActivity extends FragmentActivity {
                         mDrawerLayout.selectItem(i2);
                         mDrawerLayout.closeDrawer();
                         switchFragment(fragmentMap);
+                        setTitle("Carte");
                     }
                 }));
 
@@ -284,6 +285,7 @@ public class HomeActivity extends FragmentActivity {
                         mDrawerLayout.selectItem(i2);
                         mDrawerLayout.closeDrawer();
                         switchFragment(fragmentCreateCercle);
+                        setTitle("Création de cercle");
                     }
                 }));
 
@@ -298,6 +300,7 @@ public class HomeActivity extends FragmentActivity {
                         mDrawerLayout.selectItem(i2);
                         mDrawerLayout.closeDrawer();
                         switchFragment(fragmentFriends);
+                        setTitle("Mes amis");
 
                     }
                 }));
@@ -311,11 +314,12 @@ public class HomeActivity extends FragmentActivity {
                 mDrawerLayout.selectItem(i2);
                 mDrawerLayout.closeDrawer();
                 switchFragment(fragmentFriendDemands);
+                setTitle("Mes demandes d'amis");
             }
         }));
         mDrawerLayout.addDivider();
         mDrawerLayout.addItem(new DrawerItem()
-                .setTextPrimary("Settings")
+                .setTextPrimary("Paramètres")
                 .setImage(getResources().getDrawable(R.drawable.setting_icon))
                 .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
                     @Override
@@ -323,6 +327,7 @@ public class HomeActivity extends FragmentActivity {
                         mDrawerLayout.selectItem(i2);
                         mDrawerLayout.closeDrawer();
                         switchFragment(fragmentSettings);
+                        setTitle("Paramètres");
                     }
                 }));
 
@@ -344,6 +349,7 @@ public class HomeActivity extends FragmentActivity {
                 .commit();
         currentFragment = getFragmentMap();
         mDrawerLayout.selectItem(1);
+        setTitle("Carte");
     }
 
     public void initCurrentCercle() {
@@ -486,26 +492,29 @@ public class HomeActivity extends FragmentActivity {
                 startActivity(i);
                 return true;
             case R.id.action_settings:
-                //TODO
                 setTitle("Paramètres");
                 switchFragment(fragmentSettings);
                 mDrawerLayout.selectItem(7);
-
+                mDrawerLayout.closeDrawer();
                 return true;
             case R.id.action_add_friend:
                 setTitle("Amis");
                 switchFragment(fragmentFriends);
-                mDrawerLayout.selectItem(3);
+                mDrawerLayout.selectItem(4);
+                mDrawerLayout.closeDrawer();
                 return true;
             case R.id.action_create_circle:
                 setTitle("Cercle");
                 switchFragment(fragmentCreateCercle);
                 mDrawerLayout.selectItem(2);
+                mDrawerLayout.closeDrawer();
+
                 return true;
             case R.id.action_map:
                 setTitle("Carte");
                 switchFragment(fragmentMap);
                 mDrawerLayout.selectItem(1);
+                mDrawerLayout.closeDrawer();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
