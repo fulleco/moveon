@@ -115,7 +115,7 @@ public interface MoveOnService {
                     @Field("content") String content,
                     @Field("date") String date,
                     @Field("seen") int seen,
-                    @Field("id_image") int image,
+                    @Field("id_image") String image,
                     AddMessage_Callback c);
 
     @FormUrlEncoded
@@ -126,7 +126,7 @@ public interface MoveOnService {
                     @Field("content") String content,
                     @Field("date") String date,
                     @Field("seen") int seen,
-                    @Field("id_image") int image,
+                    @Field("id_image") String image,
                     AddMessages_Callback c);
 
     @GET("/get_messages")

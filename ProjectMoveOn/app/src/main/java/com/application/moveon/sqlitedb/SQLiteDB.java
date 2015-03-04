@@ -66,7 +66,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + TABLE_MESSAGES + " (" + COL_ID_MESSAGE + " INTEGER PRIMARY KEY, "
                                 +COL_ID_CERCLEM +" INTEGER , "+ COL_ID_SENDER + " INTEGER , " + COL_NAMESENDER + " TEXT , " + COL_CONTENT + " TEXT , "
-                                + COL_DATESEND + " TEXT , " + COL_SEEN + " INTEGER, "+ COL_ID_RECEIVER +" INTEGER, " + COL_ID_IMAGE +" INTEGER );";
+                                + COL_DATESEND + " TEXT , " + COL_SEEN + " INTEGER, "+ COL_ID_RECEIVER +" INTEGER, " + COL_ID_IMAGE +" TEXTx );";
 
     private static final String CREATE_TABLE_FRIENDDEMAND = "CREATE TABLE " + TABLE_FRIENDDEMANDS + " (" + COL_ID_DEMAND + " INTEGER PRIMARY KEY, "
                                 + COL_IDSENDER + " INTEGER , " + COL_MAILSENDER + " TEXT , " + COL_NAMESENDERD

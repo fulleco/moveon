@@ -194,7 +194,7 @@ public class MoveOnDB {
         mp.setId(String.valueOf(c.getInt(COL_ID_MESSAGE_NUMBER)));
         mp.setSeen(c.getInt(COL_SEEN_NUMBER));
         mp.setId_receiver(String.valueOf(c.getInt(COL_ID_RECEIVER_NUMBER)));
-        mp.setId_image(c.getInt(COL_ID_IMAGE_NUMBER));
+        mp.setId_image(c.getString(COL_ID_IMAGE_NUMBER));
 
         return mp;
     }

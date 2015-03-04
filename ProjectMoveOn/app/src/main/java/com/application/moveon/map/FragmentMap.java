@@ -208,7 +208,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         });
     }
 
-    private void sendMessage(String idCircle, String idSender, String idReceiver, String content, String date, int id_image){
+    private void sendMessage(String idCircle, String idSender, String idReceiver, String content, String date, String id_image){
         progressDialog.setMessage("Envoi du message...");
         progressDialog.show();
 
@@ -291,7 +291,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // Can edit based on preference. Also can add animations
                         // here.;
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "T'es où ?", "date",-1);
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "T'es où ?", "date",null);
                     }
                 });
 
@@ -303,7 +303,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Ça va ?", "date",-1);
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Ça va ?", "date",null);
                     }
                 });
 
@@ -321,7 +321,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage("1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "J'arrive !", "J'arrive !",R.drawable.rocket);
+                        sendMessage("1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "J'arrive !", "J'arrive !","R.drawable.rocket");
                     }
                 });
 
@@ -334,7 +334,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je suis en retard !", "date",R.drawable.watch);
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je suis en retard !", "date","R.drawable.watch");
                     }
                 });
 
@@ -347,7 +347,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je suis perdu...", "date",R.drawable.crying);
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je suis perdu...", "date","R.drawable.crying");
                     }
                 });
 
@@ -360,7 +360,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je suis perdu...", "date",R.drawable.fire);
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je suis perdu...", "date","R.drawable.fire");
                     }
                 });
 
@@ -380,7 +380,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je pars !", "date",R.drawable.door);
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Je pars !", "date","R.drawable.door");
                     }
                 });
 
@@ -393,7 +393,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Rejoins-moi", "date",R.drawable.running);
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Rejoins-moi", "date","R.drawable.running");
                     }
                 });
 
@@ -406,7 +406,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "J'ai besoin d'aide !", "date",R.drawable.help);
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "J'ai besoin d'aide !", "date","R.drawable.help");
                     }
                 });
 
@@ -419,7 +419,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // Can edit based on preference. Also can add animations
                         // here.
                         dismissMenu(pieMenu);
-                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Pause clope ?", "date",R.drawable.cigarette);
+                        sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin, "Pause clope ?", "date","R.drawable.cigarette");
                     }
                 });
 
@@ -440,7 +440,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // here.
                         dismissMenu(pieMenu);
                         sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
-                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date",R.drawable.eating);
+                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date","R.drawable.eating");
                     }
                 });
 
@@ -454,7 +454,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // here.
                         dismissMenu(pieMenu);
                         sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
-                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date",R.drawable.cute);
+                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date","R.drawable.cute");
                     }
                 });
 
@@ -468,7 +468,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // here.
                         dismissMenu(pieMenu);
                         sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
-                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date",R.drawable.big_smile);
+                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date","R.drawable.big_smile");
                     }
                 });
 
@@ -482,7 +482,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // here.
                         dismissMenu(pieMenu);
                         sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
-                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date",R.drawable.haha);
+                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date","R.drawable.haha");
                     }
                 });
 
@@ -496,7 +496,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // here.
                         dismissMenu(pieMenu);
                         sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
-                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date",R.drawable.upset);
+                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date","R.drawable.upset");
                     }
                 });
 
@@ -510,7 +510,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         // here.
                         dismissMenu(pieMenu);
                         sendMessage( "1", session.getUserDetails().get(SessionManager.KEY_ID), selectedLogin,
-                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date",R.drawable.crying);
+                                session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " vous envoie un smiley", "date","R.drawable.crying");
                     }
                 });
 

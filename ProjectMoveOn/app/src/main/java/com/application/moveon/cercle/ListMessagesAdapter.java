@@ -11,13 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
 import com.application.moveon.model.MessagePojo;
-import com.application.moveon.rest.modele.CerclePojo;
-import com.application.moveon.session.SessionManager;
-import com.application.moveon.sqlitedb.MoveOnDB;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 
@@ -67,10 +62,14 @@ public class ListMessagesAdapter extends BaseAdapter {
         listItemText.setText(messagePojo.getFirstname_sender() + ": " + messagePojo.getContent());
 
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
-        int id_image = messagePojo.getId_image();
-        if(id_image!=-1) {
+        String id_image = messagePojo.getId_image();
+        if(id_image!=null) {
             try {
-                Drawable d = context.getResources().getDrawable(id_image);
+                Resources resources = context.getResources();
+                final int resourceId = resources.getIdentifier(id_image, "drawable",
+                        context.getPackageName());
+
+                Drawable d = context.getResources().getDrawable(resourceId);
                 icon.setImageDrawable(d);
             }
             catch (Resources.NotFoundException e)

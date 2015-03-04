@@ -35,7 +35,7 @@ public class MessagePojo implements Comparable<MessagePojo>{
     private int seen;
 
     @SerializedName("id_image")
-    private int id_image;
+    private String id_image;
 
     public MessagePojo(){
         this.id = null;
@@ -45,12 +45,12 @@ public class MessagePojo implements Comparable<MessagePojo>{
         this.content = null;
         this.date = null;
         this.seen = 0;
-        this.id_image = -1;
+        this.id_image = null;
         this.setLastname_sender(null);
         this.setFirstname_sender(null);
     }
 
-    public MessagePojo(String id, String id_circle, String id_sender, String id_receiver, String content, String date, int seen, String lastname_sender, String firstname_sender, int id_image){
+    public MessagePojo(String id, String id_circle, String id_sender, String id_receiver, String content, String date, int seen, String lastname_sender, String firstname_sender, String id_image){
         this.id = id;
         this.id_circle = id_circle;
         this.id_sender = id_sender;
@@ -144,11 +144,11 @@ public class MessagePojo implements Comparable<MessagePojo>{
         this.firstname_sender = firstname_sender;
     }
 
-    public int getId_image() {
+    public String getId_image() {
         return id_image;
     }
 
-    public void setId_image(int id_image) {
+    public void setId_image(String id_image) {
         this.id_image = id_image;
     }
 }
