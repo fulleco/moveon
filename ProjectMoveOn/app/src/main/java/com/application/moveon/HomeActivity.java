@@ -490,6 +490,21 @@ public class HomeActivity extends FragmentActivity {
                 mDrawerLayout.selectItem(7);
 
                 return true;
+            case R.id.action_add_friend:
+                setTitle("Amis");
+                switchFragment(fragmentFriends);
+                mDrawerLayout.selectItem(3);
+                return true;
+            case R.id.action_create_circle:
+                setTitle("Cercle");
+                switchFragment(fragmentCreateCercle);
+                mDrawerLayout.selectItem(2);
+                return true;
+            case R.id.action_map:
+                setTitle("Carte");
+                switchFragment(fragmentMap);
+                mDrawerLayout.selectItem(1);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
