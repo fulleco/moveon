@@ -112,14 +112,12 @@ public class ProviderService extends Service implements GooglePlayServicesClient
 
     public void refreshPosition(){
         Location l = locationclient.getLastLocation();
-        if(l!=null){
-            currentPosition = new LatLng(l.getLatitude(), l.getLongitude());
-            locationclient.disconnect();
+        currentPosition = new LatLng(l.getLatitude(), l.getLongitude());
+        locationclient.disconnect();
 
-            if ((idUser != null) || (idUser != "")) {
-                //mainmos.getmessages(idUser, new GetMessage_Callback(this));
-                mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
-            }
+        if ((idUser != null) || (idUser != "")) {
+            //mainmos.getmessages(idUser, new GetMessage_Callback(this));
+            mainmos.updateuser(session.getUserDetails().get(SessionManager.KEY_ID), currentPosition.latitude, currentPosition.longitude, new UpdatePosition_Callback());
         }
     }
 

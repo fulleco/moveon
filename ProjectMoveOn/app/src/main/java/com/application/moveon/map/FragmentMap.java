@@ -611,15 +611,18 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     public Marker removeMarker(UserPojo u, LatLng lastLngUser){
+        Log.i("ANTHO_MAP", "size " + markers.size());
         Iterator it = markers.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
+            Log.i("ANTHO_MAP", "login pair " +((UserPojo)pair.getValue()).getLogin());
+            Log.i("ANTHO_MAP", "login user " +u.getLogin());
             if(((UserPojo)pair.getValue()).getLogin().equals(u.getLogin())){
                 Marker m = (Marker)pair.getKey();
                 m.setPosition(lastLngUser);
+                //it.remove(); // avoids a ConcurrentModificationException
                 return m;
             }
-            it.remove(); // avoids a ConcurrentModificationException
         }
         return null;
     }
@@ -628,27 +631,24 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
         MarkerOptions markerOptions = new MarkerOptions();
 
-
         LatLng lastLngUser = null;
         if(!isCurrentSession){
             lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
             Double.parseDouble(u.getLongitude()));
+            markerOptions.title(u.getFirstname() + " " + u.getLastname());
         }else{
             lastLngUser = new LatLng(myLocation.getLatitude(),
             myLocation.getLongitude());
+            markerOptions.title("Moi");
         }
         markerOptions.position(lastLngUser);
         markerOptions.flat(true);
-
-        if(isCurrentSession)
-            markerOptions.title("Moi");
-        else
-            markerOptions.title(u.getFirstname() + " " + u.getLastname());
-
         markerOptions.visible(false);
 
         synchronized (markers) {
             Marker mTmp = removeMarker(u, lastLngUser);
+
+            Log.i("ANTHO_MAP", "user existant " + mTmp + " user current " + u.getLogin());
             final Marker m = mTmp!=null?mTmp:map.addMarker(markerOptions);
 
             if(isCurrentSession){
@@ -666,6 +666,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
                         SensorManager.SENSOR_DELAY_GAME);
                 //initCercle();
             }else if(mTmp==null){
+                Log.i("ANTHO_MAP", "marker added" + u.getLogin());
                 markers.put(m, u);
                 //newMarkers.put(m, u);
             }
@@ -699,7 +700,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
             return;
         }
 
-        synchronized (markers) {
+        //synchronized (markers) {
 
             //LatLng lastLngUser = new LatLng(Double.parseDouble(u.getLatitude()),
             //        Double.parseDouble(u.getLongitude()));
@@ -725,7 +726,7 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
             //b_rounded.recycle();
             //b_rounded = null;
-        }
+        //}
     }
 
     @Override
@@ -741,13 +742,13 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
 
                 if(!marker.getTitle().equals("Point de rencontre")) {
                     if(!selectedMarker.equals(myMarker)){
-                        synchronized (markers) {
+                        //synchronized (markers) {
                             UserPojo userSelected = getUserByMarker(marker);
                             if(userSelected==null)
                                 return;
                             pieMenu.setHeader(userSelected.getFirstname()+ " " + userSelected.getLastname(), 20);
                             selectedLogin = String.valueOf(userSelected.getId_client());
-                        }
+                        //}
                     }else{
                         pieMenu.setHeader("Moi", 20);
                         selectedLogin = session.getUserDetails().get(SessionManager.KEY_ID);
@@ -852,10 +853,9 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         // to stop the listener and save battery
         mSensorManager.unregisterListener(this);
         map.clear();
-        synchronized (markers){
-            markers.clear();
-            myMarker = null;
-        }
+        Log.i("ANTHO_MAP", "pause clear");
+        markers.clear();
+        myMarker = null;
 
         super.onPause();
     }
@@ -884,9 +884,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         if(myMarker!=null)
             map.clear();
         myMarker = null;
-
+            Log.i("ANTHO_MAP", "REFRESH ");
             markers.clear();
-        }
 
         locationrequest = LocationRequest.create();
         locationrequest.setInterval(1000);
@@ -897,13 +896,13 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         UserPojo user = session.getUserPojo();
         myLocation =locationclient.getLastLocation();
 
-        synchronized (markers) {
-            loadBitmap(user, true);
-        }
+
+        loadBitmap(user, true);
 
         //map.setOnMyLocationChangeListener();
         map.setOnMarkerClickListener(this);
         homeActivity.startUpdateUI();
+        }
     }
 
     @Override
