@@ -23,6 +23,7 @@ public class FragmentListCercle extends Fragment {
     private LayoutInflater mInflater;
     private ListView list_cercles;
     MoveOnDB moveOnDB;
+    private ListCercleAdapter a = null;
 
     SessionManager session;
 
@@ -56,10 +57,19 @@ public class FragmentListCercle extends Fragment {
         if(cerclePojos==null)
             return;
 
-        final ListCercleAdapter a = new ListCercleAdapter(cerclePojos, getActivity(), (FragmentInfoCercle)getTargetFragment());
+        if(a==null)
+        {
+            a = new ListCercleAdapter(cerclePojos, getActivity(), (FragmentInfoCercle)getTargetFragment());
+            list_cercles.setAdapter(a);
+        }else{
+            a.setList(cerclePojos);
+            a.notifyDataSetChanged();
+        }
+
+        //final ListCercleAdapter a = new ListCercleAdapter(cerclePojos, getActivity(), (FragmentInfoCercle)getTargetFragment());
 
 
-        list_cercles.setAdapter(a);
+        //list_cercles.setAdapter(a);
 
     }
 

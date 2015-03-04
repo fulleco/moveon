@@ -69,4 +69,12 @@ public class InfoCercleAdapter extends BaseAdapter {
 
         return view;
     }
+
+    public UserPojo[] getList() {
+        return list;
+    }
+
+    public void setList(UserPojo[] list) {
+        this.list = list;
+    }
 }
