@@ -59,16 +59,16 @@ public class ListMessagesAdapter extends BaseAdapter {
         final MessagePojo messagePojo = list.get(position);
 
 
-        if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            if(messagePojo.getId_sender().equals(session.getUserDetails().get(SessionManager.KEY_ID))){
-                view = inflater.inflate(R.layout.layout_messagelist_sent, null);
-            }else{
-                view = inflater.inflate(R.layout.layout_messagelist, null);
-            }
 
-
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if(messagePojo.getId_sender().equals(session.getUserDetails().get(SessionManager.KEY_ID))){
+            view = inflater.inflate(R.layout.layout_messagelist_sent, null);
+        }else{
+            view = inflater.inflate(R.layout.layout_messagelist, null);
         }
+
+
+
 
 
 
