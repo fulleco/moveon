@@ -27,9 +27,11 @@ import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ToolBox;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Quentin Bitschene on 17/12/2014.
@@ -105,7 +107,7 @@ public class FragmentCreateCercle extends Fragment{
         editTimeFin = (EditText) view.findViewById(R.id.editTimeFin);
         editDateFin = (EditText) view.findViewById(R.id.editDateFin);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
 
         tools.setCurrentDateOnView(editDateDebut,c);
         tools.setCurrentTimeOnView(editTimeDebut,c);
@@ -130,6 +132,27 @@ public class FragmentCreateCercle extends Fragment{
             @Override
             public void onClick(View view) {
                String susers = new String ();
+
+                String date1 = editDateDebut.getText().toString() + " " + editTimeDebut.getText().toString();
+                String date2 = editDateFin.getText().toString() + " " + editTimeFin.getText().toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                Date datedebut = new Date();
+                Date datefin = new Date();
+
+                try {
+                    datedebut = sdf.parse(date1);
+                    datefin = sdf.parse(date2);
+                    if (datefin.after(datedebut)) {
+
+                    } else {
+                        Toast.makeText(getActivity(),"La date de fin doit être après la date de debut", Toast.LENGTH_SHORT).show();
+                       return;
+                    }
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
                 if(latitude == 0 && longitude == 0){
                     Toast.makeText(getActivity(),"Veuillez indiquer une localisation", Toast.LENGTH_SHORT).show();
                     return;
@@ -153,8 +176,8 @@ public class FragmentCreateCercle extends Fragment{
                 p.show();
                 mos.createcircle(nomCercle.getText().toString(), session.getUserDetails().get(SessionManager.KEY_EMAIL)
                         ,susers
-                        ,editDateDebut.toString() +" " + editTimeDebut.toString()
-                        , editDateFin.toString() + " " + editTimeFin
+                        ,date1
+                        ,date2
                         ,latitude
                         ,longitude
                         ,0
