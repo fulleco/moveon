@@ -93,14 +93,14 @@ public class HomeActivity extends FragmentActivity {
 
 
     private FragmentMap fragmentMap;
-    private FragmentViewProfil fragmentViewProfil = new FragmentViewProfil();
-    private FragmentEditProfil fragmentEditProfil = new FragmentEditProfil();
-    private FragmentLocationChooser fragmentLocationChooser = new FragmentLocationChooser();
-    private FragmentCreateCercle fragmentCreateCercle = new FragmentCreateCercle();
-    private FragmentFriends fragmentFriends = new FragmentFriends();
-    private FragmentFriendDemands fragmentFriendDemands = new FragmentFriendDemands();
-    private FragmentSettings fragmentSettings = new FragmentSettings();
-    private FragmentPickFriends fragmentPickFriends = new FragmentPickFriends();
+    private FragmentViewProfil fragmentViewProfil;
+    private FragmentEditProfil fragmentEditProfil;
+    private FragmentLocationChooser fragmentLocationChooser;
+    private FragmentCreateCercle fragmentCreateCercle;
+    private FragmentFriends fragmentFriends;
+    private FragmentFriendDemands fragmentFriendDemands;
+    private FragmentSettings fragmentSettings;
+    private FragmentPickFriends fragmentPickFriends;
 
 
     private Fragment currentFragment;
@@ -192,7 +192,14 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
+        fragmentViewProfil = new FragmentViewProfil();
+        fragmentEditProfil = new FragmentEditProfil();
+        fragmentLocationChooser = new FragmentLocationChooser();
+        fragmentCreateCercle = new FragmentCreateCercle();
+        fragmentFriends = new FragmentFriends();
+        fragmentFriendDemands = new FragmentFriendDemands();
+        fragmentSettings = new FragmentSettings();
+        fragmentPickFriends = new FragmentPickFriends();
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                         .setDefaultFontPath("fonts/BebasNeue.otf")
