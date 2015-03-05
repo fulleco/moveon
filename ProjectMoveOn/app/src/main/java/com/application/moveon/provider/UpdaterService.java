@@ -47,7 +47,7 @@ public class UpdaterService extends Service {
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         if (cm.getActiveNetworkInfo() == null) {
-            stopSelf();
+            //stopSelf();
             return;
         }
 

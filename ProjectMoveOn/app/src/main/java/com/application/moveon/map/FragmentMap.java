@@ -212,6 +212,9 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
         progressDialog.setMessage("Envoi du message...");
         progressDialog.show();
 
+        if(homeActivity.getCurrentCercle()==null)
+            return;
+
         String receivers = "";
         for(UserPojo u : homeActivity.getCurrentCercle().getParticipants()){
             if(!String.valueOf(u.getId_client()).equals(idSender))

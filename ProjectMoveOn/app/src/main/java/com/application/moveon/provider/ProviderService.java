@@ -62,7 +62,7 @@ public class ProviderService extends Service implements GooglePlayServicesClient
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         if (cm.getActiveNetworkInfo() == null) {
-            stopSelf();
+            //stopSelf();
             return;
         }
 
