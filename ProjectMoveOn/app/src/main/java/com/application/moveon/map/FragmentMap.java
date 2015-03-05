@@ -927,6 +927,8 @@ public class FragmentMap extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     public void updateSlidingUpDrawer() {
+        if(fragmentSlidingMenu==null)
+            return;
         fragmentSlidingMenu.updateContent();
     }
 }

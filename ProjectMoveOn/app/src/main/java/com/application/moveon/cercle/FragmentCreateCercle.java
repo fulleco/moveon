@@ -149,7 +149,7 @@ public class FragmentCreateCercle extends Fragment{
                     Toast.makeText(getActivity(),"Veuillez mettre un titre", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                CustomProgressDialog p = new CustomProgressDialog(getActivity().getBaseContext());
+                CustomProgressDialog p = new CustomProgressDialog(getActivity());
                 p.show();
                 mos.createcircle(nomCercle.getText().toString(), session.getUserDetails().get(SessionManager.KEY_EMAIL)
                         ,susers
