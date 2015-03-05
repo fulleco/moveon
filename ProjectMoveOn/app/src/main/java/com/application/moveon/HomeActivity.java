@@ -212,6 +212,8 @@ public class HomeActivity extends FragmentActivity {
                     public void onClick(DrawerProfile drawerProfile) {
                         mDrawerLayout.closeDrawer();
                         switchFragment(fragmentViewProfil);
+                        setTitle("Profil");
+                        mDrawerLayout.selectItem(0);
                     }
                 });
         target = new Target() {

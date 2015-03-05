@@ -101,6 +101,8 @@ public class FragmentInfoCercle extends Fragment {
 
 
     public void updateView() {
+        if(homeActivity==null)
+            return;
         homeActivity.updateCurrentCercle();
         CerclePojo currentCercle =((HomeActivity)getActivity()).getCurrentCercle();
 

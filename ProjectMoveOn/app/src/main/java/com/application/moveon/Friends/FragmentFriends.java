@@ -87,7 +87,7 @@ public class FragmentFriends extends Fragment {
             public void onClick(View view) {
                 //TODO ADD
 
-                CustomProgressDialog p = new CustomProgressDialog(getActivity().getBaseContext());
+                CustomProgressDialog p = new CustomProgressDialog(getActivity());
                 p.show();
 
                 String mail = session.getUserDetails().get(SessionManager.KEY_EMAIL);
