@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,7 +88,9 @@ public class FragmentSlidingMenu extends Fragment implements OnTabChangeListener
                         .replace(placeholder,fragmentListMessage,tabId)
                         .commit();
         }
-        ((HomeActivity)getActivity()).getFragmentMap().getmSlidingPanel().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+
+        if(((HomeActivity) getActivity()).getFragmentMap().getmSlidingPanel().getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED))
+            ((HomeActivity)getActivity()).getFragmentMap().getmSlidingPanel().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 
     }
 
