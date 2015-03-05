@@ -63,6 +63,6 @@ public class UpdateFriendsUi_Callback implements Callback<UserPojo[]> {
 
     @Override
     public void failure(RetrofitError error) {
-
+        p.dismiss();
     }
 }

@@ -65,6 +65,6 @@ public class UpdateDemandsUi_Callback implements Callback<DemandsPojo[]> {
 
     @Override
     public void failure(RetrofitError error) {
-
+        p.dismiss();
     }
 }
