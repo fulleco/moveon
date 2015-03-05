@@ -18,11 +18,11 @@
         android:title="Créer un cercle"
         android:showAsAction="always" />
     <item android:id="@+id/action_add_friend"
-        android:icon="@drawable/friends_add_user"
+        android:icon="@drawable/add_friend_icon"
         android:title="Créer un cercle"
         android:showAsAction="always" />
     <item android:id="@+id/action_map"
-        android:icon="@drawable/map_icon"
+        android:icon="@drawable/map_icon_action"
         android:title="Ouvrir la carte"
         android:showAsAction="always" />
 

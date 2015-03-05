@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.application.moveon.custom.CustomProgressDialog;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.sqlitedb.MoveOnDB;
@@ -19,11 +20,11 @@ import retrofit.client.Response;
 public class AddFriend_Callback implements Callback<Integer> {
 
     private Context c;
-    private ProgressDialog p;
+    private CustomProgressDialog p;
     private String iduser;
     private MoveOnDB db;
 
-    public AddFriend_Callback(Context m_activity, ProgressDialog m_p, String iduser, MoveOnDB db){
+    public AddFriend_Callback(Context m_activity, CustomProgressDialog m_p, String iduser, MoveOnDB db){
         this.c = m_activity;
         this.p = m_p;
         this.iduser = iduser;
@@ -57,7 +58,7 @@ public class AddFriend_Callback implements Callback<Integer> {
             @Override
             public void run() {
                 Toast.makeText(c, message, Toast.LENGTH_SHORT).show();
-                p.hide();
+                p.dismiss();
             }
         });
     }

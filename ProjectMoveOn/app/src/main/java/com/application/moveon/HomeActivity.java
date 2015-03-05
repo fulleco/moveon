@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -60,6 +62,10 @@ import com.heinrichreimersoftware.materialdrawer.DrawerView;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerHeaderItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
+import com.makeramen.RoundedTransformationBuilder;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import com.squareup.picasso.Transformation;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -82,6 +88,7 @@ public class HomeActivity extends FragmentActivity {
     private Calendar c = Calendar.getInstance();
     private MoveOnDB db;
     private DrawerView drawer;
+    private Target target;
 
 
 
@@ -185,6 +192,8 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
+
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                         .setDefaultFontPath("fonts/BebasNeue.otf")
                         .setFontAttrId(R.attr.fontPath)
@@ -192,6 +201,42 @@ public class HomeActivity extends FragmentActivity {
         );
 
         session = new SessionManager(this);
+        mDrawerLayout = (DrawerFrameLayout) findViewById(R.id.drawer_layout);
+
+        final DrawerProfile profile = new DrawerProfile()
+                .setBackground(getResources().getDrawable(R.drawable.background))
+                .setName(session.getUserDetails().get(SessionManager.KEY_EMAIL))
+                .setDescription(session.getUserDetails().get(SessionManager.KEY_FIRSTNAME) + " " + session.getUserDetails().get(SessionManager.KEY_LASTNAME))
+                .setOnProfileClickListener(new DrawerProfile.OnProfileClickListener() {
+                    @Override
+                    public void onClick(DrawerProfile drawerProfile) {
+                        mDrawerLayout.closeDrawer();
+                        switchFragment(fragmentViewProfil);
+                    }
+                });
+        target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                Log.i("LOADPHOTO", "CHARGE");
+                profile.setAvatar(new BitmapDrawable(bitmap));
+                mDrawerLayout.setProfile(profile);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable drawable) {
+                Log.i("LOADPHOTO", "PAS CHARGE");
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable drawable) {
+                Log.i("LOADPHOTO", "Onprepare");
+            }
+        };
+
+
+        String image = "http://martinezhugo.com/pfe/images/"+ session.getUserDetails().get(SessionManager.KEY_ID)+"/profile.jpg";
+        Picasso.with(this).load(image).resize(100, 100).into(target);
 
         tools = new com.application.moveon.tools.ToolBox(this);
 
@@ -209,7 +254,7 @@ public class HomeActivity extends FragmentActivity {
 
 
         mTitle = mDrawerTitle = getTitle();
-        mDrawerLayout = (DrawerFrameLayout) findViewById(R.id.drawer_layout);
+
 
 
         // set up the drawer's list view with items and click listener
@@ -242,23 +287,16 @@ public class HomeActivity extends FragmentActivity {
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+        Transformation transformation = new RoundedTransformationBuilder()
+                .cornerRadiusDp(15)
+                .oval(false)
+                .build();
+
 
 
         mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primary_dark_material_dark));
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerLayout.setProfile(new DrawerProfile()
-                        .setAvatar((BitmapDrawable) getResources().getDrawable(R.drawable.profile_test))
-                        .setBackground(getResources().getDrawable(R.drawable.background))
-                        .setName(session.getUserDetails().get(SessionManager.KEY_EMAIL))
-                        .setDescription(session.getUserDetails().get(SessionManager.KEY_FIRSTNAME))
-                .setOnProfileClickListener(new DrawerProfile.OnProfileClickListener() {
-                    @Override
-                    public void onClick(DrawerProfile drawerProfile) {
-                        mDrawerLayout.closeDrawer();
-                        switchFragment(fragmentViewProfil);
-                    }
-                })
-        );
+        mDrawerLayout.setProfile(profile);
 
         mDrawerLayout.addItem(new DrawerHeaderItem()
                 .setTitle("Cercles"));

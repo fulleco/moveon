@@ -11,7 +11,7 @@
         android:layout_height="90dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/inscription_question_mark"
+        android:background="@drawable/profil_default"
         android:layout_centerHorizontal="true"/>
 
     <ImageView

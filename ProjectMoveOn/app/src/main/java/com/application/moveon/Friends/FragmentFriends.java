@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.moveon.R;
+import com.application.moveon.custom.CustomProgressDialog;
 import com.application.moveon.friends.adapter.UserAdapter;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
@@ -86,8 +87,8 @@ public class FragmentFriends extends Fragment {
             public void onClick(View view) {
                 //TODO ADD
 
-                progressDialog.setMessage("Envoi de la demande...");
-                progressDialog.show();
+                CustomProgressDialog p = new CustomProgressDialog(getActivity().getBaseContext());
+                p.show();
 
                 String mail = session.getUserDetails().get(SessionManager.KEY_EMAIL);
 
@@ -96,13 +97,13 @@ public class FragmentFriends extends Fragment {
                 String val = add_friend.getText().toString();
                 if(val.equals("")){
                     Toast.makeText(activity, "Veuillez entrer un identifiant", Toast.LENGTH_SHORT).show();
-                    progressDialog.hide();
+                    p.dismiss();
                 }else if(val.equals(mail)){
                     Toast.makeText(activity, "Vous êtes déjà votre ami", Toast.LENGTH_SHORT).show();
-                    progressDialog.hide();
+                    p.dismiss();
                 }
                 else{
-                    mainmos.addfriend( mail, val, new AddFriend_Callback(activity, progressDialog, val,bd));
+                    mainmos.addfriend( mail, val.toLowerCase(), new AddFriend_Callback(activity, p, val,bd));
                 }
             }
         });

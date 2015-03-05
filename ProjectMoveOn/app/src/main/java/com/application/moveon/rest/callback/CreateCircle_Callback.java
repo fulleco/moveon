@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.widget.Toast;
 
+import com.application.moveon.custom.CustomProgressDialog;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -14,9 +16,9 @@ import retrofit.client.Response;
 public class CreateCircle_Callback implements Callback<Integer> {
 
     private Activity activity;
-    private ProgressDialog p;
+    private CustomProgressDialog p;
 
-    public CreateCircle_Callback(Activity activity, ProgressDialog p) {
+    public CreateCircle_Callback(Activity activity, CustomProgressDialog p) {
         this.activity = activity;
         this.p = p;
     }
@@ -30,19 +32,19 @@ public class CreateCircle_Callback implements Callback<Integer> {
         }
         else if(aint == 1){
             Toast.makeText(activity, "La création du cercle a été effectuée", Toast.LENGTH_SHORT).show();
-            p.hide();
+            p.dismiss();
         }else if(aint == 2){
             Toast.makeText(activity, "Problème lors de la création du cercle", Toast.LENGTH_SHORT).show();
-            p.hide();
+            p.dismiss();
         }else if(aint == 3) {
             Toast.makeText(activity, "Problème lors de l'envoie des invitations", Toast.LENGTH_SHORT).show();
-            p.hide();
+            p.dismiss();
         }
     }
 
     @Override
     public void failure(RetrofitError error) {
         Toast.makeText(activity, "Impossible de contacter le serveur", Toast.LENGTH_SHORT).show();
-        p.hide();
+        p.dismiss();
     }
 }

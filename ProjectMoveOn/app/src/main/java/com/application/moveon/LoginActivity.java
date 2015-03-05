@@ -97,7 +97,7 @@ public class LoginActivity extends Activity {
 
                 if(validFields().size() == 0){
 
-                    final String mail = editEmail.getText().toString();
+                    final String mail = editEmail.getText().toString().toLowerCase();
                     final String password = editPassword.getText().toString();
 
                     //logo.setBackgroundResource(R.drawable.login_loader);

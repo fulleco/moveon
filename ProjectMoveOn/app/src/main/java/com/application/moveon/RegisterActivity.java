@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -135,8 +137,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 
 
 
-                User newUser = new User(editEmail.getText().toString(),
-                        editPassword1.getText().toString(), editFirstName.getText().toString(), editLastName.getText().toString());
+                User newUser = new User(editEmail.getText().toString().toLowerCase(),
+                        editPassword1.getText().toString(), editFirstName.getText().toString().toLowerCase(), editLastName.getText().toString().toLowerCase());
 
                 CustomProgressDialog p = new CustomProgressDialog(RegisterActivity.this);
                 p.show();
@@ -153,6 +155,14 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    private boolean validEmail(String email) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(email).matches();
+    }
+
+
+
+
     public ArrayList<String> validFields() {
         ArrayList<String> fieldsEmpty = new ArrayList<String>();
         if (editEmail.getText().toString().equals(""))
@@ -163,6 +173,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             fieldsEmpty.add("Nom de famille");
         if (editFirstName.getText().toString().equals(""))
             fieldsEmpty.add("Prénom");
+        if (!validEmail(editEmail.getText().toString())) {
+           fieldsEmpty.add("Email invalide");
+
+        }
         return fieldsEmpty;
     }
 

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.application.moveon.HomeActivity;
 import com.application.moveon.R;
+import com.application.moveon.custom.CustomProgressDialog;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.CreateCircle_Callback;
@@ -26,6 +27,7 @@ import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ToolBox;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -103,6 +105,8 @@ public class FragmentCreateCercle extends Fragment{
         editTimeFin = (EditText) view.findViewById(R.id.editTimeFin);
         editDateFin = (EditText) view.findViewById(R.id.editDateFin);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
         tools.setCurrentDateOnView(editDateDebut,c);
         tools.setCurrentTimeOnView(editTimeDebut,c);
 
@@ -145,13 +149,8 @@ public class FragmentCreateCercle extends Fragment{
                     Toast.makeText(getActivity(),"Veuillez mettre un titre", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-
-                Log.i("HUGO", editTimeDebut.getText().toString());
-                Log.i("ANTHO", "LATITUDE" + String.valueOf(latitude));
-                Log.i("ANTHO", "LONGITUDE" + String.valueOf(longitude));
-                progressDialog.setMessage("Création en cours");
-                progressDialog.show();
+                CustomProgressDialog p = new CustomProgressDialog(getActivity().getBaseContext());
+                p.show();
                 mos.createcircle(nomCercle.getText().toString(), session.getUserDetails().get(SessionManager.KEY_EMAIL)
                         ,susers
                         ,editDateDebut.toString() +" " + editTimeDebut.toString()
@@ -159,7 +158,7 @@ public class FragmentCreateCercle extends Fragment{
                         ,latitude
                         ,longitude
                         ,0
-                        , new CreateCircle_Callback(getActivity(),progressDialog));
+                        , new CreateCircle_Callback(getActivity(),p));
             }
         });
 
