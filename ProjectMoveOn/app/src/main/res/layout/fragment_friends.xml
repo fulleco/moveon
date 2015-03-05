@@ -1,17 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
     android:background="@drawable/inscription_background"
     tools:context="com.application.moveon.HomeActivity">
 
 
     <LinearLayout
         android:id="@+id/linear_photo"
-        android:layout_below="@+id/logo"
         android:orientation="horizontal"
-        android:layout_height="70dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.15"
         android:layout_width="fill_parent"
         android:layout_centerHorizontal="true"
         android:background="#B3ffebad">
@@ -48,10 +49,26 @@
     </LinearLayout>
 
     <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_contacts"
-        android:layout_below="@+id/linear_photo"
-        android:layout_centerHorizontal="true" />
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.75"
+        android:id="@+id/list_contacts"/>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".10"
+        android:gravity="center"
+        android:background="#4Dffffff">
+        <ImageButton
+            android:id="@+id/refresh_button"
+            android:contentDescription="ok"
+            android:src="@drawable/refresh"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@null"
 
-</RelativeLayout>
+            android:scaleType="centerInside"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

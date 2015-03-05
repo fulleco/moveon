@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,8 @@ import com.application.moveon.friends.adapter.UserAdapter;
 import com.application.moveon.rest.MoveOnService;
 import com.application.moveon.rest.RestClient;
 import com.application.moveon.rest.callback.AddFriend_Callback;
+import com.application.moveon.rest.callback.UpdateDemandsUi_Callback;
+import com.application.moveon.rest.callback.UpdateFriendsUi_Callback;
 import com.application.moveon.rest.modele.UserPojo;
 import com.application.moveon.session.Connectivity;
 import com.application.moveon.session.SessionManager;
@@ -105,6 +108,17 @@ public class FragmentFriends extends Fragment {
                 else{
                     mainmos.addfriend( mail, val.toLowerCase(), new AddFriend_Callback(activity, p, val,bd));
                 }
+            }
+        });
+
+        ImageButton button = (ImageButton)view.findViewById(R.id.refresh_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomProgressDialog p = new CustomProgressDialog(getActivity());
+                p.show();
+                MoveOnService mos = new RestClient(true).getApiService();
+                mos.getfriends(session.getUserDetails().get(SessionManager.KEY_EMAIL), new UpdateFriendsUi_Callback(new MoveOnDB(getActivity(),session.getUserDetails().get(SessionManager.KEY_EMAIL)),getActivity(),p,lv));
             }
         });
 

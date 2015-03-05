@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     android:background="@drawable/inscription_background"
-    tools:context="com.application.moveon.HomeActivity">
+    tools:context="com.application.moveon.HomeActivity"
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="70dp"
@@ -20,12 +17,31 @@
         android:paddingLeft="10px"
         android:textSize="19sp"
         android:gravity="center"
-        android:id="@+id/no_demands"/>
+        android:id="@+id/no_demands"
+        android:visibility="gone"/>
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.90"
         android:id="@+id/list_demands"/>
-    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".10"
+        android:gravity="center"
+        android:background="#4Dffffff">
+        <ImageButton
+            android:id="@+id/refresh_button"
+            android:contentDescription="ok"
+            android:src="@drawable/refresh"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@null"
 
-</RelativeLayout>
+            android:scaleType="centerInside"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

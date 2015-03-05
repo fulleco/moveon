@@ -27,6 +27,7 @@ import com.application.moveon.rest.callback.EditUser_Callback;
 import com.application.moveon.session.SessionManager;
 import com.application.moveon.tools.ImageHelper;
 import com.application.moveon.tools.ToolBox;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -71,6 +72,9 @@ public class FragmentEditProfil extends Fragment {
         logo = (ImageView) view.findViewById(R.id.logo);
 
         profilePicture = (ImageView)view.findViewById(R.id.imageProfil);
+
+        String image = "http://martinezhugo.com/pfe/images/"+ session.getUserDetails().get(SessionManager.KEY_ID)+"/profile.jpg";
+        Picasso.with(getActivity()).load(image).resize(100, 100).into(profilePicture);
 
         buttonBrowse = (Button)view.findViewById(R.id.buttonParcourir);
         buttonBrowse.setOnClickListener(new View.OnClickListener() {
